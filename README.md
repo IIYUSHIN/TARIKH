@@ -31,7 +31,7 @@ app from those recordings with no network; a banner on every screen says it is a
 
 ## Tests
 
-`pytest` runs 90+ checks, including browser tests of the real front end in Chromium (`pip install playwright` then
+`pytest` runs 90+ checks, including browser tests of the real front end in Chromium (`pip install -r requirements-dev.txt` then
 `playwright install chromium`). Azure is never called by the tests; the test doubles live only in `tests/`.
 
 ## Design

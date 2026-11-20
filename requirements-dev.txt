@@ -1,0 +1,2 @@
+# Only for the browser tests in tests/ui:
+playwright>=1.50
