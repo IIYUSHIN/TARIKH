@@ -24,3 +24,7 @@ counted; month-end handling when the target day does not exist; second and later
 
 **Sources read so far (summaries and extracts, not the full judgment):** [Econ Antri summary](https://www.legalauthority.in/judgement/m-s-econ-antri-ltd-vs-m-s-rom-industries-ltd-6055),
 [AIR 2013 SC 3283 headnote](https://www.aironline.in/legal-judgements/AIR+2013+SUPREME+COURT+3283).
+
+## Implemented
+
+20 Nov 2026: `app/deadlines.py` now ends the complaint month on the same calendar date (`month_after`) and keeps the one-day-earlier reading as `conservative_closes`, which the screens offer as "file by" so the advocate is never shown only one reading. Cheque validity keeps the banking convention (day before). Tests: `tests/test_deadlines.py` (5 new), full suite 109 passing.
