@@ -74,14 +74,22 @@ def map_result(doc_type: DocType, raw: dict, doc_id: str) -> list[Fact]:
 class ContentUnderstandingExtractor:
     """Live implementation of the Extractor protocol."""
 
-    def __init__(self, settings: Settings, credential=None):
-        from azure.ai.contentunderstanding import ContentUnderstandingClient
-        from azure.identity import DefaultAzureCredential
-        self._client = ContentUnderstandingClient(
-            endpoint=settings.services_base, credential=credential or DefaultAzureCredential())
+    def __init__(self, settings: Settings, credential=None, client=None):
+        if client is None:
+            from azure.ai.contentunderstanding import ContentUnderstandingClient
+            from azure.identity import DefaultAzureCredential
+            client = ContentUnderstandingClient(
+                endpoint=settings.services_base, credential=credential or DefaultAzureCredential())
+        self._client = client
+        self._settings = settings
+        self._defaults_set = False
         self._ready: set[DocType] = set()
 
     def ensure_analyzer(self, doc_type: DocType) -> None:
+        if not self._defaults_set:  # the resource must know which deployments back each model name before any analysis
+            self.configure_defaults(self._settings.model_deployment, self._settings.cu_mini_deployment,
+                                    self._settings.cu_embedding_deployment)
+            self._defaults_set = True
         if doc_type in self._ready:
             return
         self._client.begin_create_analyzer(

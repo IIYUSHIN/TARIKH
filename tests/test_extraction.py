@@ -61,3 +61,47 @@ def test_analyzer_definition_requests_grounding_for_every_extracted_field(doc_ty
 
 def test_doc_id_is_derived_from_content():
     assert doc_id_for(b"same") == doc_id_for(b"same") != doc_id_for(b"other")
+
+
+class _Op:
+    def __init__(self, value=None):
+        self._v = value
+
+    def result(self):
+        return self._v
+
+
+class _Result:
+    def as_dict(self):
+        return {"contents": [{"fields": {}, "pages": []}]}
+
+
+class _FakeCU:
+    def __init__(self):
+        self.calls = []
+
+    def update_defaults(self, model_deployments):
+        self.calls.append(("defaults", dict(model_deployments)))
+
+    def begin_create_analyzer(self, *a, **k):
+        self.calls.append(("create",))
+        return _Op()
+
+    def begin_analyze_binary(self, *a, **k):
+        self.calls.append(("analyze",))
+        return _Op(_Result())
+
+
+def test_extractor_maps_model_names_to_the_users_deployments_once_before_first_analysis():
+    from app.config import Settings
+    from app.models import DocType
+    from app.services.extraction import ContentUnderstandingExtractor
+    fake = _FakeCU()
+    s = Settings(project_endpoint="https://r.services.ai.azure.com/api/projects/p", model_deployment="my-gpt41")
+    ex = ContentUnderstandingExtractor(s, client=fake)
+    ex.extract(DocType.CHEQUE, b"abc", "image/png")
+    ex.extract(DocType.CHEQUE, b"abd", "image/png")
+    assert fake.calls[0] == ("defaults", {"gpt-4.1": "my-gpt41", "gpt-4.1-mini": "gpt-4.1-mini",
+                                          "text-embedding-3-large": "text-embedding-3-large"})
+    assert [c[0] for c in fake.calls].count("defaults") == 1
+    assert [c[0] for c in fake.calls] == ["defaults", "create", "analyze", "analyze"]
