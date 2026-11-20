@@ -8,7 +8,7 @@ import sqlite3
 from contextlib import closing
 from pathlib import Path
 
-from .models import AuditEntry, Brief, Document, Matter, Transcript, utcnow
+from .models import AuditEntry, Brief, Document, Fact, Matter, Transcript, utcnow
 
 
 class Store:
@@ -70,6 +70,10 @@ class Store:
                 if any(f.id == fact_id for f in d.facts):
                     return m.id
         raise KeyError(fact_id)
+
+    def get_fact(self, fact_id: str) -> Fact:
+        m = self.get_matter(self.matter_id_for_fact(fact_id))
+        return next(f for d in m.documents for f in d.facts if f.id == fact_id)
 
     def update_fact(self, fact_id: str, value: str | None, actor: str) -> None:
         m = self.get_matter(self.matter_id_for_fact(fact_id))
