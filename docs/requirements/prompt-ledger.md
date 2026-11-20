@@ -99,3 +99,8 @@ Status words: **done**, **partly**, **open**, **later** (owner said it comes lat
 5. Colour only where it carries meaning (time).
 6. Every output is on GitHub (`main`) and reviewable on a phone.
 7. Nothing is called done until it has been looked at, run or tested.
+
+## Status update, 20 Nov 2026 (after message 9)
+
+- Startup-website instruction: done as a static site in `site/` (11 pages + docket, matter, brief screens in demo mode). Built by `site/build.py`; 11 engine tests and 11 browser tests pass. Published as an artifact and pushed to `main`.
+- Still open: Azure pipeline slices, app wired to the service, report from the finished app, viva pack, DEVELOPER.md, final zip, primary-source legal check, decision 0003 update (region deferred by owner).
