@@ -1,0 +1,53 @@
+{# Product panes shown in the home scroll story. Each is a macro so the stage and the small-screen copy share one source. #}
+{% macro read(root) %}
+<div class="paper" style="max-width:640px">
+  <img src="{{ root }}assets/img/cheque.jpg" width="1200" height="533" alt="A fictional cheque from Kalra Fabricators to Sharma Steel Traders for four lakh eighty-five thousand rupees, dated 20 September 2026" loading="lazy">
+  <div class="hl" style="left:67.5%;top:3.5%;width:30%;height:9.5%"></div>
+</div>
+<div class="sheet" style="max-width:640px">
+  <h4>Read from the cheque</h4>
+  <table class="fields"><tbody>
+    <tr><td>Date on the cheque</td><td class="v">20 Sep 2026</td><td class="s">top right</td></tr>
+    <tr><td>Amount</td><td class="v">₹4,85,000</td><td class="s">box, right</td></tr>
+    <tr><td>Drawer</td><td class="v">Kalra Fabricators</td><td class="s">signature block</td></tr>
+  </tbody></table>
+</div>
+{% endmacro %}
+
+{% macro trace(root) %}
+<div class="sheet" style="max-width:640px">
+  <h4>Where each fact came from</h4>
+  <table class="fields"><tbody>
+    <tr><td>Cheque date</td><td class="v">20 Sep 2026</td><td class="s"><a href="#">Cheque</a></td></tr>
+    <tr><td>Presented on</td><td class="v">1 Oct 2026</td><td class="s"><a href="#">Return memo</a></td></tr>
+    <tr><td>Return reason</td><td class="v">51, funds insufficient</td><td class="s"><a href="#">Return memo</a></td></tr>
+    <tr><td>Notice sent</td><td class="v">30 Oct 2026</td><td class="s"><a href="#">Demand notice</a></td></tr>
+    <tr><td>Memo received</td><td class="v">5 Oct 2026</td><td class="s"><i>On no paper</i>You enter it</td></tr>
+  </tbody></table>
+  <p class="t-xs" style="margin-top:16px">A date that no paper shows is never guessed. The desk asks the advocate for it.</p>
+</div>
+{% endmacro %}
+
+{% macro count(root) %}
+<div class="sheet" style="max-width:640px">
+  <h4>Counted by rule, not by model</h4>
+  <table class="fields"><tbody>
+    <tr><td>Cheque valid to</td><td class="v">19 Dec 2026</td><td class="s">presented in time</td></tr>
+    <tr><td>Notice due by</td><td class="v">4 Nov 2026</td><td class="s">sent 30 Oct</td></tr>
+    <tr><td>Drawer may pay to</td><td class="v">18 Nov 2026</td><td class="s">15 days, their clock</td></tr>
+    <tr><td>Complaint window</td><td class="v">19 Nov to 19 Dec</td><td class="s">29 days left</td></tr>
+  </tbody></table>
+  <p class="t-xs" style="margin-top:16px">Same papers in, same dates out, every time. Each date carries the rule that produced it.</p>
+</div>
+{% endmacro %}
+
+{% macro brief(root) %}
+<div class="sheet" style="max-width:640px">
+  <h4>Draft brief, for the advocate to approve</h4>
+  <ol class="paras">
+    <li class="para"><span class="n">1</span><p>Kalra Fabricators drew cheque 004718 for ₹4,85,000 on 20 September 2026 in favour of Sharma Steel Traders.<sup><a href="#">1</a></sup></p></li>
+    <li class="para"><span class="n">2</span><p>The bank returned it unpaid on 3 October 2026, funds insufficient.<sup><a href="#">2</a></sup></p></li>
+  </ol>
+  <p class="t-xs" style="margin-top:16px">Nothing is filed or sent. The advocate approves by name.</p>
+</div>
+{% endmacro %}

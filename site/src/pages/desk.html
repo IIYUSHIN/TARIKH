@@ -1,0 +1,93 @@
+{% extends "_layout.html" %}
+{% import "partials/panes.html" as P %}
+{% set title = "The desk" %}
+{% set nav = "desk" %}
+{% set desc = "The Tarikh desk: a docket of matters, one matter on a long table of dates, and a brief with a source for every sentence." %}
+{% block main %}
+<section class="band pagehead">
+  <div class="wrap">
+    <p class="eyebrow">The desk</p>
+    <h1 class="d2 rise">One file open, every date in view.</h1>
+    <p class="t-lg rise d1s">The desk is where a matter lives from the day the papers arrive to the day the advocate approves the brief. Three screens, one idea: time is the only thing that gets colour.</p>
+  </div>
+</section>
+
+<section class="band section" style="padding-top:0">
+  <div class="wrap">
+    <div class="flow">
+      <div><span class="k">One</span><b>Papers arrive</b><p>The clerk drops in a photo of the cheque, the return memo and the notice.</p></div>
+      <div><span class="k">Two</span><b>Facts appear</b><p>Each field shows the paper and the spot it came from. Missing dates are asked for.</p></div>
+      <div><span class="k">Three</span><b>Clocks start</b><p>Four periods, counted by rule. The one that matters shows days left.</p></div>
+      <div><span class="k">Four</span><b>Brief drafted</b><p>A short chronology, every sentence footnoted, any unsupported line removed.</p></div>
+      <div><span class="k">Five</span><b>Advocate approves</b><p>By name, after checking. The approval is recorded. Nothing is filed or sent.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band deep section" aria-labelledby="s1">
+  <div class="wrap">
+    <div class="cols2">
+      <div>
+        <p class="eyebrow">Screen one</p>
+        <h2 class="d3" id="s1" style="margin:16px 0 24px">The docket</h2>
+        <p class="t-lg">Every matter, ordered by what runs out first. A matter whose window closes in five days sits above one with a month to go, whatever order they arrived in. The colour is the only signal: blue is calm, amber is running short, red is urgent, grey has ended.</p>
+        <p style="margin-top:32px"><a class="btn solid" href="{{ root }}app/docket.html">Open the docket</a></p>
+      </div>
+      <div>
+        <ul class="docket" style="margin-top:8px" data-docket data-today="2026-11-20">
+          <li data-cheque="2026-09-01" data-presented="2026-09-10" data-memo="2026-09-13" data-sent="2026-10-05" data-delivered="2026-10-09"><a href="{{ root }}app/docket.html"><div><div class="nm">Dhillon Cold Storage</div><div class="sb when"></div></div><span class="st"></span></a></li>
+          <li data-cheque="2026-09-20" data-presented="2026-10-01" data-memo="2026-10-05" data-sent="2026-10-30" data-delivered="2026-11-03"><a href="{{ root }}app/docket.html"><div><div class="nm">Kalra Fabricators</div><div class="sb when"></div></div><span class="st"></span></a></li>
+          <li data-cheque="2026-08-02" data-presented="2026-08-10" data-memo="2026-08-12" data-sent="2026-09-05" data-delivered="2026-09-08"><a href="{{ root }}app/docket.html"><div><div class="nm">Bhatia Timber Mart</div><div class="sb when"></div></div><span class="st"></span></a></li>
+        </ul>
+        <p class="t-xs" style="margin-top:16px">Sample matters, all fictional. These statuses are computed live from the dates, as of 20 November 2026.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band section" aria-labelledby="s2">
+  <div class="wrap">
+    <div class="cols2">
+      <div>
+        <p class="eyebrow">Screen two</p>
+        <h2 class="d3" id="s2" style="margin:16px 0 24px">The matter</h2>
+        <p class="t-lg">A matter is the long table: five dates as pins, four clocks as bars. Slide the day the notice was sent and see what happens to the window. Beside it sit the facts, each with its source, and the three papers themselves.</p>
+        <p class="t-lg" style="margin-top:16px">The advocate gets two answers where the law leaves room for doubt: the last day the rule allows, and an earlier date that removes the doubt.</p>
+        <p style="margin-top:32px"><a class="btn solid" href="{{ root }}app/matter.html">Open the sample matter</a></p>
+      </div>
+      <div>{{ P.trace(root) }}</div>
+    </div>
+  </div>
+</section>
+
+<section class="band on-ink section" aria-labelledby="s3">
+  <div class="wrap">
+    <div class="cols2">
+      <div>
+        <p class="eyebrow">Screen three</p>
+        <h2 class="d3" id="s3" style="margin:16px 0 24px">The brief</h2>
+        <p class="t-lg">A page the advocate can read in two minutes. Every sentence has a number, every number a source. A sentence without a source never reaches this page. The advocate approves by typing a name, and that approval is the only way a brief leaves draft.</p>
+        <p style="margin-top:32px"><a class="btn" href="{{ root }}app/brief.html">Open the sample brief</a></p>
+      </div>
+      <div>
+        <ol class="paras">
+          <li class="para"><span class="n">1</span><p>Kalra Fabricators drew cheque 004718 for ₹4,85,000 on 20 September 2026 in favour of Sharma Steel Traders.<sup><a href="{{ root }}app/brief.html#n1">1</a></sup></p></li>
+          <li class="para"><span class="n">2</span><p>Presented on 1 October 2026, it was returned unpaid on 3 October, funds insufficient.<sup><a href="{{ root }}app/brief.html#n2">2</a></sup></p></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band section" aria-labelledby="more">
+  <div class="wrap">
+    <p class="eyebrow">Also on the desk</p>
+    <h2 class="d3" id="more" style="margin:16px 0 clamp(32px,4vw,56px)">Two helpers, kept on a short lead.</h2>
+    <div class="cols2">
+      <div><h3 class="d4">Take the client’s account by voice</h3><p class="t-lg" style="margin-top:12px">The client speaks in English, Hindi or Punjabi. The desk writes it down, hides names, numbers and addresses, and only then lets a model read it. The original recording stays on the machine.</p></div>
+      <div><h3 class="d4">Ask the file a question</h3><p class="t-lg" style="margin-top:12px">“When does the complaint window close?” An assistant answers from that one matter’s facts and its counted dates, through two read-only tools. It cannot change a fact, count its own date, or see another matter.</p></div>
+    </div>
+    <p class="t-sm" style="margin-top:48px;max-width:640px">Status today: the date engine and these screens are built and tested on the sample matter. Connecting the reading, voice and drafting services to Azure is in progress. The <a class="link" href="{{ root }}docs.html">docs page</a> lists what is done and what is not.</p>
+  </div>
+</section>
+{% endblock %}

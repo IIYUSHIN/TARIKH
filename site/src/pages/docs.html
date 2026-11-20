@@ -1,0 +1,86 @@
+{% extends "_layout.html" %}
+{% set title = "How it is built" %}
+{% set nav = "docs" %}
+{% set desc = "Architecture, Azure services, how to run Tarikh on Windows, and an honest status table." %}
+{% block main %}
+<section class="band pagehead">
+  <div class="wrap">
+    <p class="eyebrow">How it is built</p>
+    <h1 class="d2 rise">The pipeline, the services, and what is done.</h1>
+    <p class="t-lg rise d1s">For a developer, an examiner, or an advocate who wants to know what is under the desk. Everything here is in the <a class="link" href="{{ GITHUB }}">public repository</a>.</p>
+  </div>
+</section>
+
+<section class="band section" style="padding-top:0">
+  <div class="wrap">
+    <div class="flow">
+      <div><span class="k">Intake</span><b>Upload</b><p>Photo or scan of each paper. Kept locally.</p></div>
+      <div><span class="k">Read</span><b>Extract</b><p>Content Understanding returns fields with a place on the page.</p></div>
+      <div><span class="k">Count</span><b>Rule engine</b><p>Pure code, no model. Four windows, each with its rule.</p></div>
+      <div><span class="k">Draft</span><b>Brief</b><p>Foundry model drafts from traced facts. Unsupported lines are dropped.</p></div>
+      <div><span class="k">Gate</span><b>Approve</b><p>A named advocate approves. The approval is audited.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band deep section" aria-labelledby="stack">
+  <div class="wrap">
+    <p class="eyebrow">Stack</p>
+    <h2 class="d3" id="stack" style="margin:16px 0 clamp(32px,4vw,56px)">Small on purpose.</h2>
+    <div class="cols3">
+      <div><h3 class="d4">Service</h3><p class="t-sm" style="margin-top:8px">Python with FastAPI, SQLite for matters and the audit log, and a plain static front end. No front-end framework.</p></div>
+      <div><h3 class="d4">Azure</h3><p class="t-sm" style="margin-top:8px">Content Understanding, AI Language (PII detection), Speech, a Foundry model deployment and the Foundry Agent Service. Sign-in through Microsoft Entra ID.</p></div>
+      <div><h3 class="d4">Recording and replay</h3><p class="t-sm" style="margin-top:8px">Every Azure reply can be saved and replayed, so the whole app runs offline and tests never call Azure.</p></div>
+      <div><h3 class="d4">Date engine</h3><p class="t-sm" style="margin-top:8px">Written twice, in Python for the service and in JavaScript for this site, and tested on both sides against the same worked examples.</p></div>
+      <div><h3 class="d4">This website</h3><p class="t-sm" style="margin-top:8px">Static pages generated from templates by one script. One stylesheet, one script, self-hosted fonts, no third-party requests.</p></div>
+      <div><h3 class="d4">Decisions</h3><p class="t-sm" style="margin-top:8px">Each design and legal choice is a short numbered note in <code>docs/decisions</code>, with the alternatives that were rejected.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band section" aria-labelledby="status">
+  <div class="wrap">
+    <p class="eyebrow">Status, 20 November 2026</p>
+    <h2 class="d3" id="status" style="margin:16px 0 clamp(32px,4vw,56px)">What is done, and what is not.</h2>
+    <table class="table">
+      <thead><tr><th scope="col">Part</th><th scope="col">State</th><th scope="col">Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Deadline rule engine (Python)</td><td><span class="status ok">Built, tested</span></td><td>Complaint month corrected per decision 0004. Sources still secondary.</td></tr>
+        <tr><td>Date engine (JavaScript)</td><td><span class="status ok">Built, tested</span></td><td>Eleven tests, run with <code>node --test</code>.</td></tr>
+        <tr><td>This website and the sample desk screens</td><td><span class="status ok">Built</span></td><td>Demo mode on fictional matters. Nothing is uploaded.</td></tr>
+        <tr><td>Reading papers with Azure</td><td><span class="status part">Being connected</span></td><td>Needs the owner’s Azure sign-in on their machine.</td></tr>
+        <tr><td>Voice, privacy pass, drafting, agent</td><td><span class="status part">Being connected</span></td><td>Same dependency. Replay mode lets each be shown offline once recorded.</td></tr>
+        <tr><td>Primary-source check of legal rules</td><td><span class="status open">Not started</span></td><td>Act text, the two judgments and the RBI circular.</td></tr>
+        <tr><td>Independent security review</td><td><span class="status open">Not done</span></td><td>Do not use with real client papers.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="band deep section" aria-labelledby="run">
+  <div class="wrap">
+    <div class="cols2">
+      <div>
+        <p class="eyebrow">Run it</p>
+        <h2 class="d3" id="run" style="margin:16px 0 24px">On Windows, in PowerShell.</h2>
+        <p class="t-lg">Needs Python 3.11 or newer. The Azure steps are in <code>docs/azure-setup.md</code>; the first command checks each service and says how to fix any that fails.</p>
+      </div>
+      <div>
+<pre class="code">git clone {{ GITHUB }}.git
+cd TARIKH
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+az login
+python -m tools.check_setup
+python -m uvicorn app.main:build_app --factory --port 8000</pre>
+        <p class="t-sm" style="margin:24px 0 8px">To rebuild and test this website:</p>
+<pre class="code">cd site
+pip install jinja2
+python build.py
+node --test tests/engine.test.js</pre>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

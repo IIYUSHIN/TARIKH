@@ -1,0 +1,168 @@
+{% extends "_layout.html" %}
+{% import "partials/panes.html" as P %}
+{% set title = "" %}
+{% set nav = "" %}
+{% block main %}
+
+<section class="hero band">
+  <div class="wrap">
+    <div class="hero-grid">
+      <h1 class="d1 rise">Four clocks start the day a cheque <em>bounces.</em></h1>
+      <svg class="hero-stamp stamp-in" viewBox="0 0 172 172" fill="none" role="img" aria-label="Sample matter: 29 days left" style="color:var(--calm)">
+        <circle cx="86" cy="86" r="82" stroke="currentColor" stroke-width="3"/><circle cx="86" cy="86" r="74" stroke="currentColor" stroke-width="1"/>
+        <text x="86" y="48" text-anchor="middle" font-family="Instrument Sans, sans-serif" font-size="9" font-weight="700" letter-spacing="2.2" fill="currentColor">SAMPLE MATTER</text>
+        <path d="M42 58h88" stroke="currentColor" stroke-width="1"/>
+        <text x="86" y="114" text-anchor="middle" font-family="Bodoni Moda, serif" font-size="62" font-weight="500" fill="currentColor" letter-spacing="-2">29</text>
+        <text x="86" y="138" text-anchor="middle" font-family="Instrument Sans, sans-serif" font-size="11" font-weight="700" letter-spacing="2.4" fill="currentColor">DAYS LEFT</text>
+      </svg>
+    </div>
+    <div class="hero-sub">
+      <p class="t-lg rise d1s">Tarikh reads the cheque, the bank’s return memo and the demand notice, counts every statutory date, and drafts a short brief your advocate can check line by line. It never files or sends anything.</p>
+      <div class="hero-actions rise d2s">
+        <a class="btn solid" href="#table">Move the dates</a>
+        <a class="btn" href="{{ root }}app/docket.html">Open the desk</a>
+      </div>
+    </div>
+    <div class="ruler" role="img" aria-label="A timeline from the cheque date, 20 September, to mid January, marking when the cheque was presented, when the notice was delivered, when the drawer’s 15 days end, and the last day to file, 19 December.">
+      {% for i in range(0, 121, 7) %}<i{% if i % 28 == 0 %} class="w"{% endif %} style="left:{{ (i / 120 * 100) | round(2) }}%"></i>{% endfor %}
+      <b style="left:{{ (11/120*100) | round(2) }}%"></b>
+      <b style="left:{{ (44/120*100) | round(2) }}%"></b>
+      <b style="left:{{ (59/120*100) | round(2) }}%"></b>
+      <b class="end" style="left:{{ (90/120*100) | round(2) }}%"></b>
+      <span class="c sm-hide" style="left:{{ (11/120*100) | round(2) }}%">1 Oct<br>presented</span>
+      <span class="c sm-hide" style="left:{{ (44/120*100) | round(2) }}%">3 Nov<br>notice delivered</span>
+      <span class="c sm-hide" style="left:{{ (59/120*100) | round(2) }}%">18 Nov<br>drawer’s time ends</span>
+      <span class="c" style="left:{{ (90/120*100) | round(2) }}%;color:var(--calm);font-weight:600">19 Dec<br>last day to file</span>
+    </div>
+  </div>
+</section>
+
+<section class="band section" aria-labelledby="clocks-h">
+  <div class="wrap">
+    <p class="eyebrow">The problem, without an adjective</p>
+    <h2 class="d2 rise" id="clocks-h" style="max-width:15ch;margin-top:16px">Miss one and the complaint can be lost.</h2>
+    <p class="t-lg" style="max-width:600px;margin-top:24px">A Section 138 case is four periods that start one after another. Each begins on a date that is printed on one paper and not on another. Counting them by hand, from three scans, is where files go wrong.</p>
+    <div class="clocks" style="margin-top:clamp(48px,6vw,88px)">
+      <div class="clock rise"><span class="big">3</span><span class="unit">months</span><h3>The cheque stays valid</h3><p class="t-sm">Present it inside this time, counted from the date written on it.</p><span class="src">RBI validity rule</span></div>
+      <div class="clock rise d1s"><span class="big">30</span><span class="unit">days</span><h3>To send the demand notice</h3><p class="t-sm">Counted from the day the payee received the bank’s return memo.</p><span class="src">Section 138(b)</span></div>
+      <div class="clock rise d2s"><span class="big">15</span><span class="unit">days</span><h3>The drawer gets to pay</h3><p class="t-sm">Counted from the day after they received the notice. This clock is theirs.</p><span class="src">Section 138(c)</span></div>
+      <div class="clock rise d3s"><span class="big">1</span><span class="unit">month</span><h3>To file the complaint</h3><p class="t-sm">Starts the day after the drawer’s fifteen end. This is the one that matters most.</p><span class="src">Section 142(1)(b)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="band deep section" aria-labelledby="story-h">
+  <div class="wrap">
+    <p class="eyebrow">From paper to brief</p>
+    <h2 class="d2 rise" id="story-h" style="max-width:14ch;margin-top:16px">Read. Trace. Count. Brief.</h2>
+    <div class="story" style="margin-top:clamp(40px,5vw,72px)">
+      <ol class="story-steps">
+        <li data-step="1"><span class="n">One</span><h3 class="d3">Read the papers</h3><p class="t-lg">Upload a photo or scan of the cheque, the return memo and the demand notice. Azure Content Understanding turns each into fields and tells you where on the page every value sits.</p><div class="inline-pane">{{ P.read(root) }}</div></li>
+        <li data-step="2"><span class="n">Two</span><h3 class="d3">Trace every fact</h3><p class="t-lg">Each field links to the paper it came from. When no paper shows a date, such as the day the memo reached the client, Tarikh asks the advocate. It does not guess.</p><div class="inline-pane">{{ P.trace(root) }}</div></li>
+        <li data-step="3"><span class="n">Three</span><h3 class="d3">Count the clocks</h3><p class="t-lg">The four periods are counted by a written rule engine with its own tests. No model touches a date. Every result states the rule behind it and how sure the rule is.</p><div class="inline-pane">{{ P.count(root) }}</div></li>
+        <li data-step="4"><span class="n">Four</span><h3 class="d3">Draft the brief</h3><p class="t-lg">A model drafts a short chronology from the traced facts only. Each sentence carries a footnote to its paper, and any sentence without one is dropped before the advocate sees it.</p><div class="inline-pane">{{ P.brief(root) }}</div></li>
+      </ol>
+      <div class="story-stage" aria-hidden="true">
+        <div class="pane on" data-pane="1">{{ P.read(root) }}</div>
+        <div class="pane" data-pane="2">{{ P.trace(root) }}</div>
+        <div class="pane" data-pane="3">{{ P.count(root) }}</div>
+        <div class="pane" data-pane="4">{{ P.brief(root) }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band section" id="table" aria-labelledby="table-h">
+  <div class="wrap">
+    <p class="eyebrow">Try it</p>
+    <h2 class="d2 rise" id="table-h" style="max-width:16ch;margin-top:16px">Move a date. Watch the clocks.</h2>
+    <p class="t-lg" style="max-width:600px;margin:24px 0 clamp(40px,5vw,72px)">This is the sample matter of Kalra Fabricators. The pins are the five dates that decide everything. Drag one, or focus it and use the arrow keys.</p>
+    <div data-longtable data-cheque="2026-09-20" data-presented="2026-10-01" data-memo="2026-10-05" data-sent="2026-10-30" data-delivered="2026-11-03" data-today="2026-11-20">
+      <noscript><p class="t-sm">This table needs JavaScript. In the sample matter the complaint window runs from 19 November to 19 December 2026.</p></noscript>
+    </div>
+  </div>
+</section>
+
+<section class="band on-ink section" aria-labelledby="src-h">
+  <div class="wrap">
+    <div class="brief">
+      <div>
+        <p class="eyebrow">No source, no sentence</p>
+        <h2 class="d2 rise" id="src-h" style="max-width:13ch;margin:16px 0 clamp(32px,4vw,56px)">Every sentence has a source.</h2>
+        <ol class="paras">
+          <li class="para rise"><span class="n">1</span><p>Kalra Fabricators drew cheque 004718 for ₹4,85,000 on 20 September 2026 in favour of Sharma Steel Traders.<sup><a href="#n1">1</a></sup></p></li>
+          <li class="para rise d1s"><span class="n">2</span><p>Presented on 1 October 2026, it was returned unpaid on 3 October, funds insufficient.<sup><a href="#n2">2</a></sup></p></li>
+          <li class="para rise d2s"><span class="n">3</span><p>The memo reached the payee on 5 October, and the demand notice went out on 30 October.<sup><a href="#n3">3</a><a href="#n4">4</a></sup></p></li>
+        </ol>
+        <p class="dropped">Dropped before review: <s>“The drawer admitted the debt on a phone call.”</s> No paper supports it.</p>
+      </div>
+      <div>
+        <h3 class="sr">Notes</h3>
+        <ol class="notes" style="margin-top:clamp(0px,9vw,160px)">
+          <li id="n1"><b>1</b><span>Cheque 004718, <a href="{{ root }}app/brief.html">top right and amount box</a></span></li>
+          <li id="n2"><b>2</b><span>Return memo CRM/2026/10382, rows “Presented on” and “Return Reason”</span></li>
+          <li id="n3"><b>3</b><span>Advocate’s entry: memo received 5 October</span></li>
+          <li id="n4"><b>4</b><span>Demand notice, date line</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band section" aria-labelledby="ai-h">
+  <div class="wrap">
+    <p class="eyebrow">Where AI is used, and where it is not</p>
+    <h2 class="d2 rise" id="ai-h" style="max-width:15ch;margin:16px 0 clamp(40px,5vw,72px)">A model reads. A rule counts. A person decides.</h2>
+    <div class="split">
+      <div>
+        <h3 class="d3">Used for</h3>
+        <ul class="ruled">
+          <li><b>Reading the papers</b><span>Cheque, memo and notice become fields with a place on the page.</span></li>
+          <li><b>Hearing the client</b><span>A spoken account in English, Hindi or Punjabi becomes text.</span></li>
+          <li><b>Hiding personal details</b><span>Names, numbers and addresses are masked before any model sees the account.</span></li>
+          <li><b>Drafting from facts</b><span>A short chronology, using only facts that trace to a paper.</span></li>
+          <li><b>Answering about one file</b><span>An assistant that can only read that matter’s facts and its dates.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="d3">Never used for</h3>
+        <ul class="ruled">
+          <li><b>Counting dates</b><span>A rule engine with written tests does it, the same way every time.</span></li>
+          <li><b>Deciding what the law is</b><span>The desk states its rules and its doubts. The advocate decides.</span></li>
+          <li><b>Filing anything</b><span>There is no connection to any court or e-filing system.</span></li>
+          <li><b>Sending anything</b><span>No notice, email or message leaves the desk.</span></li>
+          <li><b>Predicting an outcome</b><span>It does not say who will win, and it will not be taught to.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band deep section" aria-labelledby="az-h">
+  <div class="wrap">
+    <p class="eyebrow">Built on Azure AI</p>
+    <h2 class="d2 rise" id="az-h" style="max-width:15ch;margin:16px 0 clamp(40px,5vw,72px)">Five services, each with one job.</h2>
+    <table class="table">
+      <thead><tr><th scope="col">Service</th><th scope="col">Its job here</th><th scope="col">Where in the code</th></tr></thead>
+      <tbody>
+        <tr><td>Azure Content Understanding</td><td>Reads the cheque, memo and notice into fields, with the place on the page for each.</td><td class="m">app/services/extraction.py</td></tr>
+        <tr><td>Azure AI Language</td><td>Finds and masks personal details in the client’s account.</td><td class="m">app/services/language.py</td></tr>
+        <tr><td>Azure Speech</td><td>Turns a spoken account into text, and reads an approved brief aloud.</td><td class="m">app/services/speech.py</td></tr>
+        <tr><td>Foundry model</td><td>Drafts the brief from traced facts, and looks at the cheque image.</td><td class="m">app/services/reasoning.py</td></tr>
+        <tr><td>Foundry Agent Service</td><td>Answers questions about one matter through two read-only tools.</td><td class="m">app/services/agent.py</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:32px"><a class="link" href="{{ root }}docs.html">How it is built</a></p>
+  </div>
+</section>
+
+<section class="band section close" aria-labelledby="close-h">
+  <div class="wrap">
+    <h2 class="d1 rise" id="close-h">Put your own matter on the table.</h2>
+    <div class="acts">
+      <a class="btn solid" href="{{ root }}app/docket.html">Open the desk</a>
+      <a class="btn" href="{{ root }}contact.html">Talk to the builder</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

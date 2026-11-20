@@ -1,0 +1,30 @@
+{% extends "_layout.html" %}
+{% set title = "About" %}
+{% set nav = "about" %}
+{% set desc = "Why Tarikh exists and who built it." %}
+{% block main %}
+<section class="band pagehead">
+  <div class="wrap">
+    <p class="eyebrow">About</p>
+    <h1 class="d2 rise">A date is a small thing to lose a case over.</h1>
+  </div>
+</section>
+<section class="band section" style="padding-top:0">
+  <div class="wrap">
+    <div class="cols2">
+      <div class="prose">
+        <p class="t-lg">Section 138 cases turn on arithmetic. A cheque is returned, and a chain of periods starts: three months, thirty days, fifteen days, one month. Each one begins on a date written on a different piece of paper, and miscounting any of them can cost the complaint.</p>
+        <p>Tarikh is a case desk built around that fact. It reads the papers, shows where each date came from, counts the clocks by rule and drafts a brief for an advocate to check. The AI reads and drafts. It does not count, decide or file.</p>
+        <p>The name is the Hindi and Urdu word for a date, and the word a court gives when it fixes the next hearing.</p>
+      </div>
+      <div class="prose">
+        <h2 style="margin-top:0">Who built it</h2>
+        <p><b>Piyush Kumar Brahmbhatt</b>, B.Tech Computer Science and Engineering (AI and ML), Chandigarh University, class 24AML4 A.</p>
+        <p>Built as the Microsoft Azure AI Fundamentals (AI-901) industrial internship project, 3 July to 31 October 2026. Programme leader: Hari Haran.</p>
+        <h2>What it is today</h2>
+        <p>A working prototype and a design for a service. It has no customers, and this site shows no figures, quotes or logos because there are none to show. The code, the decisions behind it and the open questions are all in the <a href="{{ GITHUB }}">public repository</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

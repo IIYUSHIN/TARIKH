@@ -1,0 +1,53 @@
+{% extends "_layout.html" %}
+{% set title = "Security and privacy" %}
+{% set nav = "security" %}
+{% set desc = "What leaves the machine, what never does, how identity works, and what is recorded." %}
+{% block main %}
+<section class="band pagehead">
+  <div class="wrap">
+    <p class="eyebrow">Security and privacy</p>
+    <h1 class="d2 rise">What leaves the machine, and what never does.</h1>
+    <p class="t-lg rise d1s">A cheque file holds names, account numbers and a client’s own words. The design keeps as much as possible local and puts a privacy step between the client’s account and any model.</p>
+  </div>
+</section>
+
+<section class="band section" style="padding-top:0">
+  <div class="wrap">
+    <div class="flow">
+      <div><span class="k">1</span><b>Papers stay local</b><p>Uploads are kept in the desk’s own folder on the advocate’s machine.</p></div>
+      <div><span class="k">2</span><b>Reading</b><p>Page images go to Azure Content Understanding to be read into fields.</p></div>
+      <div><span class="k">3</span><b>Voice</b><p>A recording goes to Azure Speech for text. The recording itself is kept only locally.</p></div>
+      <div><span class="k">4</span><b>Privacy pass</b><p>Azure AI Language finds names, numbers and addresses and masks them.</p></div>
+      <div><span class="k">5</span><b>Drafting</b><p>Only masked text and traced facts reach the drafting model. Nothing is sent onward.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band deep section">
+  <div class="wrap">
+    <div class="cols2">
+      <div class="prose">
+        <h2 style="margin-top:0">Identity</h2>
+        <p>The desk signs in to Azure with your own Microsoft Entra ID through the standard credential chain. There is no API key in the code, in the repository or in a settings file. If you are not signed in, the desk cannot call Azure, and says so.</p>
+        <h2>The agent’s short lead</h2>
+        <p>The question-answering assistant has exactly two tools: one that reads a matter’s facts and one that reads its counted dates. Both are read-only and scoped to the matter being asked about. It has no tool to write, send, search the web or open another matter.</p>
+        <h2>Approval and audit</h2>
+        <p>Approving a brief records who approved, when, and which version of the facts they approved. That entry cannot be edited from the desk.</p>
+      </div>
+      <div class="prose">
+        <h2 style="margin-top:0">Where data goes</h2>
+        <ul>
+          <li>Papers and recordings: stay on the machine, except the single call that reads them.</li>
+          <li>Client’s account: masked first, then used for drafting.</li>
+          <li>Services run in the Azure region the account is set to. Region changes are made by the account owner.</li>
+          <li>No analytics, no advertising, no tracking of any kind.</li>
+        </ul>
+        <h2>This website</h2>
+        <p>It sets no cookies, loads no third-party scripts or fonts, and keeps nothing about you. The sample matters here are fictional and the demo accepts no uploads.</p>
+        <h2>Honest limits</h2>
+        <p>This is a prototype and has not had an independent security review. Do not put a real client’s papers into it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

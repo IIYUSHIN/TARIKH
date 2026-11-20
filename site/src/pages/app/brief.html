@@ -1,0 +1,54 @@
+{% extends "_app.html" %}
+{% set title = "Draft brief" %}
+{% set nav = "brief" %}
+{% block main %}
+<section class="band pagehead" style="padding-bottom:var(--s5)">
+  <div class="wrap">
+    <p class="eyebrow">Draft brief · Kalra Fabricators</p>
+    <h1 class="d2">For the advocate to approve.</h1>
+    <p class="t-lg">Four sentences, each with a source. One line was removed before this page was shown.</p>
+  </div>
+</section>
+<section class="band section" style="padding-top:var(--s5)">
+  <div class="wrap">
+    <div class="brief">
+      <div>
+        <ol class="paras">
+          <li class="para"><span class="n">1</span><p>Kalra Fabricators drew cheque 004718 for ₹4,85,000 on 20 September 2026, on Northern Sample Bank, Sector 22 Branch, Chandigarh, in favour of Sharma Steel Traders.<sup><a href="#n1">1</a></sup></p></li>
+          <li class="para"><span class="n">2</span><p>Sharma Steel Traders presented the cheque on 1 October 2026. The bank returned it unpaid on 3 October, funds insufficient.<sup><a href="#n2">2</a></sup></p></li>
+          <li class="para"><span class="n">3</span><p>The memo reached Sharma Steel Traders on 5 October 2026.<sup><a href="#n3">3</a></sup></p></li>
+          <li class="para"><span class="n">4</span><p>A notice under Section 138 dated 30 October 2026 called on the drawer to pay ₹4,85,000 within fifteen days of receipt.<sup><a href="#n4">4</a></sup></p></li>
+        </ol>
+        <p class="dropped">Removed before review: <s>“The drawer admitted the debt on a phone call.”</s> No paper supports it.</p>
+
+        <div style="margin-top:clamp(40px,5vw,72px);padding-top:32px;border-top:2px solid var(--ink);max-width:640px">
+          <h2 class="d4">Counted dates</h2>
+          <table class="fields" style="margin-top:12px"><tbody>
+            <tr><td>Complaint window</td><td class="v">19 Nov to 19 Dec 2026</td><td class="s">29 days left</td></tr>
+            <tr><td>Cautious date</td><td class="v">18 Dec 2026</td><td class="s">leaves no doubt</td></tr>
+          </tbody></table>
+          <p class="t-xs" style="margin-top:12px">19 December 2026 is a Saturday. Confirm that the court sits. Court holidays and delay are for the advocate to decide.</p>
+        </div>
+
+        <form id="approve-form" class="form" data-today="2026-11-20" novalidate style="margin-top:clamp(40px,5vw,72px);padding-top:32px;border-top:2px solid var(--ink)">
+          <h2 class="d4">Approve this brief</h2>
+          <div class="field"><label for="approver">Advocate’s name</label><input id="approver" type="text" autocomplete="off" aria-describedby="approver-err"></div>
+          <div class="field" style="flex-direction:row;align-items:flex-start;gap:12px"><input id="approve-check" type="checkbox" style="min-height:24px;width:24px;margin-top:2px;flex:none"><label for="approve-check" style="font-weight:400">I have checked each sentence against its footnote.</label></div>
+          <span class="err" id="approver-err" role="alert"></span>
+          <div><button class="btn solid" type="submit">Approve brief</button></div>
+        </form>
+        <p class="form-ok" id="approve-ok" tabindex="-1" hidden></p>
+      </div>
+      <div>
+        <h2 class="sr">Notes</h2>
+        <ol class="notes">
+          <li id="n1"><b>1</b><span>Cheque 004718: date boxes top right, amount box right, drawer in the signature block. <a href="matter.html#paper-cheque">View paper</a></span></li>
+          <li id="n2"><b>2</b><span>Return memo CRM/2026/10382: “Presented On”, “Returned On”, “Return Reason”. <a href="matter.html#paper-memo">View paper</a></span></li>
+          <li id="n3"><b>3</b><span>Advocate’s entry. No paper shows this date.</span></li>
+          <li id="n4"><b>4</b><span>Demand notice, date line and paragraph 3. <a href="matter.html#paper-notice">View paper</a></span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

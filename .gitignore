@@ -5,3 +5,5 @@ data/
 *.pyc
 .pytest_cache/
 report/build/
+site/dist/
+site/shots/

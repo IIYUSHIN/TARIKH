@@ -1,0 +1,19 @@
+{% extends "_layout.html" %}
+{% set title = "Privacy" %}
+{% set nav = "" %}
+{% set desc = "What this website and the sample desk do with your information." %}
+{% block main %}
+<section class="band pagehead"><div class="wrap"><p class="eyebrow">Privacy</p><h1 class="d2">Short, because there is little to say.</h1></div></section>
+<section class="band section" style="padding-top:0"><div class="wrap"><div class="prose">
+<p>Last updated 20 November 2026.</p>
+<h2>This website</h2>
+<p>It sets no cookies. It loads no analytics, advertising or third-party scripts and no third-party fonts: every font is served from the site itself. It does not know who you are.</p>
+<p>Like any web host, the server that delivers the pages may keep ordinary access logs, such as the time and address of a request. Tarikh does not read them to identify anyone.</p>
+<h2>The sample desk</h2>
+<p>The sample matters are fictional. The demo accepts no uploads and stores nothing. The dates you move on the table exist only in your browser until you close the page.</p>
+<h2>The contact form</h2>
+<p>It sends nothing. It prepares a GitHub issue draft that you submit yourself, and public issues are visible to everyone. Do not put a real client’s details in it.</p>
+<h2>The product</h2>
+<p>How the desk treats real papers, the client’s account and Azure services is on the <a href="{{ root }}security.html">security page</a>. Because this is a prototype, please do not use it with real client material.</p>
+</div></div></section>
+{% endblock %}

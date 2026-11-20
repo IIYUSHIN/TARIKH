@@ -1,0 +1,21 @@
+{% extends "_layout.html" %}
+{% block header %}
+<header class="apphdr band">
+  <div class="wrap">
+    <a class="mark" href="{{ root }}index.html" aria-label="Tarikh, home"><b>Tarikh</b><span lang="hi">तारीख़</span></a>
+    <nav class="nav" aria-label="Desk">
+      <a href="{{ root }}app/docket.html"{% if nav == 'docket' %} aria-current="page"{% endif %}>Docket</a>
+      <a href="{{ root }}app/matter.html"{% if nav == 'matter' %} aria-current="page"{% endif %}>Matter</a>
+      <a href="{{ root }}app/brief.html"{% if nav == 'brief' %} aria-current="page"{% endif %}>Brief</a>
+      <a href="{{ root }}index.html">Back to the site</a>
+    </nav>
+    <span class="tag-sample">Sample desk · fictional matters</span>
+  </div>
+</header>
+{% endblock %}
+{% block footer %}
+<footer class="ftr band"><div class="wrap"><div class="ftr-end" style="margin-top:0;border-top:0;padding-top:0">
+  <span>Demo mode: nothing is uploaded, saved or sent. Dates are counted in your browser by the same rules as the service. Not legal advice.</span>
+  <span><a class="link" href="{{ root }}clocks.html">How the clocks are counted</a></span>
+</div></div></footer>
+{% endblock %}
