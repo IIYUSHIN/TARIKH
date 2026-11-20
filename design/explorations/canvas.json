@@ -1,0 +1,136 @@
+{
+ "v": 3,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-20T09:30:00Z"
+ },
+ "title": "Tarikh: three design directions",
+ "launch": {
+  "view": "canvas"
+ },
+ "pages": [],
+ "boards": {
+  "Main.dc.html": {
+   "x": 0,
+   "y": 0,
+   "w": 1440,
+   "h": 1360,
+   "expand": "fill",
+   "title": "Clear Day \u00b7 Desk",
+   "is_interactive": false
+  },
+  "ClearDay-Brief.dc.html": {
+   "x": 1520,
+   "y": 0,
+   "w": 1440,
+   "h": 1160,
+   "expand": "fill",
+   "title": "Clear Day \u00b7 Brief"
+  },
+  "ClearDay-Phone.dc.html": {
+   "x": 3040,
+   "y": 0,
+   "w": 390,
+   "h": 844,
+   "title": "Clear Day \u00b7 Phone"
+  },
+  "NightDesk-Desk.dc.html": {
+   "x": 0,
+   "y": 1900,
+   "w": 1440,
+   "h": 1080,
+   "expand": "fill",
+   "title": "Night Desk \u00b7 Desk"
+  },
+  "NightDesk-Brief.dc.html": {
+   "x": 1520,
+   "y": 1900,
+   "w": 1440,
+   "h": 1540,
+   "expand": "fill",
+   "title": "Night Desk \u00b7 Brief"
+  },
+  "NightDesk-Phone.dc.html": {
+   "x": 3040,
+   "y": 1900,
+   "w": 390,
+   "h": 844,
+   "title": "Night Desk \u00b7 Phone"
+  },
+  "Seal-Desk.dc.html": {
+   "x": 0,
+   "y": 3800,
+   "w": 1440,
+   "h": 1640,
+   "expand": "fill",
+   "title": "The Seal \u00b7 Desk"
+  },
+  "Seal-Brief.dc.html": {
+   "x": 1520,
+   "y": 3800,
+   "w": 1440,
+   "h": 1570,
+   "expand": "fill",
+   "title": "The Seal \u00b7 Brief"
+  },
+  "Seal-Phone.dc.html": {
+   "x": 3040,
+   "y": 3800,
+   "w": 390,
+   "h": 844,
+   "title": "The Seal \u00b7 Phone"
+  },
+  "Flagship.dc.html": {
+   "x": 0,
+   "y": -2400,
+   "w": 1440,
+   "h": 1940,
+   "expand": "fill",
+   "is_interactive": true,
+   "title": "The long table \u00b7 flagship (interactive)"
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "ClearDay-Brief.dc.html",
+  "ClearDay-Phone.dc.html",
+  "NightDesk-Desk.dc.html",
+  "NightDesk-Brief.dc.html",
+  "NightDesk-Phone.dc.html",
+  "Seal-Desk.dc.html",
+  "Seal-Brief.dc.html",
+  "Seal-Phone.dc.html",
+  "Flagship.dc.html"
+ ],
+ "notes": {
+  "t1": {
+   "x": 0,
+   "y": -300,
+   "text": "A \u00b7 Clear Day",
+   "kind": "title1",
+   "maxW": 3430
+  },
+  "t2": {
+   "x": 0,
+   "y": 1600,
+   "text": "B \u00b7 Night Desk",
+   "kind": "title1",
+   "maxW": 3430
+  },
+  "t3": {
+   "x": 0,
+   "y": 3500,
+   "text": "C \u00b7 The Seal",
+   "kind": "title1",
+   "maxW": 3430
+  },
+  "t0": {
+   "x": 0,
+   "y": -2700,
+   "text": "D \u00b7 The long table",
+   "kind": "title1",
+   "maxW": 1440
+  }
+ },
+ "designSystems": []
+}

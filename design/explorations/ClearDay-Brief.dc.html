@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Clear Day: the brief</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Gurmukhi:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.cb{--canvas:#F3F4F6;--surface:#FFFFFF;--ink:#101216;--ink2:#454B57;--ink3:#626977;--hair:#E2E4E9;--blue:#1D4FD7;--blue-wash:#E8EEFC;
+ font-family:'Geist','Noto Sans Devanagari','Noto Sans Gurmukhi',system-ui,sans-serif;color:var(--ink);background:var(--canvas);min-height:1000px;width:100%;box-sizing:border-box;padding:28px 56px 56px;display:flex;flex-direction:column;gap:28px}
+.cb *{box-sizing:border-box}
+.cb .mono{font-family:'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.cb .top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.cb .back{display:inline-flex;align-items:center;gap:10px;color:var(--ink2);text-decoration:none;font-size:14px;font-weight:500}
+.cb .back b{color:var(--ink);font-weight:600}
+.cb .state{display:inline-flex;align-items:center;height:32px;padding:0 14px;border-radius:16px;background:#E8EAEE;color:var(--ink2);font-size:13px;font-weight:600}
+.cb .cols{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap}
+.cb .sheet{flex:999 1 640px;min-width:0;max-width:860px;background:var(--surface);border-radius:28px;padding:56px 64px 40px;display:flex;flex-direction:column;gap:32px}
+.cb .sheet .eyebrow{font-size:13px;color:var(--ink3);font-weight:500}
+.cb .sheet h1{margin:8px 0 0;font-size:30px;font-weight:600;letter-spacing:-0.025em;line-height:1.2}
+.cb .sheet .lede{margin:12px 0 0;font-size:15px;line-height:1.55;color:var(--ink2);max-width:600px}
+.cb .claims{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.cb .claim{font-size:19px;line-height:1.6;padding:14px 18px;margin:0 -18px;border-radius:16px;letter-spacing:-0.005em}
+.cb .claim.on{background:var(--blue-wash)}
+.cb .chips{display:inline-flex;gap:6px;flex-wrap:wrap;vertical-align:2px;margin-left:6px}
+.cb .chip{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:13px;border:1px solid var(--hair);font-size:12px;font-weight:500;color:var(--ink2);background:#fff;text-decoration:none;white-space:nowrap}
+.cb .chip.read{border-color:#B9C8F3;color:var(--blue)}
+.cb .claim.on .chip.read{background:var(--blue);border-color:var(--blue);color:#fff}
+.cb .dropped{display:flex;gap:14px;align-items:flex-start;padding:16px 18px;border-radius:16px;background:#F7F8FA;margin:0 -18px;font-size:14px;line-height:1.5;color:var(--ink2)}
+.cb .dropped b{color:var(--ink);font-weight:600;display:block;margin-bottom:2px}
+.cb .dropped a{color:var(--blue);font-weight:500;text-decoration:none}
+.cb .approve{border-top:1px solid var(--hair);padding-top:28px;display:flex;flex-direction:column;gap:16px}
+.cb .approve .r{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.cb label{display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:500;color:var(--ink3);flex:1;min-width:220px}
+.cb input{font:inherit;font-size:16px;height:48px;border-radius:12px;border:1px solid #B8BDC8;padding:0 16px;color:var(--ink);background:#fff}
+.cb .btn{font:inherit;font-size:15px;font-weight:600;height:48px;padding:0 22px;border-radius:12px;border:1px solid var(--hair);background:#fff;color:var(--ink);display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.cb .btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.cb .btn[aria-disabled=true]{color:#6B7280;background:#F0F1F4}
+.cb .approve p{margin:0;font-size:13px;line-height:1.5;color:var(--ink3);max-width:560px}
+.cb .proof{flex:1 1 440px;min-width:380px;max-width:500px;background:var(--surface);border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:20px}
+.cb .proof h2{margin:0;font-size:15px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
+.cb .proof h2 span{font-weight:400;font-size:13px;color:var(--ink3)}
+.cb .paper{position:relative;overflow:hidden;border-radius:14px;aspect-ratio:1200/533;background:#E7EBE8}
+.cb .paper img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cb .hl{position:absolute;left:68.1%;top:3.6%;width:29.1%;height:9.2%;border:2px solid #fff;border-radius:6px;box-shadow:0 0 0 2000px rgba(16,18,22,.42)}
+.cb dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-size:14px}
+.cb dt{color:var(--ink3)}.cb dd{margin:0;font-weight:500}
+.cb .confidence{display:flex;gap:6px;align-items:center}
+.cb .confidence i{display:block;width:28px;height:6px;border-radius:3px;background:var(--blue)}
+.cb .confidence i.off{background:#DADDE3}
+.cb .note{font-size:13px;line-height:1.5;color:var(--ink3);margin:0}
+</style>
+</helmet>
+<div class="cb">
+  <header class="top">
+    <a class="back" href="Main.dc.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Back to <b>Sharma Steel Traders v. Kalra Fabricators</b></span></a>
+    <span class="state">Draft, not approved</span>
+  </header>
+
+  <div class="cols">
+    <article class="sheet">
+      <div>
+        <span class="eyebrow">Brief for the advocate</span>
+        <h1>Sharma Steel Traders v. Kalra Fabricators</h1>
+        <p class="lede">Drafted on 20 Nov 2026 from three papers and the dates you entered. Check each line against its source before you approve.</p>
+      </div>
+
+      <ol class="claims">
+        <li class="claim on">Cheque 004718 for ₹4,85,000, drawn by Kalra Fabricators on Northern Sample Bank, is dated 20 September 2026.<span class="chips"><a class="chip read" href="#c1">Cheque · Date</a><a class="chip read" href="#c2">Cheque · Amount</a></span></li>
+        <li class="claim">It was presented on 1 October 2026 and returned unpaid for insufficient funds.<span class="chips"><a class="chip" href="#c3">You · Presented</a><a class="chip read" href="#c4">Memo · Reason</a></span></li>
+        <li class="claim">The demand notice, sent on 30 October, was inside the 30 days that began when the memo was received on 5 October.<span class="chips"><a class="chip read" href="#c5">Notice · Date</a><a class="chip" href="#c6">You · Memo received</a></span></li>
+        <li class="claim">The notice reached the drawer on 3 November. The 15 days to pay ended on 18 November, and your client says nothing was paid.<span class="chips"><a class="chip" href="#c7">You · Delivered</a><a class="chip" href="#c8">Voice note · 0:42</a></span></li>
+        <li class="claim">The complaint can be made from 19 November to 19 December 2026, which is a Saturday.<span class="chips"><a class="chip" href="#c9">Deadline rule · Complaint</a></span></li>
+      </ol>
+
+      <div class="dropped">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#626977" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg>
+        <div><b>1 sentence left out of this draft</b>It said the drawer admitted the debt. No paper or note says so. <a href="#d">See what was removed</a></div>
+      </div>
+
+      <div class="approve">
+        <div class="r">
+          <label for="who">Approve as<input id="who" type="text" value="R. K. Sandhu"></label>
+          <a class="btn" href="#aloud" aria-disabled="true">Read aloud</a>
+          <a class="btn pri" href="#ok">Approve brief</a>
+        </div>
+        <p>Your name and the time are saved with the approval. Reading aloud unlocks after you approve.</p>
+      </div>
+    </article>
+
+    <aside class="proof" aria-label="Source for the selected line">
+      <h2>Source <span>Cheque · Date</span></h2>
+      <div class="paper"><img src="/_blob/d0b0c4b1dfc562bd128096a090cae608" alt="Cheque 004718 with the date boxes highlighted"><div class="hl"></div></div>
+      <dl>
+        <dt>Read as</dt><dd class="mono">20 Sep 2026</dd>
+        <dt>Confidence</dt><dd class="confidence"><i></i><i></i><i></i><span style="margin-left:6px;font-weight:500">High</span></dd>
+        <dt>Where</dt><dd>Top right, date boxes</dd>
+      </dl>
+      <p class="note">If the highlight is on the wrong place, correct the fact on the desk. The brief updates and asks you to approve again.</p>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1160}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

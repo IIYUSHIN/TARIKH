@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Seal: matter desk</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.sd{--paper:#F5F0E6;--paper2:#EDE6D6;--ink:#16130E;--ink2:#4A453B;--ink3:#6A6455;--rule:#D6CDB9;--verm:#C0301C;--ochre:#8A5A00;
+ font-family:'Instrument Sans',system-ui,sans-serif;color:var(--ink);background:var(--paper);min-height:1640px;width:100%;box-sizing:border-box;padding:0 64px 96px;font-feature-settings:'tnum' 1}
+.sd *{box-sizing:border-box}
+.sd .serif{font-family:'Bodoni Moda','Didot',serif}
+.sd .mast{display:flex;justify-content:space-between;align-items:baseline;padding:30px 0 18px;border-bottom:2px solid var(--ink);gap:16px;flex-wrap:wrap}
+.sd .mast .w{font-size:34px;font-weight:500;font-style:italic;letter-spacing:-0.01em}
+.sd .mast .w small{font-family:'Instrument Sans',sans-serif;font-style:normal;font-size:13px;color:var(--ink3);margin-left:14px;letter-spacing:0}
+.sd .mast .d{font-size:14px;color:var(--ink2)}
+.sd .grid{display:flex;gap:64px;flex-wrap:wrap;padding-top:40px}
+.sd .dock{flex:0 0 264px}
+.sd .dock h2{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.sd .dock a.m{display:block;padding:16px 0;border-top:1px solid var(--rule);text-decoration:none;color:var(--ink);min-height:44px}
+.sd .dock a.m.sel{border-top:2px solid var(--ink)}
+.sd .dock .n{font-family:'Bodoni Moda',serif;font-size:21px;line-height:1.2;font-weight:500}
+.sd .dock .s{display:block;margin-top:6px;font-size:13px;color:var(--ink3)}
+.sd .dock .s b{font-weight:600}
+.sd .dock .s.v{color:var(--verm)}.sd .dock .s.o{color:var(--ochre)}.sd .dock .s.g{color:var(--ink3)}
+.sd .dock .add{display:inline-flex;align-items:center;margin-top:18px;height:44px;padding:0 18px;border:1px solid var(--ink);border-radius:2px;color:var(--ink);font-size:14px;font-weight:600;text-decoration:none;background:transparent}
+.sd .dock .key{margin-top:36px;padding-top:16px;border-top:1px solid var(--rule);font-size:12px;line-height:1.55;color:var(--ink3);display:flex;flex-direction:column;gap:6px}
+.sd .dock .key span{display:flex;gap:8px;align-items:center}
+.sd .dock .key i{display:inline-block;width:10px;height:10px;border-radius:50%}
+.sd .main{flex:1 1 640px;min-width:0;display:flex;flex-direction:column;gap:56px}
+.sd .case{display:flex;justify-content:space-between;gap:32px;align-items:flex-start;flex-wrap:wrap}
+.sd .eyebrow{font-size:13px;color:var(--ink3);font-weight:500}
+.sd h1{margin:10px 0 0;font-family:'Bodoni Moda',serif;font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-0.015em}
+.sd h1 em{font-style:italic;font-weight:400;color:var(--ink2)}
+.sd .stamp{flex:none;width:172px;height:172px;transform:rotate(-5deg)}
+.sd .last{display:flex;flex-direction:column;gap:6px}
+.sd .last .l{font-size:14px;font-weight:600;color:var(--ink2)}
+.sd .last .big{font-family:'Bodoni Moda',serif;font-weight:400;font-size:132px;line-height:0.95;letter-spacing:-0.035em;margin:0}
+.sd .last .yr{font-family:'Bodoni Moda',serif;font-size:34px;font-style:italic;font-weight:400;color:var(--ink2);margin:6px 0 0}
+.sd .last p{margin:14px 0 0;max-width:560px;font-size:15px;line-height:1.55;color:var(--ink2)}
+.sd .last p a{color:var(--ink);font-weight:600;text-underline-offset:3px}
+.sd .acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.sd .btn{font:inherit;font-size:15px;font-weight:600;height:48px;padding:0 24px;border-radius:2px;border:1px solid var(--ink);background:transparent;color:var(--ink);display:inline-flex;align-items:center;text-decoration:none}
+.sd .btn.pri{background:var(--ink);color:var(--paper)}
+.sd h3{margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.sd table{width:100%;border-collapse:collapse}
+.sd th{text-align:left;font-size:12px;font-weight:500;color:var(--ink3);padding:10px 12px 10px 0;border-bottom:1px solid var(--ink)}
+.sd td{padding:16px 12px 16px 0;border-bottom:1px solid var(--rule);font-size:15px;vertical-align:baseline}
+.sd td:first-child{font-weight:600}
+.sd tr.now td{background:var(--paper2);border-bottom-color:var(--paper2)}
+.sd tr.now td:first-child{padding-left:14px}
+.sd td.res{color:var(--ink2)}
+.sd td.res b{color:var(--ink);font-weight:700}
+.sd .two{display:flex;gap:56px;flex-wrap:wrap;align-items:flex-start}
+.sd .ex{flex:1 1 380px;min-width:0}
+.sd .fa{flex:1 1 420px;min-width:0}
+.sd .exh{display:grid;grid-template-columns:1fr 1fr;gap:20px 18px;margin-top:16px}
+.sd .exh figure{margin:0;display:flex;flex-direction:column;gap:8px}
+.sd .exh figure.w{grid-column:1 / -1}
+.sd .exh .fr{border:1px solid var(--ink);background:#E6E0D0;overflow:hidden}
+.sd .exh .w .fr{aspect-ratio:1200/533}
+.sd .exh .t .fr{height:190px}
+.sd .exh img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.sd .exh figcaption{font-size:12px;color:var(--ink3);display:flex;gap:8px}
+.sd .exh figcaption b{color:var(--ink);font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:14px}
+.sd .facts td{font-size:14px;padding:13px 10px 13px 0}
+.sd .facts td:first-child{font-weight:400;color:var(--ink3);width:32%}
+.sd .facts td.v{font-weight:600;white-space:nowrap}
+.sd .facts td.s{text-align:right;font-size:12px;color:var(--ink3);padding-right:0}
+.sd .facts td.s a{display:block;color:var(--ink);font-weight:600;text-underline-offset:3px}
+</style>
+</helmet>
+<div class="sd">
+  <header class="mast">
+    <span class="w serif">Tarikh<small>Case desk</small></span>
+    <span class="d">Friday, 20 November 2026</span>
+  </header>
+
+  <div class="grid">
+    <aside class="dock" aria-label="Docket">
+      <h2>Docket</h2>
+      <a class="m sel" href="#a"><span class="n">Sharma Steel Traders v. Kalra Fabricators</span><span class="s g"><b>29 days left</b> · cheque 004718</span></a>
+      <a class="m" href="#b"><span class="n">Bansal Motors v. Dhillon Agro</span><span class="s v"><b>Send notice in 6 days</b> · cheque 118802</span></a>
+      <a class="m" href="#c"><span class="n">Mehta Exports v. Rao Textiles</span><span class="s g">Complaint window ended · cheque 090417</span></a>
+      <a class="add" href="#add">Add a matter</a>
+      <div class="key">
+        <span><i style="background:#16130E"></i>More than 21 days left</span>
+        <span><i style="background:#8A5A00"></i>8 to 21 days</span>
+        <span><i style="background:#C0301C"></i>7 days or fewer</span>
+        <span>The seal turns colour only as time runs short.</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="case">
+        <div>
+          <span class="eyebrow">Complaint under Section 138 · cheque 004718 · ₹4,85,000</span>
+          <h1>Sharma Steel Traders<br><em>v.</em> Kalra Fabricators</h1>
+        </div>
+        <svg class="stamp" viewBox="0 0 172 172" role="img" aria-label="29 days left" fill="none">
+          <circle cx="86" cy="86" r="82" stroke="#16130E" stroke-width="3"/>
+          <circle cx="86" cy="86" r="74" stroke="#16130E" stroke-width="1"/>
+          <text x="86" y="114" text-anchor="middle" font-family="Bodoni Moda, serif" font-size="62" font-weight="500" fill="#16130E" letter-spacing="-2">29</text>
+          <text x="86" y="136" text-anchor="middle" font-family="Instrument Sans, sans-serif" font-size="11" font-weight="600" letter-spacing="2.4" fill="#16130E">DAYS LEFT</text>
+          <path d="M42 58h88" stroke="#16130E" stroke-width="1"/>
+          <text x="86" y="48" text-anchor="middle" font-family="Instrument Sans, sans-serif" font-size="9" font-weight="600" letter-spacing="2.2" fill="#16130E">SAMPLE MATTER</text>
+        </svg>
+      </section>
+
+      <section class="last" aria-label="Last day to file the complaint">
+        <span class="l">Last day to file the complaint</span>
+        <div class="big">19 December</div>
+        <div class="yr">2026, a Saturday</div>
+        <p>Counted from 19 November, the day after the drawer's 15 days ended with nothing paid. Saturday may be a court holiday, so confirm the court sits. <a href="#how">How this is counted</a></p>
+        <div class="acts">
+          <a class="btn pri" href="Seal-Brief.dc.html">Draft the brief</a>
+          <a class="btn" href="#cal">Add dates to calendar</a>
+        </div>
+      </section>
+
+      <section aria-labelledby="hp">
+        <h3 id="hp">The four periods</h3>
+        <table>
+          <thead><tr><th scope="col">Period</th><th scope="col">Opens</th><th scope="col">Closes</th><th scope="col">Where it stands</th></tr></thead>
+          <tbody>
+            <tr><td>Cheque presented in time</td><td>20 Sep</td><td>Three months on</td><td class="res">Presented 1 Oct, in time</td></tr>
+            <tr><td>Demand notice</td><td>5 Oct</td><td>4 Nov</td><td class="res">Sent 30 Oct, 5 days to spare</td></tr>
+            <tr><td>Drawer's time to pay</td><td>4 Nov</td><td>18 Nov</td><td class="res">Ended, nothing paid</td></tr>
+            <tr class="now"><td>Complaint to the Magistrate</td><td>19 Nov</td><td>19 Dec</td><td class="res"><b>Open, 29 days left</b></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="two">
+        <section class="ex" aria-labelledby="he">
+          <h3 id="he">Exhibits</h3>
+          <div class="exh">
+            <figure class="w"><div class="fr"><img src="/_blob/d0b0c4b1dfc562bd128096a090cae608" alt="Cheque 004718, fictional sample"></div><figcaption><b>A</b> Cheque</figcaption></figure>
+            <figure class="t"><div class="fr"><img src="/_blob/7109866e7776bf3f1bbbca10d5cf8946" alt="Bank return memo, fictional sample"></div><figcaption><b>B</b> Return memo</figcaption></figure>
+            <figure class="t"><div class="fr"><img src="/_blob/f27ad37c45aa63a0c11577060f81efe1" alt="Demand notice, fictional sample"></div><figcaption><b>C</b> Demand notice</figcaption></figure>
+          </div>
+        </section>
+        <section class="fa" aria-labelledby="hf">
+          <h3 id="hf">Facts, and where each came from</h3>
+          <table class="facts">
+            <tbody>
+              <tr><td>Cheque date</td><td class="v">20 Sep 2026</td><td class="s">Exhibit A<a href="#s1">Show on paper</a></td></tr>
+              <tr><td>Presented</td><td class="v">1 Oct 2026</td><td class="s">You entered</td></tr>
+              <tr><td>Return reason</td><td class="v">Funds insufficient</td><td class="s">Exhibit B<a href="#s2">Show on paper</a></td></tr>
+              <tr><td>Memo received</td><td class="v">5 Oct 2026</td><td class="s">You entered</td></tr>
+              <tr><td>Notice sent</td><td class="v">30 Oct 2026</td><td class="s">Exhibit C<a href="#s3">Show on paper</a></td></tr>
+              <tr><td>Notice delivered</td><td class="v">3 Nov 2026</td><td class="s">You entered</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1640}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

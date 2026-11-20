@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Clear Day: matter on phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.cp{--canvas:#F3F4F6;--surface:#FFFFFF;--ink:#101216;--ink2:#454B57;--ink3:#626977;--hair:#E2E4E9;--blue:#1D4FD7;--blue-wash:#E8EEFC;
+ width:390px;height:844px;overflow:hidden;position:relative;background:var(--canvas);color:var(--ink);font-family:'Geist',system-ui,sans-serif;display:flex;flex-direction:column;box-sizing:border-box}
+.cp *{box-sizing:border-box}
+.cp .mono{font-family:'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.cp .bar{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 0;height:64px}
+.cp .back{display:inline-flex;align-items:center;gap:6px;min-height:44px;color:var(--ink2);text-decoration:none;font-size:14px;font-weight:500}
+.cp .cal{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--hair);background:var(--surface);color:var(--ink)}
+.cp .scroll{flex:1;overflow:hidden;padding:12px 20px 0;display:flex;flex-direction:column;gap:28px}
+.cp h1{margin:0;font-size:20px;font-weight:600;letter-spacing:-0.02em;line-height:1.25}
+.cp .meta{margin:6px 0 0;font-size:13px;color:var(--ink3)}
+.cp .lab{font-size:13px;color:var(--ink3);font-weight:500}
+.cp .big{margin:6px 0 0;font-size:56px;line-height:1;font-weight:600;letter-spacing:-0.045em}
+.cp .big small{display:block;font-size:20px;letter-spacing:-0.02em;color:var(--ink2);font-weight:500;margin-top:6px}
+.cp .pill{display:inline-flex;align-items:center;height:32px;padding:0 14px;border-radius:16px;background:var(--blue-wash);color:var(--blue);font-weight:600;font-size:14px;margin-top:14px}
+.cp .note{margin:12px 0 0;font-size:14px;line-height:1.5;color:var(--ink2)}
+.cp .card{background:var(--surface);border-radius:20px;padding:6px 20px}
+.cp .p{padding:14px 0;border-top:1px solid var(--hair);display:flex;flex-direction:column;gap:8px}
+.cp .p:first-child{border-top:0}
+.cp .p .r{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:14px}
+.cp .p .r b{font-weight:600}
+.cp .p .r span{color:var(--ink3);font-size:13px;white-space:nowrap}
+.cp .p .r span.open{color:var(--blue);font-weight:600}
+.cp .track{height:8px;border-radius:4px;background:#ECEEF2;position:relative}
+.cp .track i{position:absolute;top:0;bottom:0;border-radius:4px;background:#C9CDD5}
+.cp .track i.on{background:var(--blue)}
+.cp .foot{padding:12px 20px 28px;background:linear-gradient(var(--canvas),var(--canvas));border-top:1px solid var(--hair)}
+.cp .cta{display:flex;align-items:center;justify-content:center;height:52px;border-radius:14px;background:var(--blue);color:#fff;font-weight:600;font-size:16px;text-decoration:none}
+</style>
+</helmet>
+<div class="cp">
+  <header class="bar">
+    <a class="back" href="#matters"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Matters</a>
+    <a class="cal" href="#cal" aria-label="Add dates to calendar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17M12 13.5v4M10 15.5h4"/></svg></a>
+  </header>
+  <div class="scroll">
+    <div>
+      <h1>Sharma Steel Traders v. Kalra Fabricators</h1>
+      <p class="meta"><span class="mono">Cheque 004718</span> · <span class="mono">₹4,85,000</span></p>
+    </div>
+    <section>
+      <span class="lab">Last day to file the complaint</span>
+      <p class="big mono" style="font-family:'Geist',sans-serif">19 Dec<small>Saturday, 2026</small></p>
+      <span class="pill">29 days left</span>
+      <p class="note">Counted from 19 Nov, the day after the drawer's 15 days ended. Confirm the court sits on a Saturday.</p>
+    </section>
+    <section class="card" aria-label="The four periods">
+      <div class="p"><div class="r"><b>Cheque presented in time</b><span>Done</span></div><div class="track"><i style="left:0;width:100%"></i></div></div>
+      <div class="p"><div class="r"><b>Demand notice</b><span>Sent 30 Oct</span></div><div class="track"><i style="left:0;width:100%"></i></div></div>
+      <div class="p"><div class="r"><b>Drawer's time to pay</b><span>Ended 18 Nov</span></div><div class="track"><i style="left:0;width:100%"></i></div></div>
+      <div class="p"><div class="r"><b>Complaint to the Magistrate</b><span class="open">Open</span></div><div class="track"><i class="on" style="left:0;width:3%"></i></div></div>
+    </section>
+  </div>
+  <footer class="foot"><a class="cta" href="ClearDay-Brief.dc.html">Draft the brief</a></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

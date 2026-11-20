@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Clear Day: matter desk</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Gurmukhi:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.cd{--canvas:#F3F4F6;--surface:#FFFFFF;--ink:#101216;--ink2:#454B57;--ink3:#626977;--hair:#E2E4E9;--blue:#1D4FD7;--blue-wash:#E8EEFC;--done:#6B7280;--done-bar:#C9CDD5;
+ font-family:'Geist','Noto Sans Devanagari','Noto Sans Gurmukhi',system-ui,sans-serif;color:var(--ink);background:var(--canvas);display:flex;min-height:1200px;width:100%;box-sizing:border-box;font-feature-settings:'ss01','tnum' 1}
+.cd *{box-sizing:border-box}
+.cd .mono{font-family:'Geist Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.cd .rail{width:312px;flex:none;padding:28px 16px 24px;display:flex;flex-direction:column;gap:24px;border-right:1px solid var(--hair)}
+.cd .brand{font-size:22px;font-weight:600;letter-spacing:-0.03em;padding:0 12px;display:flex;align-items:baseline;gap:10px}
+.cd .brand small{font-size:13px;font-weight:400;color:var(--ink3);letter-spacing:0}
+.cd .rail h2{margin:0;padding:0 12px;font-size:13px;font-weight:500;color:var(--ink3)}
+.cd .mlist{display:flex;flex-direction:column;gap:4px}
+.cd .m{display:flex;flex-direction:column;gap:6px;padding:14px 12px;border-radius:14px;text-decoration:none;color:inherit}
+.cd .m.sel{background:var(--surface)}
+.cd .m b{font-size:15px;font-weight:600;letter-spacing:-0.01em;line-height:1.3}
+.cd .m .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:13px;color:var(--ink3)}
+.cd .m .t{font-weight:500;white-space:nowrap}
+.cd .t.calm{color:var(--blue)}.cd .t.warn{color:#9A4A00}.cd .t.gone{color:var(--done)}
+.cd .legend{margin-top:auto;padding:0 12px;font-size:12px;line-height:1.5;color:var(--ink3);display:flex;flex-direction:column;gap:10px}
+.cd .legend .sw{display:flex;gap:6px;align-items:center}
+.cd .legend i{display:block;height:6px;border-radius:3px;flex:1}
+.cd .add{margin:0 12px;padding:12px 16px;border-radius:12px;border:1px solid var(--hair);background:transparent;font:inherit;font-size:14px;font-weight:500;color:var(--ink);text-align:left}
+.cd .main{flex:1;min-width:0;padding:32px 56px 56px;display:flex;flex-direction:column;gap:40px}
+.cd .head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.cd .head h1{margin:0;font-size:26px;font-weight:600;letter-spacing:-0.02em;line-height:1.2}
+.cd .head p{margin:8px 0 0;font-size:14px;color:var(--ink3)}
+.cd .acts{display:flex;gap:10px;align-items:center}
+.cd .btn{text-decoration:none;font:inherit;font-size:14px;font-weight:500;height:44px;padding:0 20px;border-radius:12px;border:1px solid var(--hair);background:var(--surface);color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+.cd .btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.cd .hero{display:flex;flex-direction:column;gap:14px}
+.cd .hero .lab{font-size:15px;color:var(--ink3);font-weight:500}
+.cd .hero .big{font-size:104px;line-height:0.98;font-weight:600;letter-spacing:-0.045em;margin:0}
+.cd .hero .sub{display:flex;align-items:flex-start;gap:16px;font-size:15px;color:var(--ink2);line-height:1.5}
+.cd .hero .sub>span:last-child{max-width:620px;padding-top:4px}
+.cd .pill{display:inline-flex;align-items:center;height:32px;padding:0 14px;border-radius:16px;background:var(--blue-wash);color:var(--blue);font-weight:600;font-size:14px}
+.cd .link{color:var(--blue);font-weight:500;text-decoration:none}.cd .link:hover{text-decoration:underline}
+.cd .card{background:var(--surface);border-radius:24px;padding:28px 32px}
+.cd .card h3{margin:0 0 24px;font-size:15px;font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
+.cd .card h3 span{font-weight:400;font-size:13px;color:var(--ink3)}
+.cd .tl{display:grid;grid-template-columns:210px 1fr;padding-top:34px}
+.cd .names .n{height:64px;padding:12px 16px 0 0;font-size:14px;font-weight:500;line-height:1.35;border-top:1px solid var(--hair)}
+.cd .names .n small{display:block;font-weight:400;color:var(--ink3);font-size:12px;margin-top:2px;line-height:1.35}
+.cd .lanes{position:relative}
+.cd .lane{position:relative;height:64px;border-top:1px solid var(--hair)}
+.cd .bar{position:absolute;top:14px;height:20px;border-radius:10px}
+.cd .bar.calm{background:var(--blue)}.cd .bar.met{background:var(--done-bar)}.cd .bar.val{background:#E6E8ED}
+.cd .mk{position:absolute;top:8px;width:2px;height:32px;background:var(--ink);border-radius:1px}
+.cd .cap{position:absolute;top:40px;font-size:12px;color:var(--ink2);white-space:nowrap}
+.cd .today{position:absolute;top:-6px;bottom:28px;width:2px;background:var(--ink);z-index:2}
+.cd .todaylab{position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:12px;font-weight:500;padding:4px 10px;border-radius:12px;white-space:nowrap}
+.cd .axis{position:relative;height:30px;border-top:1px solid var(--hair);font-size:12px;color:var(--ink3)}
+.cd .axis span{position:absolute;top:8px;transform:translateX(-50%)}
+.cd .two{display:grid;grid-template-columns:minmax(0,4.6fr) minmax(0,7.4fr);gap:24px;align-items:start}
+.cd .papers{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cd .papers figure{margin:0;min-width:0;display:flex;flex-direction:column;gap:8px}
+.cd .papers figure.wide{grid-column:1 / -1}
+.cd .papers .frame{border-radius:12px;overflow:hidden;border:1px solid var(--hair);background:#EEF0F3}
+.cd .papers .wide .frame{aspect-ratio:1200/533}
+.cd .papers .tall .frame{height:176px}
+.cd .papers img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.cd .papers figcaption{font-size:12px;color:var(--ink2);line-height:1.35}
+.cd .facts{width:100%;border-collapse:collapse;font-size:14px}
+.cd .facts td{padding:11px 0;border-top:1px solid var(--hair);vertical-align:baseline}
+.cd .facts tr:first-child td{border-top:0}
+.cd .facts td:first-child{color:var(--ink3);width:30%;white-space:nowrap}
+.cd .facts td.v{font-weight:500;white-space:nowrap;padding-right:16px}
+.cd .facts td.s{text-align:right;color:var(--ink3);font-size:13px;white-space:nowrap}
+.cd .facts td.s a{color:var(--blue);text-decoration:none;font-weight:500}
+</style>
+</helmet>
+<div class="cd">
+  <aside class="rail">
+    <div class="brand">Tarikh <small>Case desk</small></div>
+    <h2>Matters</h2>
+    <nav class="mlist">
+      <a class="m sel" href="#a"><b>Sharma Steel Traders v. Kalra Fabricators</b><span class="row"><span class="mono">Cheque 004718</span><span class="t calm">29 days left</span></span></a>
+      <a class="m" href="#b"><b>Bansal Motors v. Dhillon Agro</b><span class="row"><span class="mono">Cheque 118802</span><span class="t warn">Send notice in 6 days</span></span></a>
+      <a class="m" href="#c"><b>Mehta Exports v. Rao Textiles</b><span class="row"><span class="mono">Cheque 090417</span><span class="t gone">Window ended</span></span></a>
+    </nav>
+    <button class="add" type="button">Add a matter</button>
+    <div class="legend">
+      <span>Colour shows time left in the open period.</span>
+      <span class="sw"><i style="background:#1D4FD7"></i><i style="background:#9A4A00"></i><i style="background:#C0301C"></i><i style="background:#9AA0AB"></i></span>
+      <span>More than 21 days, 8 to 21, 7 or fewer, ended.</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="head">
+      <div>
+        <h1>Sharma Steel Traders v. Kalra Fabricators</h1>
+        <p><span class="mono">Cheque 004718</span> · <span class="mono">₹4,85,000</span> · Northern Sample Bank, Sector 22 Branch, Chandigarh</p>
+      </div>
+      <div class="acts">
+        <a class="btn" href="#cal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17M12 13.5v4M10 15.5h4"/></svg>Add dates to calendar</a>
+        <a class="btn pri" href="ClearDay-Brief.dc.html">Draft the brief</a>
+      </div>
+    </header>
+
+    <section class="hero" aria-labelledby="h-last">
+      <span class="lab" id="h-last">Last day to file the complaint</span>
+      <h2 class="big mono" style="font-family:'Geist','Geist Mono',sans-serif;font-variant-numeric:tabular-nums">Sat 19 Dec 2026</h2>
+      <div class="sub">
+        <span class="pill">29 days left</span>
+        <span>Counted from 19 Nov, the day after the drawer's 15 days ended. 19 Dec is a Saturday, so confirm the court sits. <a class="link" href="#how">How this is counted</a></span>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="h-tl">
+      <h3 id="h-tl">The four periods <span>Today is Fri 20 Nov 2026</span></h3>
+      <div class="tl">
+        <div class="names">
+          <div class="n">Cheque presented in time<small>Valid three months from its date</small></div>
+          <div class="n">Demand notice<small>30 days after the memo was received</small></div>
+          <div class="n">Drawer's time to pay<small>15 days from receipt. Their period, not yours</small></div>
+          <div class="n">Complaint to the Magistrate<small>One month from the day payment was due</small></div>
+        </div>
+        <div class="lanes">
+          <div class="lane"><div class="bar val" style="left:0;width:95.8%"></div><div class="mk" style="left:12.1%"></div><div class="cap" style="left:13%">Presented 1 Oct, inside validity</div></div>
+          <div class="lane"><div class="bar met" style="left:16.84%;width:31.58%"></div><div class="mk" style="left:42.63%"></div><div class="cap" style="left:16.84%">5 Oct to 4 Nov. Sent 30 Oct, 5 days to spare</div></div>
+          <div class="lane"><div class="bar met" style="left:47.37%;width:15.79%"></div><div class="cap" style="left:47.37%">4 to 18 Nov, unpaid</div></div>
+          <div class="lane"><div class="bar calm" style="left:63.16%;width:32.63%"></div><div class="cap" style="left:66.5%;color:#1D4FD7;font-weight:500">19 Nov to 19 Dec. Open</div></div>
+          <div class="today" style="left:64.74%"><span class="todaylab">Today 20 Nov</span></div>
+          <div class="axis">
+            <span class="mono" style="left:11.58%">1 Oct</span><span class="mono" style="left:44.21%">1 Nov</span><span class="mono" style="left:75.79%">1 Dec</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="two">
+      <section class="card" aria-labelledby="h-p">
+        <h3 id="h-p">Papers <span>3 of 3 read</span></h3>
+        <div class="papers">
+          <figure class="wide"><div class="frame"><img src="/_blob/d0b0c4b1dfc562bd128096a090cae608" alt="Cheque 004718, fictional sample"></div><figcaption>Cheque</figcaption></figure>
+          <figure class="tall"><div class="frame"><img src="/_blob/7109866e7776bf3f1bbbca10d5cf8946" alt="Bank return memo, fictional sample"></div><figcaption>Return memo</figcaption></figure>
+          <figure class="tall"><div class="frame"><img src="/_blob/f27ad37c45aa63a0c11577060f81efe1" alt="Demand notice, fictional sample"></div><figcaption>Demand notice</figcaption></figure>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="h-f">
+        <h3 id="h-f">Facts <span>Every date traces to a paper or to you</span></h3>
+        <table class="facts">
+          <tr><td>Cheque date</td><td class="v mono">20 Sep 2026</td><td class="s">Read from cheque · <a href="#s1">Show on paper</a></td></tr>
+          <tr><td>Presented to bank</td><td class="v mono">1 Oct 2026</td><td class="s">Entered by you</td></tr>
+          <tr><td>Return reason</td><td class="v">Funds insufficient</td><td class="s">Read from memo · <a href="#s2">Show on paper</a></td></tr>
+          <tr><td>Memo received</td><td class="v mono">5 Oct 2026</td><td class="s">Entered by you</td></tr>
+          <tr><td>Notice sent</td><td class="v mono">30 Oct 2026</td><td class="s">Read from notice · <a href="#s3">Show on paper</a></td></tr>
+          <tr><td>Notice delivered</td><td class="v mono">3 Nov 2026</td><td class="s">Entered by you</td></tr>
+        </table>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1360}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

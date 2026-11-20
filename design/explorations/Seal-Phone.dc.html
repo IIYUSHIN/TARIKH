@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Seal: matter on phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.sp{--paper:#F5F0E6;--paper2:#EDE6D6;--ink:#16130E;--ink2:#4A453B;--ink3:#6A6455;--rule:#D6CDB9;
+ width:390px;height:844px;overflow:hidden;background:var(--paper);color:var(--ink);font-family:'Instrument Sans',system-ui,sans-serif;display:flex;flex-direction:column;box-sizing:border-box}
+.sp *{box-sizing:border-box}
+.sp .bar{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 12px;border-bottom:2px solid var(--ink)}
+.sp .w{font-family:'Bodoni Moda',serif;font-style:italic;font-size:26px;font-weight:500}
+.sp .cal{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--ink);border-radius:2px;color:var(--ink)}
+.sp .body{flex:1;overflow:hidden;padding:20px 20px 0;display:flex;flex-direction:column;gap:22px}
+.sp .eyebrow{font-size:12px;color:var(--ink3);font-weight:500}
+.sp h1{margin:6px 0 0;font-family:'Bodoni Moda',serif;font-weight:500;font-size:25px;line-height:1.15;letter-spacing:-0.01em}
+.sp h1 em{font-style:italic;font-weight:400;color:var(--ink2)}
+.sp .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.sp .stamp{flex:none;width:92px;height:92px;transform:rotate(-5deg);margin-top:-2px}
+.sp .l{font-size:13px;font-weight:600;color:var(--ink2)}
+.sp .big{font-family:'Bodoni Moda',serif;font-size:54px;line-height:1;letter-spacing:-0.03em;margin-top:6px;white-space:nowrap}
+.sp .yr{font-family:'Bodoni Moda',serif;font-style:italic;font-size:22px;color:var(--ink2);margin-top:6px}
+.sp .note{margin:12px 0 0;font-size:14px;line-height:1.5;color:var(--ink2)}
+.sp .ledger{border-top:1px solid var(--ink)}
+.sp .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:13px 0;border-bottom:1px solid var(--rule);font-size:14px}
+.sp .row b{font-weight:600}
+.sp .row span{font-size:13px;color:var(--ink2);white-space:nowrap}
+.sp .row.now{background:var(--paper2);margin:0 -20px;padding:13px 20px;border-bottom-color:var(--paper2)}
+.sp .row.now span{color:var(--ink);font-weight:700}
+.sp .foot{padding:12px 20px 28px;border-top:1px solid var(--rule)}
+.sp .cta{display:flex;align-items:center;justify-content:center;height:52px;border-radius:2px;background:var(--ink);color:var(--paper);font-weight:600;font-size:16px;text-decoration:none}
+</style>
+</helmet>
+<div class="sp">
+  <header class="bar">
+    <span class="w">Tarikh</span>
+    <a class="cal" href="#cal" aria-label="Add dates to calendar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1"/><path d="M8 3v4M16 3v4M3.5 10h17M12 13.5v4M10 15.5h4"/></svg></a>
+  </header>
+  <div class="body">
+    <div class="top">
+      <div>
+        <span class="eyebrow">Cheque 004718 · ₹4,85,000</span>
+        <h1>Sharma Steel Traders <em>v.</em> Kalra Fabricators</h1>
+      </div>
+      <svg class="stamp" viewBox="0 0 172 172" role="img" aria-label="29 days left" fill="none">
+        <circle cx="86" cy="86" r="82" stroke="#16130E" stroke-width="5"/>
+        <circle cx="86" cy="86" r="72" stroke="#16130E" stroke-width="1.5"/>
+        <text x="86" y="108" text-anchor="middle" font-family="Bodoni Moda, serif" font-size="68" font-weight="500" fill="#16130E" letter-spacing="-2">29</text>
+        <text x="86" y="134" text-anchor="middle" font-family="Instrument Sans, sans-serif" font-size="16" font-weight="700" letter-spacing="2" fill="#16130E">DAYS</text>
+      </svg>
+    </div>
+    <section>
+      <div class="l">Last day to file the complaint</div>
+      <div class="big">19 December</div>
+      <div class="yr">2026, a Saturday</div>
+      <p class="note">Counted from 19 November, the day after the drawer's 15 days ended. Confirm the court sits on a Saturday.</p>
+    </section>
+    <section class="ledger" aria-label="The four periods">
+      <div class="row"><b>Cheque presented in time</b><span>Done</span></div>
+      <div class="row"><b>Demand notice</b><span>Sent 30 Oct</span></div>
+      <div class="row"><b>Drawer's time to pay</b><span>Ended 18 Nov</span></div>
+      <div class="row now"><b>Complaint</b><span>Open</span></div>
+    </section>
+  </div>
+  <footer class="foot"><a class="cta" href="Seal-Brief.dc.html">Draft the brief</a></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

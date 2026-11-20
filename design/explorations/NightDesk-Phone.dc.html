@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Night Desk: matter on phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.np{--bg:#0B0D10;--sf:#14181D;--hair:#262C34;--ink:#E8ECF1;--ink2:#B4BCC8;--ink3:#8D97A6;--calm:#6FD1A8;
+ width:390px;height:844px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;display:flex;flex-direction:column;box-sizing:border-box}
+.np *{box-sizing:border-box}
+.np .mono{font-family:'Martian Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.np .bar{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 0;height:64px}
+.np .back{display:inline-flex;align-items:center;gap:6px;min-height:44px;color:var(--ink2);text-decoration:none;font-size:14px;font-weight:500}
+.np .cal{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;border:1px solid #38404B;color:var(--ink)}
+.np .body{flex:1;overflow:hidden;padding:8px 20px 0;display:flex;flex-direction:column;gap:26px}
+.np h1{margin:0;font-size:18px;font-weight:600;letter-spacing:-0.01em;line-height:1.3}
+.np .meta{margin:6px 0 0;font-size:12px;color:var(--ink3)}
+.np .num{margin:0;font-size:132px;line-height:0.9;color:var(--calm);letter-spacing:-0.06em;font-weight:500}
+.np .lab{margin:14px 0 0;font-size:14px;color:var(--ink2);line-height:1.45}
+.np .lab b{display:block;font-size:22px;color:var(--ink);letter-spacing:-0.02em;margin-top:4px;font-weight:600}
+.np .ticks{display:flex;justify-content:space-between;align-items:flex-end;height:30px}
+.np .ticks i{display:block;width:2px;height:12px;background:#3A424D;border-radius:1px}
+.np .ticks i.now{height:30px;background:var(--ink)}
+.np .ticks i.end{height:30px;background:var(--calm);width:3px}
+.np .tl{display:flex;justify-content:space-between;font-size:11px;color:var(--ink2);margin-top:8px}
+.np .tl span:last-child{color:var(--calm)}
+.np .list{background:var(--sf);border-radius:18px;padding:4px 18px}
+.np .p{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:13px 0;border-top:1px solid var(--hair);font-size:14px}
+.np .p:first-child{border-top:0}
+.np .p b{font-weight:600}
+.np .p span{font-size:11px;color:var(--ink3);white-space:nowrap}
+.np .p span.open{color:var(--calm)}
+.np .foot{padding:12px 20px 28px;border-top:1px solid var(--hair)}
+.np .cta{display:flex;align-items:center;justify-content:center;height:52px;border-radius:14px;background:var(--calm);color:#06150E;font-weight:700;font-size:16px;text-decoration:none}
+</style>
+</helmet>
+<div class="np">
+  <header class="bar">
+    <a class="back" href="#matters"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Matters</a>
+    <a class="cal" href="#cal" aria-label="Add dates to calendar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17M12 13.5v4M10 15.5h4"/></svg></a>
+  </header>
+  <div class="body">
+    <div>
+      <h1>Sharma Steel Traders v. Kalra Fabricators</h1>
+      <p class="meta mono">Cheque 004718 · ₹4,85,000</p>
+    </div>
+    <section>
+      <p class="num mono">29</p>
+      <p class="lab">days left to file the complaint<b>Saturday 19 December</b></p>
+      <div style="margin-top:22px" aria-hidden="true">
+        <div class="ticks"><i class="now"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="end"></i></div>
+        <div class="tl mono"><span>20 Nov</span><span>19 Dec</span></div>
+      </div>
+    </section>
+    <section class="list" aria-label="The four periods">
+      <div class="p"><b>Cheque presented in time</b><span class="mono">Done</span></div>
+      <div class="p"><b>Demand notice</b><span class="mono">Sent 30 Oct</span></div>
+      <div class="p"><b>Drawer's time to pay</b><span class="mono">Ended 18 Nov</span></div>
+      <div class="p"><b>Complaint</b><span class="mono open">Open</span></div>
+    </section>
+  </div>
+  <footer class="foot"><a class="cta" href="NightDesk-Brief.dc.html">Draft the brief</a></footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

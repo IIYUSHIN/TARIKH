@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Night Desk: the brief</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.nb{--bg:#0B0D10;--sf:#14181D;--sf2:#1B2027;--hair:#262C34;--ink:#E8ECF1;--ink2:#B4BCC8;--ink3:#8D97A6;--calm:#6FD1A8;
+ font-family:'Hanken Grotesk',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:1540px;width:100%;box-sizing:border-box;padding:0 56px 64px;display:flex;flex-direction:column;align-items:center;gap:40px}
+.nb *{box-sizing:border-box}
+.nb .mono{font-family:'Martian Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.nb .top{width:100%;display:flex;align-items:center;justify-content:space-between;height:84px;border-bottom:1px solid var(--hair);gap:16px;flex-wrap:wrap}
+.nb .back{display:inline-flex;align-items:center;gap:10px;min-height:44px;color:var(--ink2);text-decoration:none;font-size:14px;font-weight:500}
+.nb .state{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:16px;border:1px solid #38404B;color:var(--ink2);font-size:13px;font-weight:600}
+.nb .state i{display:block;width:8px;height:8px;border-radius:4px;background:#F0A53A}
+.nb .doc{width:100%;max-width:880px;display:flex;flex-direction:column;gap:36px}
+.nb .eyebrow{font-size:13px;color:var(--ink3);font-weight:500}
+.nb h1{margin:8px 0 0;font-size:40px;font-weight:700;letter-spacing:-0.03em;line-height:1.1}
+.nb .lede{margin:14px 0 0;font-size:16px;line-height:1.55;color:var(--ink2);max-width:600px}
+.nb ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.nb li.c{display:grid;grid-template-columns:36px minmax(0,1fr);gap:0 14px;padding:18px 20px;border-radius:16px}
+.nb li.c.open{background:var(--sf)}
+.nb .no{font-size:12px;color:var(--ink3);padding-top:7px}
+.nb .t{font-size:19px;line-height:1.55;letter-spacing:-0.005em}
+.nb .src{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.nb .chip{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:14px;border:1px solid #38404B;font-size:12px;font-weight:500;color:var(--ink2);text-decoration:none}
+.nb .chip.r{border-color:#2F6B55;color:var(--calm)}
+.nb .chip.sel{background:var(--calm);border-color:var(--calm);color:#06150E;font-weight:600}
+.nb .peek{grid-column:2;margin-top:18px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:center}
+.nb .paper{position:relative;overflow:hidden;border-radius:12px;aspect-ratio:1200/533;background:#0F1317}
+.nb .paper img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.nb .hl{position:absolute;left:68.1%;top:3.6%;width:29.1%;height:9.2%;border:2px solid var(--calm);border-radius:6px;box-shadow:0 0 0 2000px rgba(8,10,12,.62)}
+.nb dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 16px;font-size:14px}
+.nb dt{color:var(--ink3)}.nb dd{margin:0;font-weight:500}
+.nb .hint{grid-column:1 / -1;font-size:13px;line-height:1.5;color:var(--ink3);margin:0}
+.nb .dropped{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-radius:16px;border:1px dashed #38404B;font-size:14px;line-height:1.5;color:var(--ink2)}
+.nb .dropped b{display:block;color:var(--ink);font-weight:600;margin-bottom:2px}
+.nb .dropped a{color:var(--calm);text-decoration:none;font-weight:600}
+.nb .approve{border-top:1px solid var(--hair);padding-top:28px;display:flex;flex-direction:column;gap:14px}
+.nb .r2{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.nb label{display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:500;color:var(--ink3);flex:1;min-width:220px}
+.nb input{font:inherit;font-size:16px;height:48px;border-radius:12px;border:1px solid #4A5361;padding:0 16px;color:var(--ink);background:var(--sf)}
+.nb .btn{font:inherit;font-size:15px;font-weight:600;height:48px;padding:0 22px;border-radius:12px;border:1px solid #38404B;background:transparent;color:var(--ink);display:inline-flex;align-items:center;text-decoration:none}
+.nb .btn.pri{background:var(--calm);border-color:var(--calm);color:#06150E}
+.nb .btn[aria-disabled=true]{color:#7B8593;border-color:#2A3038}
+.nb .approve p{margin:0;font-size:13px;color:var(--ink3);line-height:1.5}
+</style>
+</helmet>
+<div class="nb">
+  <header class="top">
+    <a class="back" href="NightDesk-Desk.dc.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Sharma v. Kalra</a>
+    <span class="state"><i></i>Draft, not approved</span>
+  </header>
+
+  <article class="doc">
+    <div>
+      <span class="eyebrow">Brief for the advocate · 20 Nov 2026</span>
+      <h1>Five lines, each one traced.</h1>
+      <p class="lede">Built from three papers and the dates you entered. Open a line to see where it came from. Nothing is sent until you approve.</p>
+    </div>
+
+    <ol>
+      <li class="c open">
+        <span class="no mono">01</span>
+        <div>
+          <div class="t">Cheque 004718 for ₹4,85,000, drawn by Kalra Fabricators on Northern Sample Bank, is dated 20 September 2026.</div>
+          <div class="src"><a class="chip r sel" href="#c1">Cheque · Date</a><a class="chip r" href="#c2">Cheque · Amount</a></div>
+        </div>
+        <div class="peek">
+          <div class="paper"><img src="/_blob/d0b0c4b1dfc562bd128096a090cae608" alt="Cheque 004718 with the date boxes outlined"><div class="hl"></div></div>
+          <dl><dt>Read as</dt><dd class="mono" style="font-size:13px">20 Sep 2026</dd><dt>Confidence</dt><dd>High</dd><dt>Where</dt><dd>Top right, date boxes</dd></dl>
+          <p class="hint">Wrong place? Fix the fact on the desk. The brief redraws and asks you to approve again.</p>
+        </div>
+      </li>
+      <li class="c"><span class="no mono">02</span><div><div class="t">It was presented on 1 October 2026 and returned unpaid for insufficient funds.</div><div class="src"><a class="chip" href="#c3">You · Presented</a><a class="chip r" href="#c4">Memo · Reason</a></div></div></li>
+      <li class="c"><span class="no mono">03</span><div><div class="t">The demand notice, sent on 30 October, was inside the 30 days that began when the memo was received on 5 October.</div><div class="src"><a class="chip r" href="#c5">Notice · Date</a><a class="chip" href="#c6">You · Memo received</a></div></div></li>
+      <li class="c"><span class="no mono">04</span><div><div class="t">The notice reached the drawer on 3 November. The 15 days to pay ended on 18 November, and your client says nothing was paid.</div><div class="src"><a class="chip" href="#c7">You · Delivered</a><a class="chip" href="#c8">Voice note · 0:42</a></div></div></li>
+      <li class="c"><span class="no mono">05</span><div><div class="t">The complaint can be made from 19 November to 19 December 2026, which is a Saturday.</div><div class="src"><a class="chip" href="#c9">Deadline rule · Complaint</a></div></div></li>
+    </ol>
+
+    <div class="dropped">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8D97A6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg>
+      <div><b>One sentence left out of this draft</b>It said the drawer admitted the debt. No paper or note says so. <a href="#d">See what was removed</a></div>
+    </div>
+
+    <div class="approve">
+      <div class="r2">
+        <label for="who">Approve as<input id="who" type="text" value="R. K. Sandhu"></label>
+        <a class="btn" href="#aloud" aria-disabled="true">Read aloud</a>
+        <a class="btn pri" href="#ok">Approve brief</a>
+      </div>
+      <p>Your name and the time are saved with the approval. Reading aloud unlocks after you approve.</p>
+    </div>
+  </article>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1540}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

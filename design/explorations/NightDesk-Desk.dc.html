@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Night Desk: matter desk</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.nd{--bg:#0B0D10;--sf:#14181D;--sf2:#1B2027;--hair:#262C34;--ink:#E8ECF1;--ink2:#B4BCC8;--ink3:#8D97A6;--calm:#6FD1A8;--calm-wash:#12281F;--done:#5E6874;
+ font-family:'Hanken Grotesk',system-ui,sans-serif;color:var(--ink);background:var(--bg);min-height:1080px;width:100%;box-sizing:border-box;padding:0 56px 64px;display:flex;flex-direction:column;gap:56px}
+.nd *{box-sizing:border-box}
+.nd .mono{font-family:'Martian Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.nd .top{display:flex;align-items:center;gap:40px;height:84px;border-bottom:1px solid var(--hair);flex-wrap:wrap}
+.nd .brand{font-size:21px;font-weight:700;letter-spacing:-0.02em}
+.nd .tabs{display:flex;gap:6px;flex:1;min-width:0;flex-wrap:wrap}
+.nd .tab{display:inline-flex;flex-direction:column;justify-content:center;gap:2px;min-height:48px;padding:0 16px;border-radius:12px;text-decoration:none;color:var(--ink2);font-size:14px;font-weight:500}
+.nd .tab small{font-size:12px;font-weight:400;color:var(--ink3)}
+.nd .tab.sel{background:var(--sf);color:var(--ink)}
+.nd .tab.sel small{color:var(--calm)}
+.nd .tab small.warn{color:#F0A53A}.nd .tab small.gone{color:var(--ink3)}
+.nd .clock{font-size:12px;color:var(--ink3);text-align:right;line-height:1.5}
+.nd .hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:72px;align-items:end}
+.nd .num{font-size:232px;line-height:0.82;font-weight:500;color:var(--calm);letter-spacing:-0.06em;margin:0}
+.nd .lab{font-size:14px;color:var(--ink3);font-weight:500;margin:0 0 20px}
+.nd .date{font-size:44px;font-weight:600;letter-spacing:-0.03em;line-height:1.1;margin:0}
+.nd .why{margin:16px 0 0;font-size:16px;line-height:1.55;color:var(--ink2);max-width:540px}
+.nd .why a{color:var(--calm);text-decoration:none;font-weight:600}
+.nd .acts{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
+.nd .btn{font:inherit;font-size:15px;font-weight:600;height:48px;padding:0 22px;border-radius:12px;border:1px solid #38404B;background:transparent;color:var(--ink);display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.nd .btn.pri{background:var(--calm);border-color:var(--calm);color:#06150E}
+.nd .ruler{position:relative;height:92px;margin-top:-8px}
+.nd .ticks{position:absolute;left:0;right:0;top:20px;height:36px;display:flex;justify-content:space-between;align-items:flex-end}
+.nd .ticks i{display:block;width:2px;height:16px;background:#3A424D;border-radius:1px}
+.nd .ticks i.m{height:26px;background:#6B7684}
+.nd .ticks i.now{height:36px;background:var(--ink)}
+.nd .ticks i.end{height:36px;background:var(--calm);width:3px}
+.nd .rl{position:absolute;top:66px;font-size:12px;color:var(--ink2);white-space:nowrap}
+.nd .row3{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,4fr) minmax(0,5fr);gap:20px;align-items:start}
+.nd .panel{background:var(--sf);border-radius:20px;padding:28px}
+.nd .panel h2{margin:0 0 20px;font-size:14px;font-weight:600;color:var(--ink2);display:flex;justify-content:space-between;align-items:baseline}
+.nd .panel h2 span{font-weight:400;font-size:12px;color:var(--ink3)}
+.nd .per{padding:14px 0;border-top:1px solid var(--hair);display:flex;flex-direction:column;gap:10px}
+.nd .per:first-of-type{border-top:0;padding-top:0}
+.nd .per .r{display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-size:15px}
+.nd .per .r b{font-weight:600}
+.nd .per .r span{font-size:12px;color:var(--ink3);white-space:nowrap}
+.nd .per .r span.open{color:var(--calm)}
+.nd .seg{display:flex;gap:3px;height:8px}
+.nd .seg i{flex:1;border-radius:2px;background:var(--done)}
+.nd .seg i.on{background:var(--calm)}
+.nd .seg i.off{background:#262C34}
+.nd .papers{display:flex;flex-direction:column;gap:14px}
+.nd .papers figure{margin:0;display:flex;flex-direction:column;gap:8px}
+.nd .papers .fr{border-radius:10px;overflow:hidden;background:#0F1317;border:1px solid var(--hair)}
+.nd .papers .fr.w{aspect-ratio:1200/533}
+.nd .papers .fr.t{height:132px}
+.nd .papers img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;filter:brightness(.92)}
+.nd .papers figcaption{font-size:12px;color:var(--ink3)}
+.nd .pp{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.nd table{width:100%;border-collapse:collapse;font-size:14px}
+.nd td{padding:13px 0;border-top:1px solid var(--hair);vertical-align:baseline}
+.nd tr:first-child td{border-top:0;padding-top:0}
+.nd td:first-child{color:var(--ink3);white-space:nowrap;padding-right:14px}
+.nd td.v{font-size:12px;white-space:nowrap;color:var(--ink)}
+.nd td.s{text-align:right;font-size:12px;color:var(--ink3);padding-left:12px}
+.nd td.s a{color:var(--calm);text-decoration:none;font-weight:600;display:block}
+</style>
+</helmet>
+<div class="nd">
+  <header class="top">
+    <span class="brand">Tarikh</span>
+    <nav class="tabs" aria-label="Matters">
+      <a class="tab sel" href="#a">Sharma v. Kalra<small>29 days left</small></a>
+      <a class="tab" href="#b">Bansal v. Dhillon<small class="warn">Send notice in 6 days</small></a>
+      <a class="tab" href="#c">Mehta v. Rao<small class="gone">Window ended</small></a>
+    </nav>
+    <span class="clock mono">Fri 20 Nov 2026<br>Chandigarh</span>
+  </header>
+
+  <section class="hero" aria-labelledby="hl">
+    <h1 class="num mono" id="hl">29</h1>
+    <div>
+      <p class="lab">Days left to file the complaint. Closes on</p>
+      <p class="date">Saturday 19 December 2026</p>
+      <p class="why">Counted from 19 Nov, the day after the drawer's 15 days ended with nothing paid. 19 Dec is a Saturday, so confirm the court sits. <a href="#how">How this is counted</a></p>
+      <div class="acts">
+        <a class="btn pri" href="NightDesk-Brief.dc.html">Draft the brief</a>
+        <a class="btn" href="#cal">Add dates to calendar</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="ruler" aria-hidden="true">
+    <div class="ticks"><i class="now"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="m"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="end"></i></div>
+    <span class="rl mono" style="left:0">Today 20 Nov</span>
+    <span class="rl mono" style="left:37.9%;transform:translateX(-50%)">1 Dec</span>
+    <span class="rl mono" style="right:0;color:#6FD1A8">19 Dec</span>
+  </div>
+
+  <div class="row3">
+    <section class="panel" aria-labelledby="hp">
+      <h2 id="hp">The four periods <span>Sample matter</span></h2>
+      <div class="per"><div class="r"><b>Cheque presented in time</b><span class="mono">1 Oct</span></div><div class="seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="per"><div class="r"><b>Demand notice</b><span class="mono">30 Oct · 5 spare</span></div><div class="seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="per"><div class="r"><b>Drawer's time to pay</b><span class="mono">ended 18 Nov</span></div><div class="seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="per"><div class="r"><b>Complaint</b><span class="mono open">29 days open</span></div><div class="seg"><i class="on"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i></div></div>
+    </section>
+
+    <section class="panel" aria-labelledby="hpa">
+      <h2 id="hpa">Papers <span>3 of 3 read</span></h2>
+      <div class="papers">
+        <figure><div class="fr w"><img src="/_blob/d0b0c4b1dfc562bd128096a090cae608" alt="Cheque 004718, fictional sample"></div><figcaption>Cheque</figcaption></figure>
+        <div class="pp">
+          <figure><div class="fr t"><img src="/_blob/7109866e7776bf3f1bbbca10d5cf8946" alt="Bank return memo, fictional sample"></div><figcaption>Return memo</figcaption></figure>
+          <figure><div class="fr t"><img src="/_blob/f27ad37c45aa63a0c11577060f81efe1" alt="Demand notice, fictional sample"></div><figcaption>Demand notice</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="hf">
+      <h2 id="hf">Facts <span>Each traces to a paper or to you</span></h2>
+      <table>
+        <tr><td>Cheque date</td><td class="v mono">20 Sep 2026</td><td class="s">From cheque<a href="#s1">Show on paper</a></td></tr>
+        <tr><td>Presented</td><td class="v mono">1 Oct 2026</td><td class="s">You entered</td></tr>
+        <tr><td>Return reason</td><td class="v">Funds insufficient</td><td class="s">From memo<a href="#s2">Show on paper</a></td></tr>
+        <tr><td>Memo received</td><td class="v mono">5 Oct 2026</td><td class="s">You entered</td></tr>
+        <tr><td>Notice sent</td><td class="v mono">30 Oct 2026</td><td class="s">From notice<a href="#s3">Show on paper</a></td></tr>
+        <tr><td>Notice delivered</td><td class="v mono">3 Nov 2026</td><td class="s">You entered</td></tr>
+      </table>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Seal: the brief</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.sb{--paper:#F5F0E6;--sheet:#FCFAF4;--ink:#16130E;--ink2:#4A453B;--ink3:#6A6455;--rule:#D6CDB9;--verm:#C0301C;
+ font-family:'Instrument Sans',system-ui,sans-serif;color:var(--ink);background:var(--paper);min-height:1570px;width:100%;box-sizing:border-box;padding:0 64px 80px}
+.sb *{box-sizing:border-box}
+.sb .mast{display:flex;justify-content:space-between;align-items:center;padding:22px 0 16px;border-bottom:2px solid var(--ink);gap:16px;flex-wrap:wrap}
+.sb .back{display:inline-flex;align-items:center;gap:10px;min-height:44px;color:var(--ink2);text-decoration:none;font-size:14px;font-weight:500}
+.sb .back b{color:var(--ink);font-weight:600}
+.sb .state{font-size:13px;font-weight:600;color:var(--ink2);padding:6px 14px;border:1px solid var(--ink);border-radius:2px}
+.sb .cols{display:flex;gap:48px;padding-top:48px;align-items:flex-start;flex-wrap:wrap}
+.sb .sheet{flex:999 1 660px;min-width:0;max-width:820px;background:var(--sheet);border:1px solid var(--ink);padding:64px 72px 48px;display:flex;flex-direction:column;gap:36px}
+.sb .head{display:flex;flex-direction:column;gap:6px;padding-bottom:28px;border-bottom:1px solid var(--rule)}
+.sb .head .e{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.sb h1{margin:6px 0 0;font-family:'Bodoni Moda',serif;font-weight:500;font-size:38px;line-height:1.1;letter-spacing:-0.015em}
+.sb h1 em{font-style:italic;font-weight:400;color:var(--ink2)}
+.sb .head p{margin:10px 0 0;font-size:14px;color:var(--ink2);line-height:1.55;max-width:520px}
+.sb ol.paras{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:22px;counter-reset:p}
+.sb .para{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px}
+.sb .para .n{font-family:'Bodoni Moda',serif;font-style:italic;font-size:20px;color:var(--ink3);line-height:1.6}
+.sb .para p{margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:22px;line-height:1.55;letter-spacing:-0.003em}
+.sb .para.on p{background:#F1E9D3;box-shadow:0 0 0 6px #F1E9D3}
+.sb sup a{font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:700;color:var(--ink);text-decoration:none;padding:0 3px;margin-left:1px}
+.sb .para.on sup a{color:var(--verm)}
+.sb .out{padding:16px 0 0;border-top:1px solid var(--rule);font-size:14px;line-height:1.55;color:var(--ink2)}
+.sb .out b{color:var(--ink);font-weight:600}
+.sb .out s{color:var(--ink3);text-decoration-thickness:1px}
+.sb .out a{color:var(--ink);font-weight:600;text-underline-offset:3px}
+.sb .notes{margin:0;padding:18px 0 0;border-top:1px solid var(--ink);list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--ink2)}
+.sb .notes li{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.sb .notes b{font-weight:700;color:var(--ink);min-width:14px}
+.sb .notes a{color:var(--ink);font-weight:600;text-underline-offset:3px}
+.sb .notes span.you{color:var(--ink3)}
+.sb .sign{padding-top:28px;border-top:2px solid var(--ink);display:flex;flex-direction:column;gap:14px}
+.sb .sign .r{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.sb label{display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:500;color:var(--ink3);flex:1;min-width:220px}
+.sb input{font:inherit;font-size:16px;height:48px;border:1px solid var(--ink);border-radius:2px;padding:0 16px;color:var(--ink);background:#fff}
+.sb .btn{font:inherit;font-size:15px;font-weight:600;height:48px;padding:0 24px;border-radius:2px;border:1px solid var(--ink);background:transparent;color:var(--ink);display:inline-flex;align-items:center;text-decoration:none}
+.sb .btn.pri{background:var(--ink);color:var(--paper)}
+.sb .btn[aria-disabled=true]{color:#7A7466;border-color:#B8AF9B}
+.sb .sign p{margin:0;font-size:13px;line-height:1.5;color:var(--ink3);max-width:540px}
+.sb .margin{flex:1 1 380px;min-width:340px;max-width:460px;display:flex;flex-direction:column;gap:16px}
+.sb .margin h2{margin:0;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.sb .margin .cap{font-family:'Bodoni Moda',serif;font-size:20px;font-weight:500;line-height:1.3}
+.sb .margin .cap i{font-weight:400;color:var(--ink2)}
+.sb .paper{position:relative;overflow:hidden;border:1px solid var(--ink);aspect-ratio:1200/533;background:#E6E0D0}
+.sb .paper img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sb .hl{position:absolute;left:68.1%;top:3.6%;width:29.1%;height:9.2%;border:2px solid var(--verm);border-radius:2px;box-shadow:0 0 0 2000px rgba(22,19,14,.38)}
+.sb dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 18px;font-size:14px;padding-top:6px;border-top:1px solid var(--rule)}
+.sb dt{color:var(--ink3)}.sb dd{margin:0;font-weight:600}
+.sb .tip{margin:0;font-size:13px;line-height:1.5;color:var(--ink3)}
+</style>
+</helmet>
+<div class="sb">
+  <header class="mast">
+    <a class="back" href="Seal-Desk.dc.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Back to <b>Sharma Steel Traders v. Kalra Fabricators</b></span></a>
+    <span class="state">Draft, not approved</span>
+  </header>
+
+  <div class="cols">
+    <article class="sheet">
+      <div class="head">
+        <span class="e">Brief for the advocate · 20 November 2026</span>
+        <h1>Sharma Steel Traders <em>v.</em> Kalra Fabricators</h1>
+        <p>The small numbers after each sentence point to a note below, which says where the fact came from. Check the notes before you approve.</p>
+      </div>
+
+      <ol class="paras">
+        <li class="para on"><span class="n">1</span><p>Cheque 004718 for ₹4,85,000, drawn by Kalra Fabricators on Northern Sample Bank, is dated 20 September 2026.<sup><a href="#n1">1</a><a href="#n2">2</a></sup></p></li>
+        <li class="para"><span class="n">2</span><p>It was presented on 1 October 2026 and returned unpaid for insufficient funds.<sup><a href="#n3">3</a><a href="#n4">4</a></sup></p></li>
+        <li class="para"><span class="n">3</span><p>The demand notice, sent on 30 October, was inside the 30 days that began when the memo was received on 5 October.<sup><a href="#n5">5</a><a href="#n6">6</a></sup></p></li>
+        <li class="para"><span class="n">4</span><p>The notice reached the drawer on 3 November. The 15 days to pay ended on 18 November, and your client says nothing was paid.<sup><a href="#n7">7</a><a href="#n8">8</a></sup></p></li>
+        <li class="para"><span class="n">5</span><p>The complaint can be made from 19 November to 19 December 2026, which is a Saturday.<sup><a href="#n9">9</a></sup></p></li>
+      </ol>
+
+      <div class="out"><b>Left out of this draft.</b> <s>The drawer admitted the debt.</s> No paper or note says so. <a href="#d">See the full list</a></div>
+
+      <ul class="notes" aria-label="Sources">
+        <li><b>1</b>Exhibit A, cheque, date boxes. <a href="#s1">Show on paper</a></li>
+        <li><b>2</b>Exhibit A, cheque, amount box. <a href="#s2">Show on paper</a></li>
+        <li><b>3</b><span class="you">Entered by you, 1 October.</span></li>
+        <li><b>4</b>Exhibit B, return memo, reason line. <a href="#s4">Show on paper</a></li>
+        <li><b>5</b>Exhibit C, demand notice, date line. <a href="#s5">Show on paper</a></li>
+        <li><b>6</b><span class="you">Entered by you, memo received 5 October.</span></li>
+        <li><b>7</b><span class="you">Entered by you, notice delivered 3 November.</span></li>
+        <li><b>8</b><span class="you">Voice note from your client, 0:42.</span></li>
+        <li><b>9</b>Deadline rule for the complaint. <a href="#how">How this is counted</a></li>
+      </ul>
+
+      <div class="sign">
+        <div class="r">
+          <label for="who">Approved by<input id="who" type="text" value="R. K. Sandhu"></label>
+          <a class="btn" href="#aloud" aria-disabled="true">Read aloud</a>
+          <a class="btn pri" href="#ok">Approve brief</a>
+        </div>
+        <p>Your name and the time are saved with the approval. Reading aloud unlocks after you approve.</p>
+      </div>
+    </article>
+
+    <aside class="margin" aria-label="Source for note 1">
+      <h2>Note 1 on paper</h2>
+      <div class="cap">Exhibit A, <i>cheque,</i> date</div>
+      <div class="paper"><img src="/_blob/d0b0c4b1dfc562bd128096a090cae608" alt="Cheque 004718 with the date boxes outlined"><div class="hl"></div></div>
+      <dl><dt>Read as</dt><dd>20 Sep 2026</dd><dt>Confidence</dt><dd>High</dd><dt>Where</dt><dd>Top right, date boxes</dd></dl>
+      <p class="tip">If the outline is in the wrong place, correct the fact on the desk. The brief redraws and asks you to approve again.</p>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1570}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

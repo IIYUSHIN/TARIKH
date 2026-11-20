@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tarikh: the long table</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.fl{--paper:#F4EFE5;--paper2:#ECE5D4;--ink:#15120D;--ink2:#4A453B;--ink3:#6A6455;--rule:#D5CCB8;--calm:#1F3A93;--warn:#8A5A00;--hot:#C0301C;--gone:#6A6455;
+ font-family:'Instrument Sans',system-ui,sans-serif;color:var(--ink);background:var(--paper);min-height:1940px;width:100%;box-sizing:border-box;padding:0 64px 96px;font-feature-settings:'tnum' 1}
+.fl.dark{--paper:#0F0E0B;--paper2:#1A1813;--ink:#F2EDE2;--ink2:#C2BBAA;--ink3:#9A937F;--rule:#2E2B23;--calm:#9DB4FF;--warn:#E0A445;--hot:#FF7A63;--gone:#9A937F}
+.fl *{box-sizing:border-box}
+.fl .mast{display:flex;justify-content:space-between;align-items:center;padding:24px 0 16px;border-bottom:2px solid var(--ink);gap:16px;flex-wrap:wrap}
+.fl .w{font-family:'Bodoni Moda',serif;font-size:34px;font-style:italic;font-weight:500;letter-spacing:-0.01em}
+.fl .w small{font-family:'Instrument Sans',sans-serif;font-style:normal;font-size:13px;color:var(--ink3);margin-left:14px}
+.fl .crumb{display:flex;gap:28px;align-items:center;font-size:14px;color:var(--ink2);flex-wrap:wrap}
+.fl .crumb a{color:var(--ink2);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.fl .crumb a.on{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+.fl .hero{display:flex;justify-content:space-between;gap:48px;align-items:flex-start;padding:52px 0 8px;flex-wrap:wrap}
+.fl .eyebrow{font-size:13px;color:var(--ink3);font-weight:500}
+.fl h1{margin:8px 0 0;font-family:'Bodoni Moda',serif;font-weight:500;font-size:34px;line-height:1.1;letter-spacing:-0.015em}
+.fl h1 em{font-style:italic;font-weight:400;color:var(--ink2)}
+.fl .last{margin-top:44px}
+.fl .last .l{font-size:14px;font-weight:600;color:var(--ink2)}
+.fl .big{font-family:'Bodoni Moda',serif;font-weight:400;font-size:128px;line-height:0.95;letter-spacing:-0.035em;margin:8px 0 0;white-space:nowrap}
+.fl .yr{font-family:'Bodoni Moda',serif;font-style:italic;font-size:34px;color:var(--ink2);margin-top:8px}
+.fl .note{margin:18px 0 0;max-width:600px;font-size:16px;line-height:1.55;color:var(--ink2);min-height:50px}
+.fl .stampbox{display:flex;flex-direction:column;align-items:center;gap:12px;padding-top:6px}
+.fl .stamp{width:236px;height:236px;transform:rotate(-5deg)}
+.fl .pill{display:inline-flex;align-items:center;height:32px;padding:0 14px;border-radius:16px;border:1.5px solid currentColor;font-size:14px;font-weight:700}
+.fl .table{margin-top:56px}
+.fl .th{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid var(--ink)}
+.fl .th h2{margin:0;font-family:'Bodoni Moda',serif;font-weight:500;font-size:30px;letter-spacing:-0.01em}
+.fl .th p{margin:6px 0 0;font-size:14px;color:var(--ink2);max-width:520px;line-height:1.5}
+.fl .btn{font:inherit;font-size:14px;font-weight:600;height:44px;padding:0 20px;border-radius:2px;border:1px solid var(--ink);background:transparent;color:var(--ink);display:inline-flex;align-items:center;cursor:pointer}
+.fl .btn.pri{background:var(--ink);color:var(--paper)}
+.fl .plotgrid{display:grid;grid-template-columns:232px minmax(0,1fr);column-gap:24px}
+.fl .names .sp{height:44px}
+.fl .names .n{height:72px;padding-top:14px;border-top:1px solid var(--rule)}
+.fl .names .n b{display:block;font-size:15px;font-weight:600}
+.fl .names .n span{display:block;margin-top:3px;font-size:12px;color:var(--ink3);line-height:1.35}
+.fl .area{position:relative}
+.fl .axis{position:relative;height:44px}
+.fl .axis .t{position:absolute;bottom:0;height:12px;width:1px;background:var(--rule)}
+.fl .axis .t.m{height:22px;background:var(--ink3)}
+.fl .axis .tl{position:absolute;top:8px;font-size:12px;color:var(--ink2);transform:translateX(-50%);white-space:nowrap}
+.fl .axis .tl.first{transform:none}
+.fl .lanes{position:relative}
+.fl .lane{position:relative;height:72px;border-top:1px solid var(--rule)}
+.fl .bar{position:absolute;top:14px;height:22px;border-radius:11px;min-width:6px}
+.fl .bar.theirs{background:transparent;border:2px solid var(--ink3)}
+.fl .bar.wait{background:transparent}
+.fl .lcap{position:absolute;top:42px;font-size:12px;color:var(--ink2);white-space:nowrap;background:var(--paper);padding:1px 6px 1px 0;z-index:2}
+.fl .gl{position:absolute;top:0;bottom:0;width:0;border-left:1.5px dashed var(--ink3);pointer-events:none;z-index:1}
+.fl .gl.today{border-left:2px solid var(--ink)}
+.fl .tag{position:absolute;top:-34px;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-size:12px;font-weight:600;padding:5px 10px;border-radius:2px;white-space:nowrap;z-index:2}
+.fl .rail{position:relative;height:150px;border-top:1px solid var(--ink)}
+.fl .rng{position:absolute;left:-14px;width:calc(100% + 28px);top:10px;height:44px;margin:0;background:transparent;pointer-events:none;-webkit-appearance:none;appearance:none}
+.fl .rng::-webkit-slider-runnable-track{height:44px;background:transparent}
+.fl .rng::-moz-range-track{height:44px;background:transparent}
+.fl .rng::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;pointer-events:auto;width:28px;height:44px;border-radius:14px;background:var(--ink);border:3px solid var(--paper);cursor:grab}
+.fl .rng::-moz-range-thumb{pointer-events:auto;width:22px;height:38px;border-radius:14px;background:var(--ink);border:3px solid var(--paper);cursor:grab}
+.fl .rng.today::-webkit-slider-thumb{background:var(--paper);border:3px solid var(--ink)}
+.fl .rng.today::-moz-range-thumb{background:var(--paper);border:3px solid var(--ink)}
+.fl .rng:focus-visible::-webkit-slider-thumb{outline:3px solid var(--calm);outline-offset:3px}
+.fl .rng:focus-visible::-moz-range-thumb{outline:3px solid var(--calm);outline-offset:3px}
+.fl .pl{position:absolute;font-size:12px;line-height:1.3;color:var(--ink);white-space:nowrap;transform:translateX(-50%)}
+.fl .pl b{display:block;font-weight:700}
+.fl .pl span{color:var(--ink2)}
+.fl .pl.moved span{color:var(--hot);font-weight:600}
+.fl .below{display:flex;gap:64px;margin-top:64px;flex-wrap:wrap;align-items:flex-start}
+.fl .below h3{margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.fl .ledger{flex:1 1 520px;min-width:0}
+.fl table{width:100%;border-collapse:collapse}
+.fl td{padding:14px 10px 14px 0;border-bottom:1px solid var(--rule);font-size:15px;vertical-align:baseline}
+.fl td:first-child{color:var(--ink3);width:30%}
+.fl td.v{font-weight:600;white-space:nowrap}
+.fl td.s{text-align:right;font-size:12px;color:var(--ink3);padding-right:0}
+.fl td.s i{font-style:normal;color:var(--hot);font-weight:600;display:block}
+.fl td.s a{display:block;color:var(--ink);font-weight:600;text-underline-offset:3px}
+.fl .ex{flex:1 1 420px;min-width:0}
+.fl .exh{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.fl .exh figure{margin:0;display:flex;flex-direction:column;gap:8px}
+.fl .exh figure.w2{grid-column:1 / -1}
+.fl .exh .fr{border:1px solid var(--ink);background:#E6E0D0;overflow:hidden}
+.fl .exh .w2 .fr{aspect-ratio:1200/533}
+.fl .exh .tt .fr{height:170px}
+.fl .exh img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.fl .exh figcaption{font-size:12px;color:var(--ink3)}
+.fl .exh figcaption b{font-family:'Bodoni Moda',serif;font-style:italic;font-weight:500;font-size:14px;color:var(--ink);margin-right:6px}
+</style>
+</helmet>
+<div class="fl {{themeClass}}">
+  <header class="mast">
+    <span class="w">Tarikh<small>Case desk</small></span>
+    <nav class="crumb" aria-label="Matter">
+      <a href="#docket">Docket</a>
+      <a class="on" href="#matter" aria-current="page">Sharma v. Kalra</a>
+      <a href="#brief">Brief</a>
+    </nav>
+  </header>
+
+  <section class="hero" aria-labelledby="mt">
+    <div>
+      <span class="eyebrow">Complaint under Section 138 · cheque 004718 · ₹4,85,000 · sample matter</span>
+      <h1 id="mt">Sharma Steel Traders <em>v.</em> Kalra Fabricators</h1>
+      <div class="last">
+        <span class="l">Last day to file the complaint</span>
+        <div class="big">{{lastDay}}</div>
+        <div class="yr">{{lastYear}}</div>
+        <p class="note" aria-live="polite">{{note}}</p>
+      </div>
+    </div>
+    <div class="stampbox">
+      <svg class="stamp" viewBox="0 0 172 172" role="img" aria-label="{{stampLabel}}" fill="none">
+        <circle cx="86" cy="86" r="82" stroke="{{ramp}}" stroke-width="3"/>
+        <circle cx="86" cy="86" r="74" stroke="{{ramp}}" stroke-width="1"/>
+        <text x="86" y="114" text-anchor="middle" font-family="Bodoni Moda, serif" font-size="{{stampSize}}" font-weight="500" fill="{{ramp}}" letter-spacing="-2">{{stampNum}}</text>
+        <text x="86" y="138" text-anchor="middle" font-family="Instrument Sans, sans-serif" font-size="11" font-weight="700" letter-spacing="2.4" fill="{{ramp}}">{{stampWord}}</text>
+        <path d="M42 58h88" stroke="{{ramp}}" stroke-width="1"/>
+        <text x="86" y="48" text-anchor="middle" font-family="Instrument Sans, sans-serif" font-size="9" font-weight="700" letter-spacing="2.2" fill="{{ramp}}">SAMPLE MATTER</text>
+      </svg>
+      <span class="pill" style="color: {{ramp}}">{{pill}}</span>
+    </div>
+  </section>
+
+  <section class="table" aria-labelledby="lt">
+    <div class="th">
+      <div>
+        <h2 id="lt">The long table</h2>
+        <p>Move any pin. The four clocks follow. Nothing is saved: it is a way to ask "what if the notice had gone out later?"</p>
+      </div>
+      <button class="btn" type="button" onClick="{{reset}}">Back to the real dates</button>
+    </div>
+
+    <div class="plotgrid" style="margin-top:44px">
+      <div class="names">
+        <div class="sp"></div>
+        <sc-for list="{{lanes}}" as="ln" hint-placeholder-count="4">
+          <div class="n"><b>{{ln.name}}</b><span>{{ln.sub}}</span></div>
+        </sc-for>
+      </div>
+      <div class="area">
+        <div class="axis" aria-hidden="true">
+          <sc-for list="{{ticks}}" as="tk" hint-placeholder-count="21">
+            <div class="t {{tk.cls}}" style="left: {{tk.left}}%"></div>
+          </sc-for>
+          <sc-for list="{{tickLabels}}" as="tl" hint-placeholder-count="6">
+            <div class="tl {{tl.cls}}" style="left: {{tl.left}}%">{{tl.text}}</div>
+          </sc-for>
+        </div>
+        <div class="lanes">
+          <sc-for list="{{lanes}}" as="ln" hint-placeholder-count="4">
+            <div class="lane">
+              <div class="bar {{ln.barCls}}" style="left: {{ln.left}}%; width: {{ln.width}}%; background: {{ln.fill}}; border-color: {{ln.edge}}"></div>
+              <div class="lcap" style="left: {{ln.capLeft}}%; color: {{ln.capColor}}">{{ln.cap}}</div>
+            </div>
+          </sc-for>
+          <sc-for list="{{guides}}" as="g" hint-placeholder-count="5">
+            <div class="gl {{g.cls}}" style="left: {{g.left}}%"><span class="tag" style="display: {{g.tagDisplay}}">{{g.tag}}</span></div>
+          </sc-for>
+        </div>
+        <div class="rail">
+          <sc-for list="{{pins}}" as="p" hint-placeholder-count="5">
+            <input class="rng {{p.cls}}" type="range" min="0" max="{{p.max}}" step="1" value="{{p.value}}" aria-label="{{p.aria}}" aria-valuetext="{{p.text}}" onChange="{{p.onChange}}">
+          </sc-for>
+          <sc-for list="{{pins}}" as="p" hint-placeholder-count="5">
+            <div class="pl {{p.moved}}" style="left: {{p.left}}%; top: {{p.labelTop}}px"><b>{{p.name}}</b><span>{{p.text}}</span></div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="below">
+    <section class="ledger" aria-labelledby="hl">
+      <h3 id="hl">Facts, and where each came from</h3>
+      <table>
+        <tbody>
+          <sc-for list="{{facts}}" as="f" hint-placeholder-count="5">
+            <tr><td>{{f.name}}</td><td class="v">{{f.value}}</td><td class="s"><i style="display: {{f.movedDisplay}}">{{f.moved}}</i>{{f.source}}<a href="#show" style="display: {{f.showDisplay}}">Show on paper</a></td></tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </section>
+    <section class="ex" aria-labelledby="he">
+      <h3 id="he">Exhibits</h3>
+      <div class="exh">
+        <figure class="w2"><div class="fr"><img src="/_blob/d0b0c4b1dfc562bd128096a090cae608" alt="Cheque 004718, fictional sample"></div><figcaption><b>A</b>Cheque</figcaption></figure>
+        <figure class="tt"><div class="fr"><img src="/_blob/7109866e7776bf3f1bbbca10d5cf8946" alt="Bank return memo, fictional sample"></div><figcaption><b>B</b>Return memo</figcaption></figure>
+        <figure class="tt"><div class="fr"><img src="/_blob/f27ad37c45aa63a0c11577060f81efe1" alt="Demand notice, fictional sample"></div><figcaption><b>C</b>Demand notice</figcaption></figure>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1940}}'>
+class Component extends DCLogic {
+  static get REAL() { return { p: 11, m: 15, n: 40, d: 44, t: 61 }; }
+  constructor(props) {
+    super(props);
+    this.state = Object.assign({}, Component.REAL);
+  }
+  move(key, value) {
+    const ORDER = ['p', 'm', 'n', 'd'];
+    const s = Object.assign({}, this.state);
+    if (key !== 't') value = Math.min(value, 92);
+    s[key] = value;
+    const i = ORDER.indexOf(key);
+    if (i >= 0) {
+      for (let j = i + 1; j < ORDER.length; j++) s[ORDER[j]] = Math.max(s[ORDER[j]], value);
+      for (let j = 0; j < i; j++) s[ORDER[j]] = Math.min(s[ORDER[j]], value);
+    }
+    this.setState(s);
+  }
+  renderVals() {
+    const REAL = Component.REAL;
+const BASE = Date.UTC(2026, 8, 20);
+const DAY = 86400000;
+const SPAN = 144;
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTH = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function toDate(n) { return new Date(BASE + n * DAY); }
+function short(n) { const x = toDate(n); return x.getUTCDate() + ' ' + MON[x.getUTCMonth()]; }
+function full(n) { const x = toDate(n); return x.getUTCDate() + ' ' + MON[x.getUTCMonth()] + ' ' + x.getUTCFullYear(); }
+function dayOf(n) { return toDate(n).getUTCDay(); }
+function nOf(y, m, d) { return Math.round((Date.UTC(y, m, d) - BASE) / DAY); }
+function monthsLater(n, months, dayBefore) {
+  const x = toDate(n);
+  const idx = x.getUTCFullYear() * 12 + x.getUTCMonth() + months;
+  const y = Math.floor(idx / 12), m = idx % 12;
+  const last = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+  if (x.getUTCDate() > last) return nOf(y, m, last);
+  return nOf(y, m, x.getUTCDate()) - (dayBefore ? 1 : 0);
+}
+function plural(k, one, many) { return k + ' ' + (k === 1 ? one : many); }
+function pc(n) { return (n / SPAN * 100).toFixed(3); }
+
+    const s = this.state;
+    const cheque = 0;
+    // The four clocks, same rules as app/deadlines.py after decision 0004.
+    const vEnd = monthsLater(cheque, 3, true);
+    const nOpen = s.m, nEnd = s.m + 30;
+    const pOpen = s.d + 1, pEnd = s.d + 15;
+    const cOpen = pEnd + 1, cEnd = monthsLater(cOpen, 1, false);
+    const today = s.t;
+
+    const noticeLate = s.n > nEnd;
+    const presentedLate = s.p > vEnd;
+    const waiting = today < cOpen;
+    const ended = today > cEnd;
+    const left = cEnd - today;
+
+    let ramp = 'var(--calm)';
+    if (ended) ramp = 'var(--gone)';
+    else if (!waiting && left <= 7) ramp = 'var(--hot)';
+    else if (!waiting && left <= 21) ramp = 'var(--warn)';
+
+    const day = dayOf(cEnd);
+    const weekend = day === 0 || day === 6;
+    const lastDate = toDate(cEnd);
+    let note;
+    if (presentedLate) note = 'The cheque was presented after its three months ran out. The advocate decides what follows.';
+    else if (noticeLate) note = 'The notice went out ' + plural(s.n - nEnd, 'day', 'days') + ' after its 30 days closed. The advocate decides what that means for the complaint.';
+    else if (waiting) note = 'The drawer still has ' + plural(cOpen - 1 - today + 1, 'day', 'days') + ' to pay. The complaint window opens on ' + short(cOpen) + '.';
+    else if (ended) note = 'The window closed ' + plural(today - cEnd, 'day', 'days') + ' ago. Whether a late complaint can be excused is for the advocate.';
+    else note = 'Counted from ' + short(cOpen) + ', the day after the drawer\'s 15 days ended.' + (weekend ? ' ' + WEEKDAY[day] + ' may not be a court day, so confirm the court sits.' : '');
+
+    let pill, stampNum, stampWord;
+    if (waiting) { pill = 'Opens in ' + plural(cOpen - today, 'day', 'days'); stampNum = String(cOpen - today); stampWord = 'DAYS TO OPEN'; }
+    else if (ended) { pill = 'Ended ' + plural(today - cEnd, 'day', 'days') + ' ago'; stampNum = String(today - cEnd); stampWord = 'DAYS AGO'; }
+    else { pill = plural(left, 'day', 'days') + ' left'; stampNum = String(left); stampWord = left === 1 ? 'DAY LEFT' : 'DAYS LEFT'; }
+
+    // Lanes. Filled bars are the advocate's clocks; the outlined bar is the drawer's.
+    const bar = (a, b) => ({ left: pc(a), width: pc(b - a + 1) });
+    const lanes = [];
+    {
+      const b = bar(cheque, vEnd);
+      lanes.push(Object.assign({ name: 'Cheque presented in time', sub: 'Three months from the date on it', barCls: '', fill: 'var(--rule)', edge: 'transparent',
+        cap: presentedLate ? 'Presented ' + short(s.p) + ', after validity' : 'Presented ' + short(s.p) + ', in time', capLeft: pc(Math.min(s.p + 2, 80)), capColor: presentedLate ? 'var(--hot)' : 'var(--ink2)' }, b));
+    }
+    {
+      const b = bar(nOpen, nEnd);
+      lanes.push(Object.assign({ name: 'Demand notice', sub: '30 days from receiving the memo', barCls: '', fill: noticeLate ? 'var(--hot)' : 'var(--ink3)', edge: 'transparent',
+        cap: noticeLate ? 'Sent ' + short(s.n) + ', ' + plural(s.n - nEnd, 'day', 'days') + ' late' : 'Sent ' + short(s.n) + ', ' + plural(nEnd - s.n, 'day', 'days') + ' to spare', capLeft: pc(nOpen), capColor: noticeLate ? 'var(--hot)' : 'var(--ink2)' }, b));
+    }
+    {
+      const b = bar(pOpen, pEnd);
+      lanes.push(Object.assign({ name: 'Drawer\'s time to pay', sub: '15 days from the day after receipt. Their clock', barCls: 'theirs', fill: 'transparent', edge: 'var(--ink3)',
+        cap: today > pEnd ? short(pOpen) + ' to ' + short(pEnd) + ', unpaid' : short(pOpen) + ' to ' + short(pEnd), capLeft: pc(pOpen), capColor: 'var(--ink2)' }, b));
+    }
+    {
+      const b = bar(cOpen, cEnd);
+      lanes.push(Object.assign({ name: 'Complaint to the Magistrate', sub: 'One month from the day after the 15 days', barCls: waiting ? 'wait' : '', fill: waiting ? 'transparent' : ramp, edge: waiting ? 'var(--calm)' : 'transparent',
+        cap: short(cOpen) + ' to ' + short(cEnd) + (ended ? ', ended' : waiting ? ', not open yet' : ', open'), capLeft: pc(cOpen), capColor: ramp }, b));
+    }
+
+    // Axis.
+    const ticks = [];
+    for (let n = 0; n <= SPAN; n += 7) ticks.push({ left: pc(n), cls: '' });
+    const monthStarts = [11, 42, 72, 103, 134];
+    monthStarts.forEach(n => ticks.push({ left: pc(n), cls: 'm' }));
+    const tickLabels = [{ left: pc(0), text: '20 Sep', cls: 'first' }];
+    monthStarts.forEach(n => { const x = toDate(n); tickLabels.push({ left: pc(n), text: '1 ' + MON[x.getUTCMonth()] + (x.getUTCMonth() === 0 ? ' 2027' : ''), cls: '' }); });
+
+    // Pins.
+    const defs = [
+      { key: 'p', name: 'Presented', aria: 'Date the cheque was presented', cls: '', level: 0, max: SPAN },
+      { key: 'm', name: 'Memo received', aria: 'Date the return memo was received', cls: '', level: 1, max: SPAN },
+      { key: 'n', name: 'Notice sent', aria: 'Date the demand notice was sent', cls: '', level: 0, max: SPAN },
+      { key: 'd', name: 'Notice delivered', aria: 'Date the drawer received the notice', cls: '', level: 1, max: SPAN },
+      { key: 't', name: 'Today', aria: 'Today\'s date, for what-if checks', cls: 'today', level: 0, max: SPAN }
+    ];
+    const pins = defs.map(df => ({
+      name: df.name, aria: df.aria, cls: df.cls, max: df.max, value: s[df.key], text: short(s[df.key]),
+      left: pc(s[df.key]), labelTop: 60 + df.level * 40,
+      moved: s[df.key] !== REAL[df.key] ? 'moved' : '',
+      onChange: (e) => this.move(df.key, parseInt(e.target.value, 10))
+    }));
+    const guides = defs.map(df => ({ left: pc(s[df.key]), cls: df.key === 't' ? 'today' : '', tag: 'Today ' + short(s.t), tagDisplay: df.key === 't' ? 'block' : 'none' }));
+
+    // Ledger.
+    const row = (key, name, source, show) => ({
+      name, value: full(s[key]), source, showDisplay: show ? 'block' : 'none',
+      moved: s[key] !== REAL[key] ? 'Moved from ' + short(REAL[key]) : '', movedDisplay: s[key] !== REAL[key] ? 'block' : 'none'
+    });
+    const facts = [
+      { name: 'Cheque date', value: '20 Sep 2026', source: 'From the cheque', showDisplay: 'block', moved: '', movedDisplay: 'none' },
+      row('p', 'Presented', 'You entered', false),
+      row('m', 'Memo received', 'You entered', false),
+      row('n', 'Notice sent', 'From the notice', true),
+      row('d', 'Notice delivered', 'You entered', false)
+    ];
+
+    return {
+      themeClass: this.props.dark ? 'dark' : '',
+      lastDay: lastDate.getUTCDate() + ' ' + MONTH[lastDate.getUTCMonth()],
+      lastYear: lastDate.getUTCFullYear() + ', a ' + WEEKDAY[day],
+      note, ramp, pill, stampNum, stampWord,
+      stampSize: stampNum.length > 2 ? 52 : 62,
+      stampLabel: pill,
+      lanes, ticks, tickLabels, pins, guides, facts,
+      reset: () => this.setState(Object.assign({}, Component.REAL))
+    };
+  }
+}
+</script>
+</body>
+</html>
