@@ -69,12 +69,12 @@ def deadline_cases() -> list[list[str]]:
     assert (p.opens, p.closes) == (date(2017, 5, 6), date(2017, 5, 20))
     rows.append(["Drawer's 15 days", "Notice received 5 May 2017", "6 May to 20 May 2017"])
     x = w(date(2026, 3, 23), date(2026, 4, 10))
-    assert (x["payment"].closes, x["complaint"].opens, x["complaint"].closes) == (date(2026, 4, 7), date(2026, 4, 8), date(2026, 5, 7))
-    rows.append(["Complaint period after the 15 days", "Notice received 23 Mar 2026", "15 days end 7 Apr; complaint 8 Apr to 7 May 2026"])
+    assert (x["payment"].closes, x["complaint"].opens, x["complaint"].closes) == (date(2026, 4, 7), date(2026, 4, 8), date(2026, 5, 8))
+    rows.append(["Complaint period after the 15 days", "Notice received 23 Mar 2026", "15 days end 7 Apr; complaint 8 Apr to 8 May 2026 (7 May if counted from the cause-of-action day)"])
     j = w(date(2020, 1, 8), date(2020, 2, 1))
-    assert j["payment"].closes == date(2020, 1, 23) and (j["complaint"].opens, j["complaint"].closes) == (date(2020, 1, 24), date(2020, 2, 23))
+    assert j["payment"].closes == date(2020, 1, 23) and (j["complaint"].opens, j["complaint"].closes) == (date(2020, 1, 24), date(2020, 2, 24))
     assert j["complaint"].opens <= date(2020, 2, 20) <= j["complaint"].closes
-    rows.append(["Timeline in a High Court judgment {c:sk}", "Notice received 8 Jan 2020", "15 days end 23 Jan; complaint 24 Jan to 23 Feb; filing on 20 Feb is inside"])
+    rows.append(["Timeline in a High Court judgment {c:sk}", "Notice received 8 Jan 2020", "15 days end 23 Jan; complaint 24 Jan to 24 Feb; filing on 20 Feb is inside"])
     m = {x.key: x for x in compute_windows(None, None, date(2026, 10, 30), None, today=date(2026, 11, 21))}
     assert m["payment"].closes is None and m["complaint"].closes is None and m["payment"].status == "unknown"
     rows.append(["Delivery date missing, posting date known", "Notice posted 30 Oct 2026", "Payment and complaint periods: cannot be worked out; no date assumed"])

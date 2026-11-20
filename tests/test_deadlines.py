@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 
-from app.deadlines import compute_windows, month_period_end
+from app.deadlines import compute_windows, month_after, month_period_end
 
 
 @pytest.mark.parametrize("start, months, expected", [
@@ -38,7 +38,28 @@ def test_complaint_window_matches_published_march_april_example():
     assert w["payment"].closes == date(2026, 4, 7)
     assert w["complaint"].opens == date(2026, 4, 8)
     assert w["complaint"].opens <= date(2026, 5, 2) <= w["complaint"].closes
-    assert w["complaint"].closes == date(2026, 5, 7)   # the safer (earlier) date is the one shown
+    # Econ Antri v. Rom Industries (2013): the day the cause of action arose is excluded, so the month
+    # ends on the same calendar date. The one-day-earlier reading is kept as the conservative date.
+    assert w["complaint"].closes == date(2026, 5, 8)
+    assert w["complaint"].conservative_closes == date(2026, 5, 7)
+
+
+@pytest.mark.parametrize("start, months, expected", [
+    (date(2026, 11, 19), 1, date(2026, 12, 19)),   # same calendar date next month
+    (date(2026, 12, 19), 1, date(2027, 1, 19)),    # across a year end
+    (date(2026, 1, 31), 1, date(2026, 2, 28)),     # no such date: last day of the shorter month
+    (date(2024, 1, 31), 1, date(2024, 2, 29)),     # leap year
+])
+def test_month_after_is_the_same_calendar_date(start, months, expected):
+    assert month_after(start, months) == expected
+
+
+def test_notice_to_complaint_example_in_the_site_demo():
+    # Notice delivered 3 Nov 2026: drawer's 15 days end 18 Nov, complaint 19 Nov to 19 Dec, aim for 18 Dec.
+    w = _by_key(compute_windows(None, None, None, date(2026, 11, 3), today=date(2026, 11, 20)))
+    assert (w["complaint"].opens, w["complaint"].closes) == (date(2026, 11, 19), date(2026, 12, 19))
+    assert w["complaint"].conservative_closes == date(2026, 12, 18)
+    assert w["complaint"].days_left == 29
 
 
 def test_complaint_window_month_end_leap_year():

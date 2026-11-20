@@ -47,7 +47,8 @@ export async function renderMatter(host, matterId, ctx) {
       answer.classList.add("answer--stamp");
       answer.append(h("b", {}, "The complaint window is open."), " File by ", d(c.closes), c.days_left != null ? `, ${c.days_left} day${c.days_left === 1 ? "" : "s"} from ${asOf === ctx.today ? "today" : fmtDate(asOf)}.` : ".");
     }
-    answer.append(h("span", { class: "hint", style: "display:block;font:400 var(--t-sm)/1.5 var(--sans);margin-top:var(--s-2)" }, "This is the earlier, safer date. ", TXT.confirmLaw));
+    const safe = c && c.conservative_closes && c.conservative_closes !== c.closes && (c.status === "open" || c.status === "closing");
+    answer.append(h("span", { class: "hint", style: "display:block;font:400 var(--t-sm)/1.5 var(--sans);margin-top:var(--s-2)" }, safe ? ["Counting from the day payment fell due gives ", d(c.conservative_closes), ". Filing by then leaves no doubt. "] : "", TXT.confirmLaw));
   }
   let timer, abort;
   function scheduleWindows(delay) {

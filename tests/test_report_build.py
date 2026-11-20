@@ -21,7 +21,7 @@ def test_boundary_cases_are_computed_by_the_real_engine_and_fail_loudly_if_it_ch
 def test_worked_example_matches_the_screen():
     rows = worked_cases()
     assert rows[2] == ["Drawer's time to pay", "4 Nov 2026", "18 Nov 2026", "Ended"]
-    assert rows[3][3] == "Open, 27 days left"
+    assert rows[3][3] == "Open, 28 days left"
 
 
 def test_citations_are_numbered_in_order_of_first_use():

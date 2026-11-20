@@ -1,9 +1,15 @@
 """Statutory windows for a Section 138 (Negotiable Instruments Act, 1881) matter.
 
-Plain date arithmetic, no model involved. Convention, applied everywhere: a period that begins on
-day D and runs N calendar months ends on the day BEFORE the same calendar date N months later; if
-that date does not exist (31 Jan + 1 month) the period ends on the last day of the shorter month.
-Where readings differ by a day we always show the earlier, safer date and say so.
+Plain date arithmetic, no model involved. Two conventions, each tied to its source:
+
+* Cheque validity (three months) and anything else that counts the first day: the period ends on the
+  day BEFORE the same calendar date three months later (banking practice).
+* The complaint month (Section 142(1)(b)): the day the cause of action arose is excluded
+  (Section 9, General Clauses Act; Econ Antri v. Rom Industries, 2013), so the month ends on the SAME
+  calendar date one month later. The reading one day earlier is kept as `conservative_closes`.
+
+If the corresponding date does not exist (31 Jan + 1 month) the period ends on the last day of the
+shorter month. See docs/decisions/0004 and docs/research/02-legal-rules.md.
 """
 from __future__ import annotations
 
@@ -25,6 +31,7 @@ class Window:
     status: Status
     rule: str
     days_left: int | None
+    conservative_closes: date | None = None
 
 
 def month_period_end(start: date, months: int) -> date:
@@ -36,6 +43,14 @@ def month_period_end(start: date, months: int) -> date:
     if start.day > last:                      # corresponding date does not exist
         return date(year, month, last)
     return date(year, month, start.day) - timedelta(days=1)
+
+
+def month_after(start: date, months: int) -> date:
+    """The same calendar date `months` later; the last day of the month when that date does not exist."""
+    index = start.year * 12 + (start.month - 1) + months
+    year, month = divmod(index, 12)
+    month += 1
+    return date(year, month, min(start.day, calendar.monthrange(year, month)[1]))
 
 
 def _status(opens: date | None, closes: date | None, today: date) -> tuple[Status, int | None]:
@@ -96,12 +111,15 @@ def compute_windows(
 
     # 4. Complaint within one month from the day after the fifteen days end (s.142(1)(b)).
     c_opens = p_closes + timedelta(days=1) if p_closes else None
-    c_closes = month_period_end(c_opens, 1) if c_opens else None
+    c_closes = month_after(c_opens, 1) if c_opens else None
+    c_safe = month_period_end(c_opens, 1) if c_opens else None
     c_status, c_left = _status(c_opens, c_closes, today)
     complaint = Window(
         "complaint", "Complaint before the Magistrate", c_opens, c_closes, c_status,
-        "One month from the day after the fifteen days end. Where readings differ by a day, the "
-        "earlier date is shown. Court holidays and delay condonation are not applied: lawyer to confirm.",
-        c_left)
+        "One month from the day payment fell due, the first day excluded (Econ Antri v. Rom Industries), "
+        "so the last day has the same date one month on. Counting from the cause-of-action day gives a "
+        "date one day earlier, kept as the conservative date. Court holidays and delay condonation are "
+        "not applied: lawyer to confirm.",
+        c_left, c_safe)
 
     return [validity, notice, payment, complaint]

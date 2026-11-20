@@ -64,10 +64,11 @@ def test_entering_three_dates_opens_the_complaint_window_and_scrubbing_closes_it
     open_sample(page)
     enter_dates(page)
     assert "open" in page.locator("[data-testid=answer]").inner_text()
-    assert "18 Dec 2026" in page.locator("[data-testid=answer]").inner_text()
+    assert "19 Dec 2026" in page.locator("[data-testid=answer]").inner_text()
+    assert "18 Dec 2026" in page.locator("[data-testid=answer]").inner_text()   # the conservative date is offered, not hidden
     assert page.locator('[data-window=payment]').inner_text().count("Ended") == 1
     page.locator(".today__grip").focus()
-    for _ in range(4):
+    for _ in range(5):   # four weeks from 21 Nov is the last day, 19 Dec; the fifth press passes it
         page.keyboard.press("PageUp")
     page.wait_for_function("document.querySelector('[data-testid=answer]').innerText.includes('closed')")
     page.get_by_role("button", name="Today").click()

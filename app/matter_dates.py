@@ -36,4 +36,5 @@ def windows_for_matter(matter: Matter, today: date) -> list[Window]:
 def window_dict(w: Window) -> dict:
     return {"key": w.key, "label": w.label, "opens": w.opens.isoformat() if w.opens else None,
             "closes": w.closes.isoformat() if w.closes else None, "status": w.status,
-            "days_left": w.days_left, "rule": w.rule}
+            "days_left": w.days_left, "rule": w.rule,
+            "conservative_closes": w.conservative_closes.isoformat() if w.conservative_closes else None}

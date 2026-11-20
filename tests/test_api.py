@@ -133,7 +133,7 @@ def test_deadlines_follow_the_today_parameter_and_never_guess_missing_dates(tmp_
         fid = next(f["id"] for f in doc["facts"] if f["key"] == key)
         assert c.patch(f"/api/facts/{fid}", json={"value": val}).status_code == 200
     w = {x["key"]: x for x in c.get(f"/api/matters/{mid}/deadlines", params={"today": "2026-11-21"}).json()["windows"]}
-    assert (w["payment"]["closes"], w["complaint"]["opens"], w["complaint"]["closes"]) == ("2026-11-18", "2026-11-19", "2026-12-18")
+    assert (w["payment"]["closes"], w["complaint"]["opens"], w["complaint"]["closes"]) == ("2026-11-18", "2026-11-19", "2026-12-19")
     assert w["complaint"]["status"] == "open"
     assert c.get(f"/api/matters/{mid}/deadlines", params={"today": "tomorrow"}).status_code == 422
 
