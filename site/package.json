@@ -1,0 +1,6 @@
+{
+  "name": "tarikh-site",
+  "private": true,
+  "description": "Static website and app pages for Tarikh. Build with python build.py; test the date engine with npm test.",
+  "scripts": { "test": "node --test tests/engine.test.js" }
+}
