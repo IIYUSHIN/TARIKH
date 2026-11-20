@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Protocol
 
-from ..models import Answer, Brief, DocType, Fact, Observation, Redaction, Transcript
+from ..models import Answer, Brief, DocType, Entity, Fact, Observation, Redaction
 
 
 class Extractor(Protocol):
@@ -21,6 +21,7 @@ class Synthesizer(Protocol):
 
 class TextAnalyzer(Protocol):
     def redact_pii(self, text: str, language: str) -> Redaction: ...
+    def entities(self, text: str, language: str) -> list[Entity]: ...
     def key_phrases(self, text: str, language: str) -> list[str]: ...
 
 
