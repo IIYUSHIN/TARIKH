@@ -1,6 +1,7 @@
 """Domain models. Plain pydantic classes, no behaviour beyond validation."""
 from __future__ import annotations
 
+import hashlib
 from datetime import datetime, timezone
 from enum import Enum
 from typing import Literal
@@ -10,6 +11,11 @@ from pydantic import BaseModel, Field
 
 def utcnow() -> datetime:
     return datetime.now(timezone.utc)
+
+
+def doc_id_for(content: bytes) -> str:
+    """Stable id from the file's bytes, so the same paper gets the same ids in any matter."""
+    return "d_" + hashlib.sha256(content).hexdigest()[:8]
 
 
 class DocType(str, Enum):
@@ -35,6 +41,7 @@ class Fact(BaseModel):
     source: SourceRef | None = None
     verified: bool = False
     manual: bool = False  # lawyer must supply (e.g. date the memo was received)
+    flag: str | None = None  # plain-language reason a person should check this value
 
 
 class Observation(BaseModel):
