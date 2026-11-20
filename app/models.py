@@ -79,6 +79,7 @@ class Transcript(BaseModel):
 class Claim(BaseModel):
     text: str
     fact_ids: list[str]
+    section: str = ""
 
 
 class Brief(BaseModel):
