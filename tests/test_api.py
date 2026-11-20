@@ -145,3 +145,19 @@ def test_ask_mode_and_unknown_matter(tmp_path):
     assert c.post(f"/api/matters/{mid}/ask", json={"question": "  "}).status_code == 422
     assert c.get("/api/mode").json()["mode"] == "live"
     assert c.get("/api/matters/m_nope").status_code == 404
+
+
+def test_sample_matter_loads_the_three_fictional_papers_and_says_so(tmp_path):
+    c, _ = make(tmp_path)
+    r = c.post("/api/sample-matter")
+    assert r.status_code == 200
+    m = r.json()
+    assert "sample" in m["title"].lower() and "fictional" in m["title"].lower()
+    assert sorted(d["doc_type"] for d in m["documents"]) == ["cheque", "demand_notice", "return_memo"]
+    again = c.post("/api/sample-matter").json()
+    assert again["id"] != m["id"]  # each demo run is its own matter, nothing is overwritten
+
+
+def test_mode_reports_the_servers_own_today_so_the_screen_and_the_engine_share_one_clock(tmp_path):
+    c, _ = make(tmp_path)
+    assert c.get("/api/mode").json()["today"] == Pipeline(Store(tmp_path / "x.db"), None, tmp_path).today().isoformat()

@@ -21,6 +21,7 @@ from .services.errors import ServiceError
 from .store import Store
 
 STATIC = Path(__file__).parent / "static"
+SAMPLES = Path(__file__).resolve().parent.parent / "samples"
 VOICE_LOCALES = {"en-IN": "English", "hi-IN": "Hindi", "pa-IN": "Punjabi"}
 
 
@@ -77,7 +78,7 @@ def create_app(pipeline: Pipeline, store: Store, data_dir: Path | str, mode: str
 
     @app.get("/api/mode")
     def get_mode():
-        return {"mode": mode, "recorded_at": recorded_at(), "deployment": deployment}
+        return {"mode": mode, "recorded_at": recorded_at(), "deployment": deployment, "today": pipeline.today().isoformat()}
 
     @app.get("/api/locales")
     def locales():
@@ -93,6 +94,15 @@ def create_app(pipeline: Pipeline, store: Store, data_dir: Path | str, mode: str
             out.append({"id": m.id, "title": m.title, "created_at": m.created_at, "documents": len(m.documents),
                         "approved_by": m.approved_by, "complaint": window_dict(w["complaint"])})
         return out
+
+    @app.post("/api/sample-matter")
+    def sample_matter():
+        """A demo matter from the fictional sample papers in /samples, so a first run needs no files of its own."""
+        m = store.create_matter("Sharma Steel Traders v. Kalra Fabricators (fictional sample)")
+        for doc_type, name in [(DocType.CHEQUE, "cheque.png"), (DocType.RETURN_MEMO, "return_memo.png"),
+                               (DocType.DEMAND_NOTICE, "demand_notice.png")]:
+            pipeline.add_document(m.id, doc_type, name, (SAMPLES / name).read_bytes())
+        return store.get_matter(m.id)
 
     @app.post("/api/matters")
     def new_matter(body: NewMatter):
