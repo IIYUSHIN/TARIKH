@@ -1,37 +1,27 @@
 {% extends "_layout.html" %}
-{% set title = "Contact" %}
-{% set nav = "" %}
-{% set desc = "Ask for a walkthrough of the Tarikh desk, or send feedback to the builder." %}
+{% set title = "Early access" %}{% set nav = "" %}
+{% set desc = "Request early access to Tarikh Desk, Recover or the API." %}
 {% block main %}
-<section class="band pagehead">
-  <div class="wrap">
-    <p class="eyebrow">Contact</p>
-    <h1 class="d2 rise">Talk to the builder.</h1>
-    <p class="t-lg rise d1s">Ask for a walkthrough, tell me what the desk gets wrong, or say what a real file needs that this one lacks.</p>
-  </div>
-</section>
-<section class="band section" style="padding-top:0">
-  <div class="wrap">
-    <div class="cols2">
-      <div>
-        <form class="form" id="contact-form" novalidate data-issues="{{ GITHUB }}/issues/new">
-          <div class="field"><label for="c-name">Your name</label><input id="c-name" name="name" type="text" autocomplete="name" data-required aria-describedby="c-name-err"><span class="err" id="c-name-err" role="alert"></span></div>
-          <div class="field"><label for="c-topic">What is this about</label>
-            <select id="c-topic" name="topic"><option>Walkthrough request</option><option>Something looks wrong</option><option>A feature a real file needs</option><option>Something else</option></select></div>
-          <div class="field"><label for="c-msg">Message</label><textarea id="c-msg" name="msg" data-required aria-describedby="c-msg-hint c-msg-err"></textarea><span class="hint" id="c-msg-hint">Do not include any real client’s details.</span><span class="err" id="c-msg-err" role="alert"></span></div>
-          <div><button class="btn solid" type="submit">Prepare my message</button></div>
-        </form>
-        <div class="form-ok" id="form-ok" tabindex="-1" hidden>
-          <h2 class="d4">Your message is ready.</h2>
-          <p class="t-lg" style="margin-top:12px">This site has no mail server, so nothing has been sent. Your message is drafted as a GitHub issue. Press Open on GitHub, then Submit new issue there. Issues are public.</p>
-          <p style="margin-top:24px"><a class="btn solid" id="form-link" href="{{ GITHUB }}/issues/new">Open on GitHub</a></p>
+<section class="band dark phead">
+  <div class="wrap g2" style="align-items:start">
+    <div><p class="kicker">Early access</p><h1 class="h-xl rise" style="margin-top:24px;max-width:10ch">Be one of the first <em>chambers.</em></h1>
+      <p class="lede rise d1" style="color:#B5B5AF">Tell us who you are and what your cheque work looks like. Early-access chambers and lenders shape what gets built next.</p>
+      <ul class="ruled-list" style="margin-top:40px;max-width:480px"><li><b>No sales calls.</b><span>A reply from the person building it.</span></li><li><b>No real client papers yet.</b><span>We start on samples, together.</span></li></ul></div>
+    <div>
+      <form class="stage light" id="contact-form" novalidate data-issues="{{ GITHUB }}/issues/new" style="display:grid;gap:18px">
+        <div class="field"><label for="c-name">Your name</label><input class="inp" id="c-name" autocomplete="name" data-required aria-describedby="c-name-err"><span class="err" id="c-name-err" role="alert"></span></div>
+        <div class="field"><label for="c-org">Chambers, firm or company <span class="hint">optional</span></label><input class="inp" id="c-org" autocomplete="organization"></div>
+        <div class="g2" style="gap:14px">
+          <div class="field"><label for="c-role">You are</label><select class="sel" id="c-role"><option>An advocate</option><option>A lender or NBFC</option><option>A business owner</option><option>A developer</option><option>Something else</option></select></div>
+          <div class="field"><label for="c-product">Interested in</label><select class="sel" id="c-product"><option>Tarikh Desk</option><option>Tarikh Recover</option><option>Tarikh API</option><option>All of it</option></select></div>
         </div>
-      </div>
-      <div class="prose">
-        <h2 style="margin-top:0">Where this stands</h2>
-        <p>Tarikh is a working prototype built for an internship. There is no sales team, no support desk and no promised reply time. Messages reach the builder through the public repository.</p>
-        <h2>Prefer to look first?</h2>
-        <p><a href="{{ root }}app/docket.html">Open the sample desk</a> or <a href="{{ root }}clocks.html">read how every date is counted</a>.</p>
+        <div class="field"><label for="c-msg">How many cheque matters do you handle, and what slows you down?</label><textarea class="inp" id="c-msg" data-required aria-describedby="c-msg-h c-msg-err"></textarea><span class="hint" id="c-msg-h">Please don’t include any real client’s details.</span><span class="err" id="c-msg-err" role="alert"></span></div>
+        <div><button class="btn red" type="submit">Prepare my request <span class="arr">→</span></button></div>
+      </form>
+      <div class="stage" id="form-ok" tabindex="-1" hidden style="background:#fff;color:var(--bk)">
+        <h2 class="h-m">Your request is ready.</h2>
+        <p style="margin-top:12px;color:var(--g700)">This site has no mail server, so nothing has been sent yet. Your request is drafted as a GitHub issue to the builder. Open it, then press <b>Submit new issue</b>. Issues are public.</p>
+        <p style="margin-top:22px"><a class="btn red" id="form-link" href="{{ GITHUB }}/issues/new">Open on GitHub <span class="arr">→</span></a></p>
       </div>
     </div>
   </div>

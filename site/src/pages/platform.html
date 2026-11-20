@@ -1,0 +1,93 @@
+{% extends "_layout.html" %}
+{% import "partials/ui.html" as U %}
+{% set title = "Platform" %}{% set nav = "platform" %}
+{% set desc = "Eight capabilities on one rule engine: Read, Count, Draft, Diary, Settle, Speak, Ask, and Vault and audit." %}
+{% block main %}
+{{ U.phead('Platform', 'One engine under every product.', 'Desk, Recover, Check and the API share the same eight capabilities. Each does one job, and each knows what it is not allowed to do.', True) }}
+<section class="band dark" style="padding-bottom:var(--sec)">
+  <div class="wrap">
+    <div class="g4">
+      {% for id, n, name, line in [('read','01','Read','Papers become facts with a place on the page.'),('count','02','Count','Every statutory window, by tested rule.'),('draft','03','Draft','Court-ready papers from traced facts.'),('diary','04','Diary','Hearings and deadlines on one calendar.'),('settle','05','Settle','Compounding costs and instalments.'),('speak','06','Speak','The client’s account in their language.'),('ask','07','Ask','Questions answered from one file only.'),('vault','08','Vault and audit','Every paper kept, every approval logged.')] %}
+      <a class="card" href="#{{ id }}" style="min-height:190px"><span class="cap-n">{{ n }}</span><b class="h-s">{{ name }}</b><p>{{ line }}</p><span class="more">Details</span></a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="band sec" id="read"><div class="wrap cap">
+  <div class="cap-copy"><p class="cap-n">01 · Read</p><h2 class="h-l">Paper in, facts out.</h2>
+  <p class="lede">Tarikh reads cheques, return memos, demand notices, postal receipts and tracking printouts. It returns each value with the box it was read from and a confidence score. Low-confidence values are flagged for a person.</p>
+  <ul class="ticks"><li><span><b>Return reasons understood.</b> <span>“Funds insufficient”, “payment stopped”, “account closed”, “signature differs”, mapped to how each is usually treated.</span></span></li><li><span><b>Missing dates asked for.</b> <span>The day the memo reached the client is on no paper, so Tarikh asks.</span></span></li><li><span><b>Duplicates caught.</b> <span>The same cheque uploaded twice opens one matter, not two.</span></span></li></ul></div>
+  {{ U.read_stage(root) }}
+</div></section>
+
+<section class="band grey sec" id="count"><div class="wrap cap flip">
+  <div class="cap-copy"><p class="cap-n">02 · Count</p><h2 class="h-l">Four windows, one rule engine.</h2>
+  <p class="lede">Cheque validity, the 30-day notice, the drawer’s 15 days and the one-month complaint window are counted in plain, tested code. Where the law leaves room for argument, Tarikh shows both readings.</p>
+  <ul class="ticks"><li><span><b>The legal last day and the cautious one,</b> <span>side by side.</span></span></li><li><span><b>Weekends flagged.</b> <span>Court holidays and delay are left to the advocate, and said so.</span></span></li><li><span><b>A public rule register.</b> <span>Every rule, its source and how settled it is.</span></span></li></ul>
+  <div class="acts" style="margin-top:28px"><a class="tlink" href="{{ root }}law.html">Read the rule register</a></div></div>
+  <div class="stage" style="display:flex;justify-content:center;gap:28px;flex-wrap:wrap;padding:48px 24px;background:#fff">
+    <div class="pad" style="--lw:200px" data-pad='[["2026-11-04","Notice due","met · 30 Oct"]]'></div>
+    <div class="pad" style="--lw:200px;margin-top:30px" data-pad='[["2026-12-19","Last day to file","29 days"]]'></div>
+  </div>
+</div></section>
+
+<section class="band sec" id="draft"><div class="wrap cap">
+  <div class="cap-copy"><p class="cap-n">03 · Draft</p><h2 class="h-l">Drafts you can check line by line.</h2>
+  <p class="lede">A drafting model writes only from facts that trace to a paper or to the advocate’s own entry. Each fact in the draft carries its source. Anything else is removed before a person sees it.</p>
+  <ul class="ticks"><li><span><b>Demand notice</b> <span>under Section 138(b).</span></span></li><li><span><b>Complaint with synopsis,</b> <span>list of documents and the contacts affidavit.</span></span></li><li><span><b>Applications</b> <span>under Sections 143A and 147, and for condonation of delay.</span></span></li><li><span><b>Evidence affidavit</b> <span>under Section 145.</span></span></li></ul></div>
+  {{ U.doc_stage() }}
+</div></section>
+
+<section class="band dark sec" id="diary"><div class="wrap cap flip">
+  <div class="cap-copy"><p class="cap-n">04 · Diary</p><h2 class="h-l">The next tarikh, for every matter.</h2>
+  <p class="lede" style="color:#B5B5AF">Hearings, statutory deadlines and settlement instalments on one calendar. After each hearing, record what happened in a line. Tarikh counts adjournments and shows which matters are stalling.</p>
+  <ul class="ticks"><li><span><b>Black for hearings, red for deadlines.</b> <span>Sundays in red, as on the wall.</span></span></li><li><span><b>Cause-list import</b> <span>from the case number, planned with the eCourts services.</span></span></li></ul></div>
+  <div class="stage light" style=""><div data-mini-month="2026-11"></div></div>
+</div></section>
+
+<section class="band sec" id="settle"><div class="wrap cap">
+  <div class="cap-copy"><p class="cap-n">05 · Settle</p><h2 class="h-l">Settlement, priced and tracked.</h2>
+  <p class="lede">Compounding costs depend on the stage the case has reached. Tarikh prices a settlement at today’s stage, drafts the joint application and tracks each instalment against the hearing dates.</p></div>
+  <div class="stage">{{ U.settle(640000) }}</div>
+</div></section>
+
+<section class="band grey sec" id="speak"><div class="wrap cap flip">
+  <div class="cap-copy"><p class="cap-n">06 · Speak</p><h2 class="h-l">The client tells it in their own language.</h2>
+  <p class="lede">A client can speak in Hindi, Punjabi or English. Tarikh writes it down, masks names, numbers and addresses, and only then lets a model help turn it into a statement for the advocate.</p>
+  <ul class="ticks"><li><span><b>Personal details masked first.</b> <span>Before any drafting model reads the account.</span></span></li><li><span><b>The recording stays with the chambers.</b> <span>Only the text moves on.</span></span></li></ul></div>
+  <div class="stage" style="background:#fff">
+    <div class="list"><div class="lh">Client account · recorded 18 Nov<span class="tag">HINDI → ENGLISH</span></div>
+      <div style="padding:16px 14px;border-bottom:1px solid var(--line)"><p class="tiny" style="font-family:var(--mono)">HEARD</p><p class="deva" lang="hi" style="font-size:19px;line-height:1.6;margin-top:6px">उन्होंने अक्टूबर के आख़िर में फ़ोन किया और कहा कि पैसा दिवाली के बाद देंगे।</p></div>
+      <div style="padding:16px 14px;border-bottom:1px solid var(--line)"><p class="tiny" style="font-family:var(--mono)">WRITTEN</p><p style="margin-top:6px">He phoned at the end of October and said the money would be paid after Diwali.</p></div>
+      <div style="padding:16px 14px"><p class="tiny" style="font-family:var(--mono)">MASKED BEFORE DRAFTING</p><p style="margin-top:6px"><span class="fx calc">[PERSON]</span> phoned at the end of October from <span class="fx calc">[PHONE]</span> and said the money would be paid after Diwali.</p><p class="tiny" style="margin-top:10px">Not on any paper, so it cannot enter a brief as fact. It is kept as the client’s account.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="band sec" id="ask"><div class="wrap cap">
+  <div class="cap-copy"><p class="cap-n">07 · Ask</p><h2 class="h-l">Ask the file. Only the file.</h2>
+  <p class="lede">An assistant answers questions about one matter. It has two tools, both read-only: the matter’s facts and its counted dates. It cannot change a fact, count a date itself, open another matter or search the web.</p></div>
+  <div class="stage">
+    <div class="list">
+      <div style="padding:14px"><span class="tag">ADVOCATE</span><p style="margin-top:8px;font-weight:650">Can we still file in Kalra? And what if the court doesn’t sit on the last day?</p></div>
+      <div style="padding:10px 14px;border-top:1px dashed var(--line);font-family:var(--mono);font-size:12px;color:var(--mute)">→ get_matter_dates("KF-1042") · read-only</div>
+      <div style="padding:14px;border-top:1px solid var(--line)"><span class="tag" style="background:var(--bk);color:#fff">TARIKH</span><p style="margin-top:8px">Yes. The complaint window opened on 19 November and the last day by the rule is <b>19 December 2026</b>, a Saturday. Counting from the day payment fell due gives 18 December, a Friday, which leaves no room for argument. Whether the court sits on the 19th is for you to confirm.</p><p class="tiny" style="margin-top:8px">Dates from the rule engine · facts from the cheque, memo and notice</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="band dark sec" id="vault"><div class="wrap cap flip">
+  <div class="cap-copy"><p class="cap-n">08 · Vault and audit</p><h2 class="h-l">Every paper kept. Every approval signed.</h2>
+  <p class="lede" style="color:#B5B5AF">Originals are stored with the matter. Each approval records who, when and which version of the facts. The log cannot be edited from inside Tarikh.</p></div>
+  <div class="stage light" style="">
+    <div class="list"><div class="lh">KF-1042 · activity<span>append-only</span></div>
+      <div class="row"><div><b>Complaint with synopsis approved</b><span>Adv. S. Grewal · facts v4</span></div><span class="tag">20 Nov 10:42</span></div>
+      <div class="row"><div><b>Notice delivery date entered</b><span>Clerk · from India Post tracking</span></div><span class="tag">19 Nov 17:05</span></div>
+      <div class="row"><div><b>Sentence removed from draft</b><span>No paper supports “admitted the debt on a call”</span></div><span class="tag">19 Nov 16:58</span></div>
+      <div class="row"><div><b>Return memo read</b><span>6 fields · lowest confidence 0.91</span></div><span class="tag">06 Oct 11:20</span></div>
+    </div>
+  </div>
+</div></section>
+{{ U.close(root) }}
+{% endblock %}

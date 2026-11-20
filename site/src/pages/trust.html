@@ -1,43 +1,49 @@
 {% extends "_layout.html" %}
-{% set title = "Trust" %}
-{% set nav = "trust" %}
-{% set desc = "Six responsible-AI principles, written as things the Tarikh desk does and does not do." %}
+{% import "partials/ui.html" as U %}
+{% set title = "Trust and security" %}{% set nav = "trust" %}
+{% set desc = "How Tarikh uses AI, where data goes, how identity works, and what we will not claim." %}
 {% block main %}
-<section class="band pagehead">
-  <div class="wrap">
-    <p class="eyebrow">Trust</p>
-    <h1 class="d2 rise">Six principles, written as behaviour.</h1>
-    <p class="t-lg rise d1s">Microsoft’s responsible-AI principles are easy to agree with and easy to ignore. Here each one is a specific thing the desk does, and where in the product you can see it.</p>
+{{ U.phead('Trust', 'AI that reads. Rules that count. People who decide.', 'A cheque file holds names, account numbers and a client’s own words. Here is exactly what Tarikh does with them, which AI services it uses and for what, and what it will never do.', True) }}
+<section class="band dark" style="padding-bottom:var(--sec)">
+  <div class="wrap g2">
+    <div><h2 class="h-m" style="padding-bottom:16px;border-bottom:1.5px solid #fff">AI is used for</h2>
+      <ul class="ruled-list"><li><b>Reading papers</b><span>Cheques, memos and notices become fields with a place on the page.</span></li><li><b>Hearing the client</b><span>Speech in English, Hindi or Punjabi becomes text.</span></li><li><b>Masking personal details</b><span>Before any drafting model sees a client’s account.</span></li><li><b>Drafting from traced facts</b><span>Every fact in a draft links to its source, or it is removed.</span></li><li><b>Answering about one file</b><span>Through two read-only tools, and nothing else.</span></li></ul></div>
+    <div><h2 class="h-m" style="padding-bottom:16px;border-bottom:1.5px solid var(--red)">AI is never used for</h2>
+      <ul class="ruled-list"><li><b>Counting a date</b><span>A tested rule engine does it, the same way every time.</span></li><li><b>Deciding the law</b><span>Tarikh states its rules and its doubts. The advocate decides.</span></li><li><b>Filing or sending</b><span>Tarikh has no connection to any court and sends nothing on its own.</span></li><li><b>Predicting an outcome</b><span>No “chance of winning”, and none will be added.</span></li><li><b>Scoring a person</b><span>Parties appear as the papers name them. Nobody is rated.</span></li></ul></div>
   </div>
 </section>
-
-<section class="band section" style="padding-top:0">
+<section class="band sec">
   <div class="wrap">
-    <div class="principles">
-      <div class="principle"><span class="k">Fairness</span><h2 class="d4">It never scores a person.</h2><p>The desk does not rank, rate or predict anyone. Parties appear exactly as the papers name them. There is no model for “likely to win” and none will be added.</p><span class="where">Seen in: the brief, which holds only facts that trace to a paper.</span></div>
-      <div class="principle"><span class="k">Reliability and safety</span><h2 class="d4">Dates are counted, not generated.</h2><p>A rule engine with written tests counts every date, so the same papers always give the same answer. A model that is unsure is not allowed to guess a date.</p><span class="where">Seen in: the rule register, and the more than a hundred automated checks.</span></div>
-      <div class="principle"><span class="k">Privacy and security</span><h2 class="d4">Masked before a model reads it.</h2><p>The client’s account passes a privacy step that hides names, numbers and addresses before any model sees it. Access to Azure uses your sign-in, not a key stored in the code.</p><span class="where">Seen in: the security page.</span></div>
-      <div class="principle"><span class="k">Inclusiveness</span><h2 class="d4">The client speaks their own language.</h2><p>The account can be given in English, Hindi or Punjabi. Every control works by keyboard, the focus is always visible, and no meaning rests on colour alone: each colour is also written as words.</p><span class="where">Seen in: the long table, where every pin is a slider with a spoken date.</span></div>
-      <div class="principle"><span class="k">Transparency</span><h2 class="d4">Every fact shows its paper.</h2><p>Each field links to the page and the spot it was read from. Each date states the rule behind it, and the rule register states how sure the rule is. Where a fact is on no paper, the desk says so.</p><span class="where">Seen in: the trace step, and every footnote in the brief.</span></div>
-      <div class="principle"><span class="k">Accountability</span><h2 class="d4">A named person approves.</h2><p>A brief stays a draft until an advocate types their name and confirms they checked it. The approval is written to an audit log. The desk files nothing and sends nothing.</p><span class="where">Seen in: the approval box on the brief.</span></div>
+    <p class="kicker">Where data goes</p>
+    <h2 class="h-l" style="margin-top:22px;max-width:15ch">Five steps, and what crosses each one.</h2>
+    <ol class="rail" style="grid-template-columns:repeat(5,minmax(0,1fr))">
+      <li><span class="st">1</span><h3>Upload</h3><p>Papers and recordings are stored with the matter, in the account’s own storage.</p></li>
+      <li><span class="st">2</span><h3>Read</h3><p>Page images go to Azure Content Understanding and come back as fields.</p></li>
+      <li><span class="st">3</span><h3>Hear</h3><p>Audio goes to Azure Speech for text. The recording stays with the chambers.</p></li>
+      <li class="hot"><span class="st">4</span><h3>Mask</h3><p>Azure AI Language finds names, numbers and addresses and masks them.</p></li>
+      <li><span class="st">5</span><h3>Draft</h3><p>Only masked text and traced facts reach the Azure AI Foundry model.</p></li>
+    </ol>
+  </div>
+</section>
+<section class="band grey sec">
+  <div class="wrap g2">
+    <div class="prose">
+      <h2 style="margin-top:0">Identity</h2>
+      <p>Tarikh signs in to Azure with Microsoft Entra ID through the standard credential chain. There is no API key in the code, the repository or a settings file.</p>
+      <h2>Least access for the assistant</h2>
+      <p>The question-answering agent runs on Azure AI Foundry Agent Service with two read-only tools scoped to one matter. It has no tool to write, send, browse or open another matter.</p>
+      <h2>Approval and audit</h2>
+      <p>A draft leaves draft only when a named advocate approves it. The approval records who, when and which version of the facts. The log is append-only.</p>
+    </div>
+    <div class="prose">
+      <h2 style="margin-top:0">This website</h2>
+      <p>No cookies, no analytics, no advertising and no third-party scripts or fonts. Tarikh Check runs in your browser and sends nothing.</p>
+      <h2>Responsible AI, in practice</h2>
+      <ul><li><b>Fairness:</b> no scoring or ranking of people.</li><li><b>Reliability:</b> dates from tested rules, not models.</li><li><b>Privacy:</b> masking before drafting.</li><li><b>Inclusiveness:</b> three spoken languages; every control works by keyboard; no meaning by colour alone.</li><li><b>Transparency:</b> every fact shows its source; every rule shows its standing.</li><li><b>Accountability:</b> a named person approves; the log keeps it.</li></ul>
+      <h2>What we will not claim</h2>
+      <p>Tarikh is a prototype. It has not had an independent security review, has no customers yet, and should not be used with real client papers. When that changes, this page will say so.</p>
     </div>
   </div>
 </section>
-
-<section class="band deep section">
-  <div class="wrap">
-    <div class="cols2">
-      <div>
-        <p class="eyebrow">What we will not claim</p>
-        <h2 class="d3" style="margin:16px 0 24px">Limits, stated plainly.</h2>
-      </div>
-      <ul class="ruled">
-        <li><b>It is not legal advice.</b><span>It is a tool that organises dates and papers for a qualified advocate.</span></li>
-        <li><b>It does not know every court’s calendar.</b><span>Holidays and condonation of delay are left to the advocate.</span></li>
-        <li><b>Its legal sources are secondary for now.</b><span>Primary texts are still to be checked and cited. The clocks page says which rules stand on what.</span></li>
-        <li><b>It is a student-built prototype.</b><span>There are no customers, no testimonials and no usage figures on this site because there are none to show.</span></li>
-      </ul>
-    </div>
-  </div>
-</section>
+{{ U.close(root) }}
 {% endblock %}

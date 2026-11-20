@@ -1,17 +1,13 @@
 {% extends "_layout.html" %}
 {% set title = "Page not found" %}
-{% set nav = "" %}
 {% block main %}
-<section class="band hero" style="padding-bottom:var(--section)">
+<section class="band dark sec close-band">
   <div class="wrap">
-    <p class="eyebrow">Error 404</p>
-    <h1 class="d1" style="margin-top:16px">No such date.</h1>
-    <p class="t-lg" style="max-width:520px;margin-top:32px">That page is not here, or it has moved. Try one of these.</p>
-    <div class="hero-actions" style="margin-top:32px">
-      <a class="btn solid" href="{{ root }}index.html">Go to the start</a>
-      <a class="btn" href="{{ root }}app/docket.html">Open the desk</a>
-      <a class="btn" href="{{ root }}clocks.html">How the clocks are counted</a>
-    </div>
+    <p class="kicker">Error 404</p>
+    <h1 class="h-xl" style="margin-top:22px">Adjourned. This page has no date.</h1>
+    <p class="lede" style="margin-top:24px;color:#B5B5AF">It isn’t here, or it has moved.</p>
+    <div class="acts" style="margin-top:36px"><a class="btn red" href="{{ root }}index.html">Back to the start</a><a class="btn" href="{{ root }}check.html">Check a cheque</a><a class="btn" href="{{ root }}app/index.html">Open the demo</a></div>
   </div>
+  <div class="pad" data-pad='[["2026-11-20","Next date","not fixed"]]'></div>
 </section>
 {% endblock %}

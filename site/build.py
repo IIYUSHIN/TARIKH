@@ -8,18 +8,18 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 HERE = Path(__file__).parent
 SRC, DIST = HERE / "src", HERE / "dist"
 
-NAV = [
-    ("desk", "The desk", "desk.html"),
-    ("clocks", "The clocks", "clocks.html"),
-    ("trust", "Trust", "trust.html"),
-    ("security", "Security", "security.html"),
-    ("docs", "How it is built", "docs.html"),
-    ("about", "About", "about.html"),
+PRODUCTS = [
+    ("D", "Tarikh Desk", "For advocates and chambers. Every matter, date and draft in one place.", "desk.html"),
+    ("R", "Tarikh Recover", "For lenders and businesses. Hundreds of bounced cheques, one portfolio.", "recover.html"),
+    ("C", "Tarikh Check", "Free for anyone. Is your cheque case still in time?", "check.html"),
+    ("A", "Tarikh API", "The deadline engine and paper reading, inside your own systems.", "api.html"),
 ]
+NAV = [("platform", "Platform", "platform.html"), ("law", "The law", "law.html"), ("pricing", "Pricing", "pricing.html"), ("trust", "Trust", "trust.html"), ("company", "Company", "company.html")]
 FOOT = {
-    "Product": [("The desk", "desk.html"), ("How the clocks are counted", "clocks.html"), ("Open the sample matter", "app/docket.html")],
-    "Responsible use": [("Trust", "trust.html"), ("Security and privacy", "security.html"), ("How it is built", "docs.html")],
-    "Company": [("About", "about.html"), ("Contact", "contact.html"), ("Privacy", "privacy.html"), ("Terms", "terms.html")],
+    "Products": [("Tarikh Desk", "desk.html"), ("Tarikh Recover", "recover.html"), ("Tarikh Check", "check.html"), ("Tarikh API", "api.html"), ("Open the demo", "app/index.html")],
+    "Platform": [("Read", "platform.html#read"), ("Count", "platform.html#count"), ("Draft", "platform.html#draft"), ("Diary", "platform.html#diary"), ("Settle", "platform.html#settle")],
+    "Resources": [("The law, counted", "law.html"), ("The 2025 Supreme Court directions", "law.html#directions"), ("Compounding costs", "law.html#compounding"), ("Pricing", "pricing.html")],
+    "Company": [("About", "company.html"), ("Trust and security", "trust.html"), ("Early access", "contact.html"), ("Privacy", "privacy.html"), ("Terms", "terms.html")],
 }
 GITHUB = "https://github.com/IIYUSHIN/TARIKH"
 
@@ -38,7 +38,7 @@ def build():
         out = DIST / rel
         out.parent.mkdir(parents=True, exist_ok=True)
         tpl = env.get_template("pages/" + rel.as_posix())
-        out.write_text(tpl.render(root=root, NAV=NAV, FOOT=FOOT, GITHUB=GITHUB, page=rel.as_posix()), encoding="utf-8")
+        out.write_text(tpl.render(root=root, NAV=NAV, FOOT=FOOT, PRODUCTS=PRODUCTS, GITHUB=GITHUB, page=rel.as_posix()), encoding="utf-8")
         count += 1
     print(f"built {count} pages -> {DIST}")
 

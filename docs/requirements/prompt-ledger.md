@@ -104,3 +104,16 @@ Status words: **done**, **partly**, **open**, **later** (owner said it comes lat
 
 - Startup-website instruction: done as a static site in `site/` (11 pages + docket, matter, brief screens in demo mode). Built by `site/build.py`; 11 engine tests and 11 browser tests pass. Published as an artifact and pushed to `main`.
 - Still open: Azure pipeline slices, app wired to the service, report from the finished app, viva pack, DEVELOPER.md, final zip, primary-source legal check, decision 0003 update (region deferred by owner).
+
+## Message 10 (20 Nov 2026, 19:17 IST)
+
+"I don't like design, it's all colour... only focused on the Azure... I thought real services I provide and multi features... Ultimate v2.0... finished work... grand planning... current market, internet search, samples."
+
+Read as: v1 was a monotone beige brochure for one feature with Azure in the headline. Build v2 as a real company: several products, real services, a working multi-feature app, a bold distinct identity, grounded in current market facts.
+
+Done (see docs/site/v2-brief.md):
+- Researched pendency (43,05,932 pending, Lok Sabha Dec 2024; 6,50,283 in Delhi, Sep 2025) and the Supreme Court's Sanjabij Tari directions (25 Sep 2025, in force 1 Nov 2025). Built features around them: synopsis, contacts affidavit, compounding cost by stage, stage dashboards.
+- Four products: Desk (advocates), Recover (lenders), Check (free public tool), API. Eight capabilities on one engine.
+- New identity: tear-off wall calendar; black, white and calendar red; Schibsted Grotesk, Anton, JetBrains Mono, Tiro Devanagari Hindi.
+- 14 site pages plus a 6-screen demo app (Today, Matters, Matter, Diary, Portfolio, Drafts) with command palette, date entry, bulk allocation and approval gate. Azure moved to Trust and the API, not the headline.
+- 16 browser tests, 11 engine tests, 109 Python tests pass. v1 kept as git tag site-v1 (local).

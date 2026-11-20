@@ -1,21 +1,36 @@
 {% extends "_layout.html" %}
-{% block header %}
-<header class="apphdr band">
-  <div class="wrap">
-    <a class="mark" href="{{ root }}index.html" aria-label="Tarikh, home"><b>Tarikh</b><span lang="hi">तारीख़</span></a>
-    <nav class="nav" aria-label="Desk">
-      <a href="{{ root }}app/docket.html"{% if nav == 'docket' %} aria-current="page"{% endif %}>Docket</a>
-      <a href="{{ root }}app/matter.html"{% if nav == 'matter' %} aria-current="page"{% endif %}>Matter</a>
-      <a href="{{ root }}app/brief.html"{% if nav == 'brief' %} aria-current="page"{% endif %}>Brief</a>
-      <a href="{{ root }}index.html">Back to the site</a>
-    </nav>
-    <span class="tag-sample">Sample desk · fictional matters</span>
+{% block bodyclass %}app-body{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block main %}
+<div class="app" id="app" data-page="{{ appage }}">
+  <aside class="side" aria-label="Desk navigation">
+    <a class="brand" href="{{ root }}index.html" aria-label="Tarikh website"><span class="lf" aria-hidden="true"></span><b>Tarikh</b></a>
+    <div class="org"><b>Grewal &amp; Associates</b><span>Sample chambers · Chandigarh</span></div>
+    {% for key, label, href in [('today','Today','index.html'),('matters','Matters','matters.html'),('diary','Diary','diary.html'),('drafts','Drafts','drafts.html')] %}
+    <a class="it" href="{{ href }}"{% if appage == key %} aria-current="page"{% endif %}>{{ label }}<em data-count-for="{{ key }}"></em></a>
+    {% endfor %}
+    <p class="grp">Recover</p>
+    <a class="it" href="portfolio.html"{% if appage == 'portfolio' %} aria-current="page"{% endif %}>Portfolio<em>64</em></a>
+    <p class="grp">Tools</p>
+    <a class="it" href="{{ root }}check.html">Check a cheque</a>
+    <a class="it" href="{{ root }}law.html">Rule register</a>
+    <div class="foot">Demo with fictional matters, dated 20 November 2026. Nothing is uploaded, saved or sent. <a href="{{ root }}index.html">Back to the website</a></div>
+  </aside>
+  <div>
+    <div class="top">
+      <button class="app-menu" type="button" aria-expanded="false">Menu</button>
+      <p class="crumb"><b>{{ crumb }}</b></p>
+      <span class="sp"></span>
+      <button class="search" type="button" id="open-palette" aria-haspopup="dialog"><span aria-hidden="true">⌕</span><span class="lbl">Search matters, people, dates</span><kbd>Ctrl K</kbd></button>
+      <span class="demo-flag">Demo</span>
+    </div>
+    <div class="content" id="content">{% block app %}{% endblock %}</div>
   </div>
-</header>
+</div>
+<dialog class="palette" id="palette" aria-label="Search">
+  <input type="text" id="palette-q" placeholder="Type a party, a matter number or a page" aria-label="Search" autocomplete="off">
+  <ul id="palette-list" role="listbox"></ul>
+</dialog>
 {% endblock %}
-{% block footer %}
-<footer class="ftr band"><div class="wrap"><div class="ftr-end" style="margin-top:0;border-top:0;padding-top:0">
-  <span>Demo mode: nothing is uploaded, saved or sent. Dates are counted in your browser by the same rules as the service. Not legal advice.</span>
-  <span><a class="link" href="{{ root }}clocks.html">How the clocks are counted</a></span>
-</div></div></footer>
-{% endblock %}
+{% block scripts %}<script src="{{ root }}assets/app.js"></script>{% endblock %}

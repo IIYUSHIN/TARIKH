@@ -1,0 +1,80 @@
+{% macro close(root, title='Your next tarikh should never be a surprise.', sub='Start with the free checker, or walk through the full desk with sample matters.') %}
+<section class="band dark sec close-band" aria-labelledby="close-h">
+  <div class="wrap">
+    <p class="kicker">Get started</p>
+    <h2 class="h-xl" id="close-h" style="margin-top:22px">{{ title }}</h2>
+    <p class="lede" style="margin-top:24px;color:#B5B5AF">{{ sub }}</p>
+    <div class="acts"><a class="btn red" href="{{ root }}check.html">Check a cheque, free <span class="arr">→</span></a><a class="btn" href="{{ root }}app/index.html">Open the demo</a><a class="btn" href="{{ root }}contact.html">Request early access</a></div>
+  </div>
+  <div class="pad" data-pad='[["2026-12-19","Last day to file","KF-1042"],["2026-11-24","Hearing","BT-0611"],["2026-12-02","Notice due","RM-1121"]]' data-auto></div>
+</section>
+{% endmacro %}
+
+{% macro phead(kicker, title, lede, dark=False, acts='') %}
+<section class="band{% if dark %} dark{% endif %} phead">
+  <div class="wrap">
+    <p class="kicker">{{ kicker }}</p>
+    <h1 class="h-xl rise">{{ title }}</h1>
+    {% if lede %}<p class="lede rise d1">{{ lede }}</p>{% endif %}
+    {% if acts %}<div class="acts rise d2">{{ acts }}</div>{% endif %}
+  </div>
+</section>
+{% endmacro %}
+
+{% macro settle(amount=485000) %}
+<div class="calc" data-settle>
+  <div style="display:flex;flex-direction:column;gap:18px">
+    <div class="field"><label for="st-amt">Cheque amount (₹)</label><input class="inp" id="st-amt" name="amount" inputmode="numeric" value="{{ amount }}"></div>
+    <fieldset class="seg" style="border:0;margin:0;padding:0"><legend class="field lab" style="font-size:13px;font-weight:700;margin-bottom:8px">When the accused pays</legend>
+      <label><input type="radio" name="stage" value="0" checked><span>Before defence evidence</span><em>0%</em></label>
+      <label><input type="radio" name="stage" value="5"><span>After defence evidence, before judgment</span><em>5%</em></label>
+      <label><input type="radio" name="stage" value="7.5"><span>In revision or appeal</span><em>7.5%</em></label>
+      <label><input type="radio" name="stage" value="10"><span>Before the Supreme Court</span><em>10%</em></label>
+    </fieldset>
+  </div>
+  <div class="out" aria-live="polite">
+    <div class="k">Compounding cost</div><div class="v red" data-o="cost">₹0</div>
+    <p data-o="note">Paid before defence evidence: compounding with no cost.</p>
+    <hr><div class="k">Cheque amount plus cost</div><div class="v" data-o="total" style="font-size:36px">₹0</div>
+    <p>Stages and percentages from <i>Sanjabij Tari v. Kishore S. Borcar</i>, Supreme Court, 25 September 2025. The court decides; this shows the arithmetic.</p>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro read_stage(root) %}
+<div class="stage">
+  <div class="paper" style="margin-top:22px">
+    <img src="{{ root }}assets/img/cheque.jpg" width="1200" height="533" alt="A fictional cheque from Kalra Fabricators for ₹4,85,000 dated 20 September 2026" loading="lazy">
+    <div class="box" style="left:67%;top:4%;width:31%;height:10%"><b>DATE · 0.98</b></div>
+    <div class="box" style="left:71%;top:36%;width:26%;height:11%"><b>AMOUNT · 0.99</b></div>
+    <div class="box" style="left:64%;top:68%;width:33%;height:22%"><b>DRAWER</b></div>
+  </div>
+  <table class="fields" style="margin-top:22px"><tbody>
+    <tr><td>Date on the cheque</td><td class="v">20 Sep 2026</td><td class="s"><span class="tag">cheque · top right</span></td></tr>
+    <tr><td>Amount</td><td class="v">₹4,85,000</td><td class="s"><span class="tag">cheque · amount box</span></td></tr>
+    <tr><td>Returned, and why</td><td class="v">3 Oct 2026 · funds insufficient</td><td class="s"><span class="tag">return memo · reason</span></td></tr>
+    <tr><td>Memo reached the client</td><td class="v">5 Oct 2026</td><td class="s"><span class="chip warn plain">on no paper · asked</span></td></tr>
+  </tbody></table>
+</div>
+{% endmacro %}
+
+{% macro doc_stage() %}
+<div class="stage">
+  <div class="doc">
+    <h4>Synopsis</h4>
+    <p class="sub">Complaint under Section 138, Negotiable Instruments Act, 1881 · placed after the index</p>
+    <table class="syn"><tbody>
+      <tr><td>Complainant</td><td><span class="fx">Sharma Steel Traders</span></td></tr>
+      <tr><td>Accused</td><td><span class="fx">Kalra Fabricators</span></td></tr>
+      <tr><td>Cheque number, date and amount</td><td><span class="fx">004718</span>, <span class="fx">20.09.2026</span>, <span class="fx">₹4,85,000</span></td></tr>
+      <tr><td>Date of return and reason</td><td><span class="fx">03.10.2026</span>, <span class="fx">funds insufficient</span></td></tr>
+      <tr><td>Return memo received</td><td><span class="fx entry">05.10.2026</span></td></tr>
+      <tr><td>Demand notice sent, and served</td><td><span class="fx">30.10.2026</span>, <span class="fx entry">03.11.2026</span></td></tr>
+      <tr><td>Cause of action</td><td><span class="fx calc">19.11.2026</span></td></tr>
+      <tr><td>Accused’s email and mobile</td><td><span class="fx entry">accounts@kalra-fab.example</span>, on affidavit</td></tr>
+    </tbody></table>
+    <p class="sig tiny">Draft for the advocate’s approval</p>
+  </div>
+  <div class="legend"><span><span class="fx">red</span> read from a paper</span><span><span class="fx entry">amber</span> entered by the advocate</span><span><span class="fx calc">grey</span> counted by rule</span></div>
+</div>
+{% endmacro %}

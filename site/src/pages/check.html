@@ -1,0 +1,57 @@
+{% extends "_layout.html" %}
+{% import "partials/ui.html" as U %}
+{% set title = "Tarikh Check: is your cheque case still in time?" %}{% set nav = "check" %}
+{% set desc = "Free. Enter the dates from your bounced cheque and see the last day to send the notice and to file the complaint." %}
+{% block main %}
+<section class="band dark phead" style="padding-bottom:var(--s,48px)">
+  <div class="wrap">
+    <p class="kicker">Tarikh Check · free, no sign-up</p>
+    <h1 class="h-xl rise" style="margin-top:24px;max-width:12ch">Your cheque bounced. <em>What now?</em></h1>
+    <p class="lede rise d1" style="color:#B5B5AF">Enter the dates you know. Tarikh counts the deadlines that decide whether you can file a case, and tells you what to do this week. Nothing you type leaves this page.</p>
+  </div>
+</section>
+<section class="band dark" style="padding-bottom:var(--sec)">
+  <div class="wrap g2" style="align-items:start">
+    <form id="check-form" class="stage light" style="display:grid;gap:18px" novalidate>
+      <div class="field"><label for="ck-memo">The day the bank’s return memo reached you <span class="red">required</span></label><input class="inp" type="date" id="ck-memo" aria-describedby="ck-memo-h ck-err"><span class="hint" id="ck-memo-h">Not the date printed on the memo. The day you or your bank received it.</span></div>
+      <div class="g2" style="gap:14px">
+        <div class="field"><label for="ck-cheque">Date written on the cheque</label><input class="inp" type="date" id="ck-cheque"></div>
+        <div class="field"><label for="ck-presented">Date it was deposited</label><input class="inp" type="date" id="ck-presented"></div>
+        <div class="field"><label for="ck-sent">Notice sent on</label><input class="inp" type="date" id="ck-sent"><span class="hint">Leave empty if not sent yet.</span></div>
+        <div class="field"><label for="ck-delivered">Notice received by the drawer on</label><input class="inp" type="date" id="ck-delivered"><span class="hint">From postal tracking.</span></div>
+      </div>
+      <div class="field"><label for="ck-today">Count as of</label><input class="inp" type="date" id="ck-today" value="2026-11-20"></div>
+      <p class="err" id="ck-err" role="alert" style="color:var(--red);font-weight:650;font-size:14px"></p>
+      <div class="acts"><button class="btn red" type="submit">Count my dates <span class="arr">→</span></button><button class="btn" type="button" id="ck-sample" style="color:var(--bk)">Try a sample</button></div>
+    </form>
+    <div id="check-result" tabindex="-1" hidden aria-live="polite" style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap">
+        <div data-r="leaf" style="--lw:200px"></div>
+        <div style="flex:1;min-width:240px"><p class="kicker">Your answer</p><p class="h-m" data-r="lead" style="margin-top:14px"></p></div>
+      </div>
+      <ol data-r="steps" class="ruled-list" style="display:flex;flex-direction:column"></ol>
+      <table class="fields"><tbody data-r="table"></tbody></table>
+      <p class="small">This is a count by rule, not legal advice. An advocate should check it against your papers and the court’s calendar. <a class="tlink" href="{{ root }}law.html">How every date is counted</a></p>
+    </div>
+  </div>
+</section>
+<section class="band sec">
+  <div class="wrap">
+    <p class="kicker">What happens in a cheque case</p>
+    <h2 class="h-l" style="margin-top:22px;max-width:15ch">Four deadlines, one after another.</h2>
+    <div class="g4" style="margin-top:56px">
+      <div class="cell"><span class="num" style="font-size:96px">3</span><b class="h-s">months</b><p>to deposit the cheque, from the date written on it.</p></div>
+      <div class="cell"><span class="num" style="font-size:96px">30</span><b class="h-s">days</b><p>to send a written demand, from the day the memo reached you.</p></div>
+      <div class="cell"><span class="num" style="font-size:96px">15</span><b class="h-s">days</b><p>for the drawer to pay, from the day after they receive it.</p></div>
+      <div class="cell"><span class="num red" style="font-size:96px">1</span><b class="h-s">month</b><p>to file the complaint, from the day after those 15 days end.</p></div>
+    </div>
+    <div class="faq" style="margin-top:72px;max-width:900px">
+      <details><summary>Do I need an advocate to send the notice?</summary><p>The law does not say a notice must come from an advocate, but most are sent through one, and a badly drafted notice can weaken the case. Tarikh Check tells you the deadline; an advocate can make sure the notice itself holds up.</p></details>
+      <details><summary>What if the drawer pays part of the amount?</summary><p>Part payment can change what you can claim. Keep a record of every payment, and tell your advocate before the notice goes out.</p></details>
+      <details><summary>The deadline has passed. Is it over?</summary><p>Not always. A court can accept a late complaint if there was sufficient cause for the delay. A cheque that is still within its three months may also be deposited again. Both need an advocate’s judgment.</p></details>
+      <details><summary>Does Tarikh keep my dates?</summary><p>No. The count runs in your browser. Nothing you enter on this page is sent anywhere.</p></details>
+    </div>
+  </div>
+</section>
+{{ U.close(root, 'Need someone to take it from here?', 'Advocates use Tarikh Desk to run the case. Lenders use Recover for hundreds of them.') }}
+{% endblock %}

@@ -5,27 +5,42 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{% if title %}{{ title }} · {% endif %}Tarikh</title>
-<meta name="description" content="{{ desc | default('Every date in a bounced-cheque case, counted and traced. A working prototype built on Microsoft Azure AI.') }}">
-<meta name="theme-color" content="#F4EFE5">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2315120D'/%3E%3Ctext x='16' y='24' text-anchor='middle' font-family='serif' font-style='italic' font-size='24' fill='%23F4EFE5'%3ET%3C/text%3E%3C/svg%3E">
-<link rel="preload" href="{{ root }}assets/fonts/bodoni-moda-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{{ root }}assets/fonts/instrument-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<title>{% if title %}{{ title }} · Tarikh{% else %}Tarikh · The litigation platform for cheque-bounce cases{% endif %}</title>
+<meta name="description" content="{{ desc | default('Tarikh reads the papers, counts every statutory deadline, drafts court-ready documents and tracks every hearing in Section 138 cheque-bounce cases. For one cheque or ten thousand.') }}">
+<meta name="theme-color" content="#0B0B0B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='2' width='24' height='28' rx='3' fill='%23fff'/%3E%3Crect x='4' y='2' width='24' height='8' rx='3' fill='%23E2321B'/%3E%3Ctext x='16' y='27' text-anchor='middle' font-family='Impact,sans-serif' font-size='15' fill='%230B0B0B'%3ET%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="{{ root }}assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ root }}assets/fonts/anton-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ root }}assets/tarikh.css">
+{% block head %}{% endblock %}
 </head>
-<body>
+<body class="{% block bodyclass %}{% endblock %}">
 <a class="skip" href="#main">Skip to content</a>
 {% block header %}
-<header class="hdr band">
+<header class="hdr">
   <div class="wrap">
-    <a class="mark" href="{{ root }}index.html" aria-label="Tarikh, home"><b>Tarikh</b><span lang="hi">तारीख़</span></a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
-    <nav class="nav" id="site-nav" aria-label="Main">
+    <a class="brand" href="{{ root }}index.html" aria-label="Tarikh home"><span class="lf" aria-hidden="true"></span><b>Tarikh</b><span lang="hi" aria-hidden="true">तारीख़</span></a>
+    <nav class="mainnav" id="mainnav" aria-label="Main">
+      <div class="dd{% if nav in ['desk','recover','check','api'] %} cur{% endif %}">
+        <button type="button" aria-expanded="false" aria-controls="dd-products">Products <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></button>
+        <div class="ddp" id="dd-products">
+          {% for ic, name, blurb, href in PRODUCTS %}
+          <a href="{{ root }}{{ href }}"><span class="ic" aria-hidden="true">{{ ic }}</span><span><b>{{ name }}</b><span>{{ blurb }}</span></span></a>
+          {% endfor %}
+          <div class="foot"><span>Every product runs on the same rule engine.</span><a href="{{ root }}app/index.html">Open the live demo →</a></div>
+        </div>
+      </div>
       {% for key, label, href in NAV %}
       <a href="{{ root }}{{ href }}"{% if nav == key %} aria-current="page"{% endif %}>{{ label }}</a>
       {% endfor %}
-      <a class="btn sm solid" href="{{ root }}app/docket.html">Open the desk</a>
+      <a class="m-only" href="{{ root }}check.html">Check a cheque, free</a>
+      <a class="m-only" href="{{ root }}app/index.html">Open the demo</a>
     </nav>
+    <div class="hdr-r">
+      <a class="signin" href="{{ root }}app/index.html">Open the demo</a>
+      <a class="btn red sm" href="{{ root }}check.html">Check a cheque, free</a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainnav">Menu</button>
+    </div>
   </div>
 </header>
 {% endblock %}
@@ -33,31 +48,28 @@
 {% block main %}{% endblock %}
 </main>
 {% block footer %}
-<footer class="ftr band">
+<footer class="ftr">
   <div class="wrap">
     <div class="ftr-grid">
       <div>
-        <a class="mark" href="{{ root }}index.html" aria-label="Tarikh, home"><b>Tarikh</b><span lang="hi">तारीख़</span></a>
-        <p class="about">Every date in a bounced-cheque case, counted and traced. For advocates handling Section 138 complaints in India.</p>
+        <a class="brand" href="{{ root }}index.html" aria-label="Tarikh home"><span class="lf" aria-hidden="true"></span><b>Tarikh</b></a>
+        <p class="about">The litigation platform for cheque-bounce cases in India. Built in Chandigarh.</p>
       </div>
       {% for head, links in FOOT.items() %}
-      <div>
-        <h2>{{ head }}</h2>
-        <ul>
-          {% for label, href in links %}<li><a href="{{ root }}{{ href }}">{{ label }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
+      <div><h2>{{ head }}</h2><ul>{% for label, href in links %}<li><a href="{{ root }}{{ href }}">{{ label }}</a></li>{% endfor %}</ul></div>
       {% endfor %}
     </div>
+    <div class="ftr-word" aria-hidden="true">Tarikh<span lang="hi">तारीख़ पे तारीख़, नहीं।</span></div>
     <div class="ftr-end">
-      <span>A working prototype built on Microsoft Azure AI. Not legal advice. All sample papers are fictional.</span>
-      <span><a class="link" href="{{ GITHUB }}">Source on GitHub</a></span>
+      <span>Tarikh is a working prototype. It is not a law firm and does not give legal advice. Every party in the demo is fictional.</span>
+      <span><a href="{{ GITHUB }}">Source on GitHub</a></span>
     </div>
   </div>
 </footer>
 {% endblock %}
 <script src="{{ root }}assets/engine.js"></script>
-<script src="{{ root }}assets/tarikh.js"></script>
+<script src="{{ root }}assets/data.js"></script>
+<script src="{{ root }}assets/site.js"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

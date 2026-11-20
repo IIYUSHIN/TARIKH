@@ -1,0 +1,76 @@
+{% extends "_layout.html" %}
+{% import "partials/ui.html" as U %}
+{% set title = "The law, counted" %}{% set nav = "law" %}
+{% set desc = "How Tarikh counts every Section 138 deadline, the 2025 Supreme Court directions in plain language, and compounding costs by stage." %}
+{% block main %}
+{{ U.phead('The law, counted', 'Every rule we count, and how sure we are.', 'Dates are arithmetic, so Tarikh counts them with written rules, not a model. This page lists each rule, where it comes from and how settled it is, and explains the Supreme Court’s 2025 directions in plain language.', False) }}
+<section class="band" style="padding-bottom:var(--sec)">
+  <div class="wrap">
+    <nav aria-label="On this page" class="acts"><a class="btn sm" href="#register">Rule register</a><a class="btn sm" href="#directions">2025 directions</a><a class="btn sm" href="#compounding">Compounding costs</a><a class="btn sm" href="#sections">Key sections</a></nav>
+  </div>
+</section>
+<section class="band grey sec" id="register">
+  <div class="wrap">
+    <p class="kicker">Rule register</p>
+    <h2 class="h-l" style="margin-top:22px">What the engine does, rule by rule.</h2>
+    <table class="tbl stack" style="margin-top:48px">
+      <thead><tr><th scope="col" style="width:20%">Rule</th><th scope="col">How it is counted</th><th scope="col" style="width:26%">Source</th><th scope="col" style="width:14%">Standing</th></tr></thead>
+      <tbody>
+        <tr><td>Cheque validity</td><td>Three months from the date on the cheque, ending the day before the same date three months later.</td><td class="m">RBI circular of 4 November 2011; banking convention for the last day</td><td><span class="chip warn">Last day to confirm</span></td></tr>
+        <tr><td>Demand notice</td><td>Within 30 days of the payee receiving the return memo. The memo’s printed date is not used.</td><td class="m">Section 138(b), NI Act 1881</td><td><span class="chip ok">Applied</span></td></tr>
+        <tr><td>Drawer’s time to pay</td><td>Fifteen days, starting the day after the drawer receives the notice.</td><td class="m">Section 138(c)</td><td><span class="chip ok">Applied</span></td></tr>
+        <tr><td>Complaint window</td><td>Opens the day after the 15 days end. One month long, leaving out the first day, so it ends on the same calendar date a month later.</td><td class="m">Section 142(1)(b); Section 9, General Clauses Act 1897; Econ Antri v. Rom Industries (SC, 2013)</td><td><span class="chip ok">Applied</span></td></tr>
+        <tr><td>The cautious date</td><td>One day earlier, counting from the day payment fell due. Shown beside the legal date.</td><td class="m">A conservative reading, not a ruling</td><td><span class="chip">Shown</span></td></tr>
+        <tr><td>Weekends and holidays</td><td>Saturdays and Sundays are flagged. Court holidays are not assumed.</td><td class="m">Depends on the court and the year</td><td><span class="chip">Advocate decides</span></td></tr>
+        <tr><td>Delay</td><td>When a window has closed, Tarikh says by how many days, and nothing more.</td><td class="m">Proviso to Section 142(1)(b)</td><td><span class="chip">Advocate decides</span></td></tr>
+        <tr><td>Short months</td><td>A period starting on the 29th to 31st ends on the last day of a shorter month.</td><td class="m">Common reading of calendar months</td><td><span class="chip warn">Open question</span></td></tr>
+      </tbody>
+    </table>
+    <p class="small" style="margin-top:28px;max-width:760px">Our sources are currently secondary: published summaries and commentary. Each rule is being checked against the primary text of the Act, the judgments and the RBI circular. Until that is complete, treat every date as a careful first count that an advocate confirms.</p>
+  </div>
+</section>
+<section class="band sec" id="directions">
+  <div class="wrap">
+    <div class="g2" style="align-items:end"><div><p class="kicker">Supreme Court · 25 September 2025</p><h2 class="h-l" style="margin-top:22px">The 2025 directions, in plain language.</h2></div>
+    <p class="lede">In <i>Sanjabij Tari v. Kishore S. Borcar</i> (2025 INSC 1158) the Court set out how trial courts must handle Section 138 cases. High Courts and district courts were told to put them in place by 1 November 2025.</p></div>
+    <div class="g3" style="margin-top:56px;row-gap:48px">
+      <div class="cell"><span class="n">SUMMONS</span><h3 class="h-s">Served by hand and electronically</h3><p>Besides the usual modes, the complainant may serve summons (dasti), and electronic service is used where rules allow. At filing, the complainant gives the accused’s email, mobile and messaging details on affidavit.</p></div>
+      <div class="cell"><span class="n">PAYMENT</span><h3 class="h-s">Pay early, online</h3><p>District courts are to set up QR or UPI payment. The summons tells the accused they can pay the cheque amount at the start, after which the case may be compounded or closed.</p></div>
+      <div class="cell"><span class="n">SYNOPSIS</span><h3 class="h-s">A one-page summary in every complaint</h3><p>A synopsis in a set format sits right after the index, before the complaint itself, with the cheque, dishonour and notice particulars.</p></div>
+      <div class="cell"><span class="n">PROCEDURE</span><h3 class="h-s">No summons before cognizance</h3><p>Trial courts need not issue notice to the accused before taking cognizance. Interim deposit under Section 143A can be ordered early.</p></div>
+      <div class="cell"><span class="n">COURTS</span><h3 class="h-s">Physical courts after service</h3><p>Once summons is served, cases move to physical courts. Evening courts are to get realistic money limits.</p></div>
+      <div class="cell"><span class="n">DASHBOARDS</span><h3 class="h-s">Pendency watched every month</h3><p>District judges in Delhi, Mumbai and Calcutta keep dashboards of pendency, disposal, settlement and average adjournments by stage.</p></div>
+    </div>
+  </div>
+</section>
+<section class="band dark sec" id="compounding">
+  <div class="wrap cap">
+    <div class="cap-copy"><p class="kicker">Compounding costs</p><h2 class="h-l" style="margin-top:22px">The later the payment, the higher the cost.</h2>
+    <p class="lede" style="color:#B5B5AF">The Court revised the costs first set in <i>Damodar S. Prabhu</i> (2010). If the accused pays before defence evidence, the case can be compounded without cost. After that, a percentage of the cheque amount is added.</p>
+    <table class="tbl" style="margin-top:32px"><tbody>
+      <tr><td>Before defence evidence</td><td class="num" style="font-size:32px">0%</td></tr>
+      <tr><td>After defence evidence, before the trial court’s judgment</td><td class="num" style="font-size:32px">5%</td></tr>
+      <tr><td>Before a Sessions Court or High Court, in revision or appeal</td><td class="num" style="font-size:32px">7.5%</td></tr>
+      <tr><td>Before the Supreme Court</td><td class="num red" style="font-size:32px">10%</td></tr>
+    </tbody></table></div>
+    <div class="stage light" style="">{{ U.settle() }}</div>
+  </div>
+</section>
+<section class="band sec" id="sections">
+  <div class="wrap">
+    <p class="kicker">Key sections</p>
+    <h2 class="h-l" style="margin-top:22px">The Act, in seven lines.</h2>
+    <ul class="ruled-list" style="margin-top:40px;max-width:900px">
+      <li><b>Section 138</b><span>Dishonour of a cheque for insufficient funds, or because it exceeds the arrangement, is an offence once the notice-and-payment conditions are met.</span></li>
+      <li><b>Section 139</b><span>The court presumes the cheque was given for a debt or liability, unless the accused proves otherwise.</span></li>
+      <li><b>Section 141</b><span>When a company issues the cheque, those in charge of its business can also be liable.</span></li>
+      <li><b>Section 142</b><span>Only the payee or holder can complain, in writing, within a month of the cause of action, before the court with jurisdiction.</span></li>
+      <li><b>Section 143A</b><span>The trial court may order the accused to pay interim compensation of up to 20 percent of the cheque amount.</span></li>
+      <li><b>Section 145</b><span>The complainant’s evidence may be given by affidavit.</span></li>
+      <li><b>Section 147</b><span>Every offence under the Act is compoundable.</span></li>
+    </ul>
+    <p class="src" style="margin-top:40px">Sources: Negotiable Instruments Act, 1881 (as amended); Supreme Court of India, Sanjabij Tari v. Kishore S. Borcar, Criminal Appeal 1755 of 2010, 25 September 2025; Econ Antri Pvt. Ltd. v. Rom Industries Ltd. (2014) 11 SCC 769; Damodar S. Prabhu v. Sayed Babalal H. (2010) 5 SCC 663. This page explains; it does not advise.</p>
+  </div>
+</section>
+{{ U.close(root) }}
+{% endblock %}

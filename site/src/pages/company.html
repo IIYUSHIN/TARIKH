@@ -1,0 +1,61 @@
+{% extends "_layout.html" %}
+{% import "partials/ui.html" as U %}
+{% set title = "Company" %}{% set nav = "company" %}
+{% set desc = "Why Tarikh exists, who is building it, and what is built today." %}
+{% block main %}
+<section class="band dark phead">
+  <div class="wrap">
+    <p class="kicker">Company</p>
+    <h1 class="h-xl rise" style="margin-top:24px;max-width:13ch">A date is a small thing to lose a case over.</h1>
+  </div>
+</section>
+<section class="band dark" style="padding-bottom:var(--sec)">
+  <div class="wrap g2">
+    <p class="quote">Tarikh means “date”. It is the word a court gives when it fixes the next hearing, and the word litigants say with a sigh.</p>
+    <div class="prose">
+      <p>Cheque-bounce cases are the largest single block of pending criminal cases in India’s magistrate courts. Most are not legally hard. They are hard to run: four deadlines in a row, each counted from a different paper, followed by years of hearings, adjournments and settlement talks.</p>
+      <p>Tarikh is built on one idea. The parts that are arithmetic should be exact and explained. The parts that are reading and drafting can be helped by AI, provided every fact keeps its source. The parts that are judgment stay with an advocate.</p>
+      <p>We start with Section 138 because it is narrow, high-volume and unforgiving of mistakes. The same engine can later carry other time-bound proceedings.</p>
+    </div>
+  </div>
+</section>
+<section class="band sec">
+  <div class="wrap g2">
+    <div><p class="kicker">Who is building it</p><h2 class="h-l" style="margin-top:22px">Built in Chandigarh.</h2></div>
+    <div class="prose">
+      <p><b>Piyush Kumar Brahmbhatt</b> is building Tarikh. He is studying for a B.Tech in Computer Science and Engineering (AI and ML) at Chandigarh University, class 24AML4 A.</p>
+      <p>Tarikh began as his Microsoft Azure AI Fundamentals (AI-901) industrial internship project, 3 July to 31 October 2026, under programme leader Hari Haran.</p>
+      <p>The code, every design decision and every open legal question are public on <a href="{{ GITHUB }}">GitHub</a>.</p>
+    </div>
+  </div>
+</section>
+<section class="band grey sec">
+  <div class="wrap">
+    <p class="kicker">Status, 20 November 2026</p>
+    <h2 class="h-l" style="margin-top:22px">What is built, and what is not.</h2>
+    <table class="tbl stack" style="margin-top:48px">
+      <thead><tr><th scope="col">Part</th><th scope="col">State</th><th scope="col">Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Deadline rule engine</td><td><span class="chip ok">Built, tested</span></td><td>Python and JavaScript, checked against the same worked examples.</td></tr>
+        <tr><td>Website, Check and the demo desk</td><td><span class="chip ok">Built</span></td><td>Runs on fictional matters in the browser.</td></tr>
+        <tr><td>Reading papers, speech, masking, drafting, the agent</td><td><span class="chip warn">Being connected</span></td><td>Azure services, wired through a recorded-reply layer so tests never call the cloud.</td></tr>
+        <tr><td>Client updates, team roles, cause-list import</td><td><span class="chip">Planned</span></td><td>After the first early-access chambers.</td></tr>
+        <tr><td>Primary-source check of every legal rule</td><td><span class="chip warn">In progress</span></td><td>Act text, judgments and the RBI circular.</td></tr>
+        <tr><td>Independent security review</td><td><span class="chip">Not done</span></td><td>Before any real client paper is accepted.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="band sec">
+  <div class="wrap">
+    <p class="kicker">How we build</p>
+    <div class="g4" style="margin-top:40px">
+      <div class="cell"><span class="n">01</span><h3 class="h-s">Arithmetic is exact</h3><p>Dates come from tested rules, never from a model.</p></div>
+      <div class="cell"><span class="n">02</span><h3 class="h-s">Every fact has a source</h3><p>Or it does not appear.</p></div>
+      <div class="cell"><span class="n">03</span><h3 class="h-s">People sign</h3><p>Tarikh drafts. An advocate approves.</p></div>
+      <div class="cell"><span class="n">04</span><h3 class="h-s">No borrowed trust</h3><p>No invented customers, logos or numbers on this site.</p></div>
+    </div>
+  </div>
+</section>
+{{ U.close(root) }}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "_layout.html" %}
+{% import "partials/ui.html" as U %}
+{% set title = "Pricing" %}{% set nav = "pricing" %}
+{% set desc = "Tarikh early-access pricing: Check is free, Desk for chambers, Recover for lenders, and the API." %}
+{% block main %}
+{{ U.phead('Pricing · early access', 'Priced per matter, not per lawyer.', 'Check is free for everyone. Desk and Recover are priced on the work a chambers or lender actually does. These are early-access prices: nothing is on sale yet, and the first chambers help set them.') }}
+<section class="band" style="padding-bottom:var(--sec)">
+  <div class="wrap">
+    <div class="plans" style="margin-top:0">
+      <div class="plan"><div class="pn">Check</div><div class="pr">₹0</div><p class="for">For anyone holding a bounced cheque.</p><ul><li>Every deadline counted</li><li>What to do this week</li><li>Runs in your browser, keeps nothing</li></ul><a class="btn" href="{{ root }}check.html">Check a cheque</a></div>
+      <div class="plan feat"><div class="pn">Desk <span class="chip hot plain">Most chambers</span></div><div class="pr">₹1,999<small>/ month</small></div><p class="for">For an advocate or a small chambers. Up to 3 people and 60 open matters.</p><ul><li>Read, Count, Draft and Diary</li><li>All seven sourced drafts</li><li>Settlement calculator</li><li>Client updates (coming next)</li></ul><a class="btn red" href="{{ root }}contact.html">Request early access</a></div>
+      <div class="plan"><div class="pn">Recover</div><div class="pr">₹149<small>/ matter / month</small></div><p class="for">For lenders and businesses with a portfolio of cheque cases.</p><ul><li>Portfolio dashboard by stage</li><li>Return-file import</li><li>Panel advocate allocation</li><li>Volume pricing above 500 matters</li></ul><a class="btn" href="{{ root }}contact.html">Talk to us</a></div>
+      <div class="plan"><div class="pn">API</div><div class="pr">₹2<small>/ count</small></div><p class="for">For platforms that want the engine inside their own product.</p><ul><li>Clocks endpoint</li><li>Paper reading, per page</li><li>Sourced drafts, per document</li><li>Private beta</li></ul><a class="btn" href="{{ root }}api.html">Read the API</a></div>
+    </div>
+    <p class="small" style="margin-top:24px">Prices in Indian rupees, before GST. Indicative early-access prices for a product in development.</p>
+  </div>
+</section>
+<section class="band grey sec">
+  <div class="wrap">
+    <h2 class="h-l" style="max-width:14ch">Questions people ask first.</h2>
+    <div class="faq" style="margin-top:40px;max-width:900px">
+      <details><summary>Why per matter and not per seat?</summary><p>A chambers with two advocates may run two hundred cheque matters. Charging per lawyer would make the busiest, smallest offices pay the least for the most work, and lenders the most for the least.</p></details>
+      <details><summary>Is Tarikh a law firm?</summary><p>No. Tarikh is software for advocates and for the people who instruct them. It does not appear in court, give legal advice or decide anything about a case.</p></details>
+      <details><summary>Where does our data live?</summary><p>On Microsoft Azure, in the region the account is set to. Personal details in a client’s account are masked before any model drafts from it. See Trust for the full picture.</p></details>
+      <details><summary>Can we try it with our own matters?</summary><p>Not yet. The demo runs on fictional matters so that nobody puts real client papers into a product still in development. Early-access chambers will be the first to use their own.</p></details>
+    </div>
+  </div>
+</section>
+{{ U.close(root) }}
+{% endblock %}
