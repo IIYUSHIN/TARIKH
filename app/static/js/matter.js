@@ -4,6 +4,7 @@ import { createClock } from "./clock.js";
 import { createViewer } from "./viewer.js";
 import { TXT, DOC_LABEL, ADD_LABEL, READING, DATE_KEYS, SAFEGUARDS, NEEDS } from "./copy.js";
 
+const SHORT_DOC = { cheque: "Cheque", return_memo: "Memo", demand_notice: "Notice" };
 const TICK = () => svg("svg", { class: "tick", viewBox: "0 0 16 16", "aria-hidden": "true", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" }, svg("path", { d: "M2.5 8.8l3.6 3.4L13.4 3.8" }));
 const room = (id, title, meta, ...kids) => h("section", { class: "room", id, "aria-labelledby": id + "-h" },
   h("div", { class: "room__head" }, h("h2", { class: "title", id: id + "-h" }, title), meta ? h("p", { class: "room__meta" }, meta) : null), ...kids);
@@ -66,7 +67,7 @@ export async function renderMatter(host, matterId, ctx) {
     clear(slotsHost);
     for (const type of ["cheque", "return_memo", "demand_notice"]) {
       const have = current.documents.filter((d) => d.doc_type === type);
-      const input = h("input", { type: "file", accept: "image/png,image/jpeg,image/tiff,image/bmp,application/pdf", class: "sr", id: "up-" + type, tabindex: "-1", onchange: () => input.files[0] && upload(type, input.files[0]) });
+      const input = h("input", { type: "file", accept: "image/png,image/jpeg,image/tiff,image/bmp,application/pdf", class: "sr", id: "up-" + type, tabindex: "-1", "aria-label": ADD_LABEL[type], onchange: () => input.files[0] && upload(type, input.files[0]) });
       const slot = h("div", { class: "slot", ondragover: (e) => { e.preventDefault(); slot.classList.add("drag"); }, ondragleave: () => slot.classList.remove("drag"),
         ondrop: (e) => { e.preventDefault(); slot.classList.remove("drag"); const f = e.dataTransfer.files[0]; f && upload(type, f); } },
         h("div", {}, h("div", { class: "slot__name" }, DOC_LABEL[type]), h("div", { class: "slot__file" }, have.length ? have.map((d) => d.filename).join(", ") : "Not added")),
@@ -120,8 +121,8 @@ export async function renderMatter(host, matterId, ctx) {
     if (f.key === "amount_figures" && f.value) meta.append(h("span", { class: "mono" }, fmtMoney(f.value)));
     if (f.confidence != null && !f.manual) meta.append(h("span", { class: "mono" }, `Read at ${Math.round(f.confidence * 100)}%`));
     if (f.verified && f.value) meta.append(h("span", {}, TICK(), " ", TXT.checked));
-    if (f.source?.polygon?.length >= 6) meta.append(h("button", { class: "linkbtn", type: "button", onclick: () => showOnPaper(f) }, TXT.showOnPaper));
-    if (f.value && !f.verified) meta.append(h("button", { class: "linkbtn", type: "button", onclick: () => saveFact(f, f.value, row) }, TXT.markChecked));
+    if (f.source?.polygon?.length >= 6) meta.append(h("button", { class: "linkbtn", type: "button", "aria-label": `${TXT.showOnPaper}: ${f.label}`, onclick: () => showOnPaper(f) }, TXT.showOnPaper));
+    if (f.value && !f.verified) meta.append(h("button", { class: "linkbtn", type: "button", "aria-label": `${TXT.markChecked}: ${f.label}`, onclick: () => saveFact(f, f.value, row) }, TXT.markChecked));
     if (f.manual && !f.value) meta.append(h("span", {}, TXT.notOnPaper));
     meta.append(h("span", { class: "fact__status", role: "status" }));
     row.querySelector(".fact__flag")?.remove();
@@ -157,6 +158,7 @@ export async function renderMatter(host, matterId, ctx) {
     const draftBtn = h("button", { class: "btn" + (b ? "" : " btn--solid"), type: "button", disabled: !hasCheque, onclick: (e) => draft(e.currentTarget) }, b ? TXT.redraft : TXT.draftBrief);
     if (!b) { briefHost.append(h("p", { class: "empty" }, "No brief yet. It is drafted from the facts in the ledger, and every sentence cites the facts it rests on."), h("div", { class: "actions" }, draftBtn, !hasCheque ? h("span", { class: "why" }, TXT.needCheque) : null)); return; }
     const byId = factById(); let lastSection = null;
+    const docType = Object.fromEntries(current.documents.map((d) => [d.id, d.doc_type]));
     const approved = !!current.approved_by;
     const memo = h("article", { class: "memo" + (approved ? " memo--approved" : ""), "data-testid": "brief" },
       h("div", { class: "memo__head" }, h("p", { class: "hint" }, TXT.draftedBy(b.model), " ", fmtStamp(b.drafted_at) + "."),
@@ -165,7 +167,7 @@ export async function renderMatter(host, matterId, ctx) {
         const secs = [];
         if (c.section && c.section !== lastSection) { secs.push(h("p", { class: "section" }, c.section.replace(/_/g, " "))); lastSection = c.section; }
         const chips = c.fact_ids.map((id) => byId[id]).filter(Boolean).map((f) => h("button", { class: "src", type: "button", title: `${f.label}: ${f.value}`,
-          onclick: () => showOnPaper(f) }, `${f.label} · ${String(f.value).slice(0, 22)}`));
+          onclick: () => showOnPaper(f) }, `${SHORT_DOC[docType[f.doc_id]] ?? ""} · ${f.label} · ${String(f.value).slice(0, 22)}`));
         return [secs, h("p", { class: "reading" }, c.text, " ", chips)];
       }),
       b.flagged.length ? h("div", { class: "left-out" }, h("p", {}, "Left out because the papers do not support it:"), h("ul", {}, b.flagged.map((x) => h("li", {}, x)))) : null,
@@ -241,13 +243,13 @@ export async function renderMatter(host, matterId, ctx) {
       rec.start(); recBtn.replaceChildren(h("span", { class: "rec", "aria-hidden": "true" }), TXT.stop);
     } catch { clear(voiceOut).append(h("p", { class: "err" }, "The microphone is not available. Allow it in the browser, or upload a recording instead.")); }
   } }, TXT.record);
-  const file = h("input", { type: "file", accept: "audio/*", class: "sr", id: "aud", tabindex: "-1", onchange: () => file.files[0] && sendAudio(file.files[0], file.files[0].name) });
+  const file = h("input", { type: "file", accept: "audio/*", class: "sr", id: "aud", tabindex: "-1", "aria-label": TXT.uploadAudio, onchange: () => file.files[0] && sendAudio(file.files[0], file.files[0].name) });
   voiceCtl.append(h("div", { class: "field" }, h("label", { class: "label", for: "voice-loc" }, "Language spoken"), sel), recBtn, h("button", { class: "btn", type: "button", onclick: () => file.click() }, TXT.uploadAudio), file);
 
   // ---------- safeguards + audit ----------
   const auditHost = h("ul", { class: "audit", "aria-label": "Audit trail" });
   async function loadAudit() {
-    try { const m = await api.matter(matterId); clear(auditHost).append(m.audit.slice().reverse().slice(0, 12).map((a) => h("li", {}, h("span", { class: "mono quiet" }, fmtStamp(a.ts)), h("span", {}, h("b", { style: "font-weight:500" }, a.actor), " ", a.action.replace(/_/g, " "), a.detail?.key ? ` · ${a.detail.key}` : "")))); } catch { /* quiet */ }
+    try { const m = await api.matter(matterId); clear(auditHost).append(...m.audit.slice().reverse().slice(0, 12).map((a) => h("li", {}, h("span", { class: "mono quiet" }, fmtStamp(a.ts)), h("span", {}, h("b", { style: "font-weight:500" }, a.actor), " ", a.action.replace(/_/g, " "), a.detail?.key ? ` · ${a.detail.key}` : "")))); } catch { /* quiet */ }
   }
 
   // ---------- compose ----------

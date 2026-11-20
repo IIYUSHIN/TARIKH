@@ -3,20 +3,25 @@ import { STATUS_WORD, NEEDS } from "./copy.js";
 
 const PAD = 14;       // days of air either side of the windows
 const WORD_CLASS = { open: "st--stamp", closing: "st--stamp", expired: "st--stamp", met: "st--ok" };
+// The drawer's 15 days are the other side's clock: the advocate waits through it, so it is never shown as a miss.
+const PAY_WORD = { upcoming: "Not yet running", open: "Running", closing: "Ending soon", expired: "Ended" };
+const word = (w) => (w.key === "payment" && PAY_WORD[w.status]) || STATUS_WORD[w.status];
+const wordClass = (w) => (w.key === "payment" ? (w.status === "met" ? "st--ok" : "") : WORD_CLASS[w.status] || "");
+const barClass = (w) => (w.key === "payment" ? ({ open: "wait", closing: "wait", expired: "ended", met: "met" }[w.status] || "upcoming") : (w.status === "unknown" ? "upcoming" : w.status));
 
 function daysText(w, asOf) {
   const a = dayNumber(asOf);
   if (w.status === "unknown") return "needs " + NEEDS[w.key];
   if (w.status === "met") return "";
   if (w.status === "upcoming") { const n = dayNumber(w.opens) - a; return `opens in ${n} day${n === 1 ? "" : "s"}`; }
-  if (w.status === "expired") { const n = a - dayNumber(w.closes); return `closed ${n} day${n === 1 ? "" : "s"} ago`; }
+  if (w.status === "expired") { const n = a - dayNumber(w.closes); return `${w.key === "payment" ? "ended" : "closed"} ${n} day${n === 1 ? "" : "s"} ago`; }
   const n = w.days_left ?? dayNumber(w.closes) - a;
   return n === 0 ? "last day" : `${n} day${n === 1 ? "" : "s"} left`;
 }
 
 export function createClock({ onDate, realToday }) {
   let domain = null, asOf = realToday, windows = [];
-  const rail = h("div", { class: "clock__axis", style: "height:44px" }, h("div", { class: "label", style: "align-self:center" }, "Counting from"), h("div", { class: "track" }));
+  const rail = h("div", { class: "clock__axis", style: "height:44px" }, h("div"), h("div", { class: "track" }));
   const axis = h("div", { class: "clock__axis" }, h("div"), h("div", { class: "track" }));
   const rows = h("div");
   const grip = h("div", { class: "today__grip", role: "slider", tabindex: "0", "aria-label": "Day the deadlines are counted from" });
@@ -27,7 +32,8 @@ export function createClock({ onDate, realToday }) {
   const dateInput = h("input", { class: "input", type: "date", id: "asof", "aria-label": "Count deadlines from this date" });
   const todayBtn = h("button", { class: "btn btn--small", type: "button" }, "Today");
   const tableHost = h("details", { class: "clock__table" });
-  const root = h("div", { class: "clock", "data-testid": "clock" }, rail, axis, rows, layer,
+  const plot = h("div", { style: "position:relative" }, rail, axis, rows, layer);
+  const root = h("div", { class: "clock", "data-testid": "clock" }, plot,
     h("div", { class: "clock__ctl" },
       h("div", { class: "field" }, h("label", { class: "label", for: "asof" }, "Counting from"), dateInput, todayBtn),
       h("p", { class: "hint" }, "Moving this does not change the matter. It only changes the day the deadlines are counted from.")),
@@ -81,7 +87,7 @@ export function createClock({ onDate, realToday }) {
       const iso = `${y}-${String(m + 1).padStart(2, "0")}-01`;
       if (dayNumber(iso) > domain.d1) break;
       const label = new Date(iso + "T00:00:00Z").toLocaleString("en-GB", { month: "short", timeZone: "UTC" }) + (m === 0 ? " " + y : "");
-      t.append(h("div", { class: "tick-m", style: `left:${pct(iso)}%` }, label));
+      if (pct(iso) < 93) t.append(h("div", { class: "tick-m", style: `left:${pct(iso)}%` }, label));
     }
     clear(rows);
     for (const w of windows) {
@@ -89,7 +95,7 @@ export function createClock({ onDate, realToday }) {
       track.append(...gridlines());
       if (w.opens && w.closes) {
         const l = pct(w.opens), r = pct(w.closes);
-        track.append(h("div", { class: `bar-w bar-w--${w.status === "unknown" ? "upcoming" : w.status}`, style: `left:${l}%;width:${Math.max(r - l, 0.4)}%`, "aria-hidden": "true" }));
+        track.append(h("div", { class: `bar-w bar-w--${barClass(w)}`, style: `left:${l}%;width:${Math.max(r - l, 0.4)}%`, "aria-hidden": "true" }));
         const right = r < 82;
         track.append(h("div", { class: "bar-d", style: right ? `left:calc(${r}% + 8px)` : `right:calc(${100 - l}% + 8px)` }, right ? fmtDate(w.closes) : fmtDate(w.opens)));
       } else {
@@ -98,14 +104,14 @@ export function createClock({ onDate, realToday }) {
       const when = w.opens && w.closes ? `${fmtDate(w.opens)} to ${fmtDate(w.closes)}` : "";
       rows.append(h("div", { class: "clock__row", "data-window": w.key, "data-status": w.status },
         h("div", { class: "clock__name" }, h("strong", {}, w.label),
-          h("span", {}, h("span", { class: `st ${WORD_CLASS[w.status] || ""}` }, STATUS_WORD[w.status]), daysText(w, asOf) && w.status !== "unknown" ? " · " + daysText(w, asOf) : ""),
+          h("span", {}, h("span", { class: `st ${wordClass(w)}` }, word(w)), daysText(w, asOf) && w.status !== "unknown" ? " · " + daysText(w, asOf) : ""),
           when ? h("span", { class: "mono" }, when) : null),
         track));
     }
     clear(tableHost).append(h("summary", {}, "Show these dates as a table"),
       h("table", {}, h("thead", {}, h("tr", {}, ["Window", "Opens", "Closes", "Status"].map((x) => h("th", { scope: "col" }, x)))),
         h("tbody", {}, windows.map((w) => h("tr", {}, h("th", { scope: "row" }, w.label), h("td", { class: "mono" }, fmtDate(w.opens) || "—"),
-          h("td", { class: "mono" }, fmtDate(w.closes) || "—"), h("td", {}, STATUS_WORD[w.status] + (daysText(w, asOf) && w.status !== "unknown" ? ", " + daysText(w, asOf) : "")))))));
+          h("td", { class: "mono" }, fmtDate(w.closes) || "—"), h("td", {}, word(w) + (daysText(w, asOf) && w.status !== "unknown" ? ", " + daysText(w, asOf) : "")))))));
     paintMarker();
   }
   function gridlines() {

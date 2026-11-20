@@ -6,6 +6,7 @@
 .mark span{font-family:var(--serif);font-style:normal;font-size:.6em;margin-left:var(--s-2);color:var(--ink-3);letter-spacing:0}
 .mark:hover{background:none}
 .crumb{font-size:var(--t-sm);color:var(--ink-3)}
+.page:focus{outline:0}
 .page{max-width:var(--page);margin:0 auto;padding:0 var(--s-5) var(--s-9)}
 .rule{border:0;border-top:1px solid var(--ink);margin:0}
 
@@ -58,7 +59,7 @@
 .newform .field{min-width:min(100%,360px)}
 
 /* ---------- the answer + clock ---------- */
-.answer{font-family:var(--serif);font-weight:420;font-size:var(--t-xl);line-height:1.2;max-width:34em;letter-spacing:-.005em}
+.answer{margin-top:var(--s-5);font-family:var(--serif);font-weight:420;font-size:var(--t-xl);line-height:1.2;max-width:34em;letter-spacing:-.005em}
 .answer b{font-weight:520}
 .answer .date{font-family:var(--mono);font-size:.82em;white-space:nowrap}
 .answer--stamp b{color:var(--stamp)}
@@ -77,11 +78,12 @@
 .clock__name .st--stamp{color:var(--stamp)}
 .clock__name .st--ok{color:var(--verified)}
 .clock .track{position:relative}
-.clock__row .track::before{content:"";position:absolute;inset:0;background:linear-gradient(to right,var(--rule) 1px,transparent 1px) 0 0/var(--month-w,0) 100%;opacity:.0}
 .gridline{position:absolute;top:0;bottom:0;border-left:1px solid var(--rule)}
 .bar-w{position:absolute;top:50%;height:16px;transform:translateY(-50%);min-width:3px;transition:left var(--dur) var(--ease),width var(--dur) var(--ease)}
 .bar-w--open,.bar-w--closing{background:var(--stamp)}
 .bar-w--expired{border:1.5px solid var(--stamp);background:repeating-linear-gradient(135deg,var(--stamp-bg) 0 4px,transparent 4px 8px)}
+.bar-w--wait{background:var(--ink-3)}
+.bar-w--ended{border:1.5px solid var(--ink-4);background:repeating-linear-gradient(135deg,var(--rule) 0 4px,transparent 4px 8px)}
 .bar-w--met{background:var(--verified)}
 .bar-w--upcoming{border:1.5px solid var(--ink-3);background:transparent}
 .needs{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);border-top:1px dashed var(--ink-4);font:400 var(--t-xs)/1 var(--sans);color:var(--ink-3)}
@@ -89,7 +91,7 @@
 .bar-d{position:absolute;top:calc(50% + 14px);font:400 var(--t-xs)/1 var(--mono);color:var(--ink-3);white-space:nowrap;transform:translateX(0)}
 .today{position:absolute;top:0;bottom:0;width:0;z-index:2}
 .today__line{position:absolute;top:0;bottom:0;left:0;border-left:2px solid var(--pen);pointer-events:none}
-.today__grip{position:absolute;top:-30px;left:0;transform:translateX(-50%);background:var(--pen);color:var(--paper);font:500 var(--t-xs)/1 var(--mono);padding:7px 10px;border-radius:var(--radius);cursor:ew-resize;white-space:nowrap;touch-action:none;display:flex;gap:8px;align-items:center;min-height:32px}
+.today__grip{position:absolute;top:6px;left:0;transform:translateX(-50%);background:var(--pen);color:var(--paper);font:500 var(--t-xs)/1 var(--mono);padding:7px 10px;border-radius:var(--radius);cursor:ew-resize;white-space:nowrap;touch-action:none;display:flex;gap:8px;align-items:center;min-height:32px}
 .today__grip::before,.today__grip::after{content:"";width:2px;height:12px;border-left:1px solid currentColor;border-right:1px solid currentColor;opacity:.7}
 .today__grip::after{display:none}
 .clock__ctl{display:flex;align-items:center;gap:var(--s-4);flex-wrap:wrap;margin-top:var(--s-4)}
@@ -102,7 +104,7 @@
 .clock__table th{font-weight:500;color:var(--ink-3)}
 
 /* ---------- desk: papers + ledger ---------- */
-.desk{display:grid;gap:var(--s-6)}
+.desk{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s-6)}
 @media (min-width:960px){.desk{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s-7)}.sheet-col{position:sticky;top:var(--s-4);align-self:start}}
 .slots{display:grid;gap:var(--s-3);margin-bottom:var(--s-5)}
 .slot{display:grid;grid-template-columns:1fr auto;gap:var(--s-3);align-items:center;padding:var(--s-3) 0;border-bottom:1px solid var(--rule)}
@@ -123,12 +125,12 @@
 .sheet__cap{padding:var(--s-3) var(--s-4);border-top:1px solid var(--rule);font:400 var(--t-xs)/1.4 var(--mono);color:var(--ink-3);min-height:44px}
 .docgroup+.docgroup{margin-top:var(--s-6)}
 .docgroup__head{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s-3);border-bottom:1px solid var(--ink);padding-bottom:var(--s-2)}
-.fact{display:grid;grid-template-columns:minmax(120px,1fr) minmax(0,1.4fr);gap:var(--s-2) var(--s-4);padding:var(--s-3) 0;border-bottom:1px solid var(--rule);align-items:start}
-.fact__label{font:500 var(--t-xs)/1.3 var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);padding-top:11px}
-.fact__val .input{border:0;border-bottom:1px solid var(--ink-4);border-radius:0;background:transparent;font-family:var(--mono);padding:0 2px;font-size:var(--t-base)}
+.fact{display:grid;grid-template-columns:minmax(120px,1fr) minmax(0,1.4fr);gap:var(--s-1) var(--s-4);padding:var(--s-2) 0;border-bottom:1px solid var(--rule);align-items:start}
+.fact__label{font:500 var(--t-xs)/1.3 var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);padding-top:8px}
+.fact__val .input{min-height:36px;border:0;border-bottom:1px solid var(--ink-4);border-radius:0;background:transparent;font-family:var(--mono);padding:0 2px;font-size:var(--t-base)}
 .fact__val .input:focus{outline:0;border-bottom:2px solid var(--pen)}
 .fact--manual.fact--empty .input{background:var(--raised);border:1px dashed var(--ink-4);padding:0 var(--s-2)}
-.fact__meta{display:flex;flex-wrap:wrap;gap:var(--s-2) var(--s-4);align-items:center;margin-top:var(--s-1);font-size:var(--t-xs);color:var(--ink-3)}
+.fact__meta{display:flex;flex-wrap:wrap;gap:0 var(--s-4);align-items:center;margin-top:0;min-height:24px;font-size:var(--t-xs);color:var(--ink-3)}
 .fact__meta .mono{font-size:var(--t-xs)}
 .fact__flag{font-size:var(--t-sm);color:var(--ink);margin-top:var(--s-1);border-left:3px solid var(--ink-4);padding-left:var(--s-2)}
 .fact--low .fact__val .input{text-decoration:underline dotted var(--ink-4) 2px;text-underline-offset:6px}
@@ -178,6 +180,8 @@ mark.masked{background:var(--ink);color:var(--paper);padding:0 3px;font-family:v
 @media (max-width:719px){
   .page,.bar{padding-left:var(--s-4);padding-right:var(--s-4)}
   .display{font-size:var(--t-xl)} .answer{font-size:var(--t-lg)}
+  .crumb{display:none}
+  .clock .track{min-height:36px}.bar-d{display:none}
   .clock{--label:0px}.clock__axis,.clock__row{grid-template-columns:1fr}
   .clock__name{padding-bottom:0}.clock__axis>div:first-child{display:none}
   .fact{grid-template-columns:1fr}.fact__label{padding-top:0}
