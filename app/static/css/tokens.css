@@ -1,0 +1,23 @@
+/* Tarikh design tokens. Every value is justified in /DESIGN.md; contrast ratios were computed, not eyeballed. */
+:root{
+  /* paper and ink: the surface is a docket sheet, never white */
+  --paper:#F4EFE4; --raised:#FBF8F1; --sunken:#EAE3D3; --rule:#D6CCB6;
+  --ink:#17140F; --ink-2:#3B362D; --ink-3:#5E5748; --ink-4:#7D7564; /* ink-4: lines and glyphs only, 3.98:1 */
+  /* three colours, three meanings, nothing else is coloured */
+  --stamp:#A3221B; --stamp-bg:#F1D9D0;   /* a deadline that is live or has passed */
+  --verified:#2D5B39; --verified-bg:#DCE5D2; /* a person checked it */
+  --pen:#1F3C66; --pen-bg:#D9E0EA;       /* provenance: where on the paper it was read */
+
+  --serif:"Newsreader","Noto Sans Devanagari","Noto Sans Gurmukhi",Georgia,serif;
+  --sans:"Plex Sans","Noto Sans Devanagari","Noto Sans Gurmukhi",system-ui,sans-serif;
+  --mono:"Plex Mono",ui-monospace,Menlo,monospace;
+
+  /* type scale: ratio 1.2 on 16px, rounded to the 4px grid for line boxes */
+  --t-xs:.75rem; --t-sm:.875rem; --t-base:1rem; --t-md:1.1875rem; --t-lg:1.4375rem; --t-xl:1.75rem; --t-2xl:2.5rem; --t-3xl:3.5rem;
+
+  /* spacing: 4px base */
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px; --s-7:48px; --s-8:64px; --s-9:96px;
+  --radius:2px; --hair:1px solid var(--rule); --rule-strong:1px solid var(--ink);
+  --measure:62ch; --page:1280px;
+  --ease:cubic-bezier(.2,.7,.2,1); --dur:140ms;
+}
