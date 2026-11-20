@@ -5,17 +5,31 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
+from urllib.parse import urlparse
 
 
 @dataclass(frozen=True)
 class Settings:
     mode: Literal["live", "replay"] = "live"
     project_endpoint: str = ""        # https://<resource>.services.ai.azure.com/api/projects/<project>
-    services_endpoint: str = ""       # https://<resource>.services.ai.azure.com  (Language, Content Understanding)
-    speech_region: str = ""
     model_deployment: str = ""
     cassette_dir: Path = Path("data/cassettes")
     data_dir: Path = Path("data")
+
+    @property
+    def resource_name(self) -> str:
+        host = urlparse(self.project_endpoint).hostname or ""
+        return host.split(".")[0] if host else ""
+
+    @property
+    def services_base(self) -> str:
+        """Foundry project and Content Understanding."""
+        return f"https://{self.resource_name}.services.ai.azure.com" if self.resource_name else ""
+
+    @property
+    def cognitive_base(self) -> str:
+        """Language and Speech custom-domain endpoint of the same resource."""
+        return f"https://{self.resource_name}.cognitiveservices.azure.com" if self.resource_name else ""
 
     @classmethod
     def from_env(cls, env: dict[str, str] | None = None) -> "Settings":
@@ -26,8 +40,6 @@ class Settings:
         return cls(
             mode=mode,  # type: ignore[arg-type]
             project_endpoint=e.get("AZURE_AI_PROJECT_ENDPOINT", ""),
-            services_endpoint=e.get("AZURE_AI_SERVICES_ENDPOINT", ""),
-            speech_region=e.get("AZURE_SPEECH_REGION", ""),
             model_deployment=e.get("AZURE_AI_MODEL_DEPLOYMENT_NAME", ""),
             cassette_dir=Path(e.get("TARIKH_CASSETTE_DIR", "data/cassettes")),
             data_dir=Path(e.get("TARIKH_DATA_DIR", "data")),

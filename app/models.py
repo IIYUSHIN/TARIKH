@@ -99,3 +99,19 @@ class AuditEntry(BaseModel):
     actor: str
     action: str
     detail: dict = Field(default_factory=dict)
+
+
+class Redaction(BaseModel):
+    redacted_text: str
+    entities: list[Entity] = Field(default_factory=list)
+
+
+class ToolCall(BaseModel):
+    name: str
+    args: dict
+    result: dict
+
+
+class Answer(BaseModel):
+    text: str
+    tool_calls: list[ToolCall] = Field(default_factory=list)
