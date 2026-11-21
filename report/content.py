@@ -567,6 +567,9 @@ def appendices() -> list[tuple]:
     A.append(("h1a", "B", "Course Certificate"))
     cert = HERE.parent / "assets" / "course_certificate.png"
     A.append(("certificate", str(cert) if cert.exists() else None))
+    if cert.exists():
+        A.append(("p", "Authenticated digital transcript from Certiport, issued 21 November 2026: Microsoft Certified Fundamentals, Microsoft Azure AI Fundamentals. "
+                       "Exam AI-901, Microsoft Azure AI Fundamentals, passed on 28 October 2026, administered by Chandigarh University, in English."))
     A.append(("h1a", "C", "Screens of the Working Platform"))
     A.append(("p", "Each screen below was captured on 21 November 2026 from the running Tarikh server, signed in as a fictional advocate with the fictional sample matters loaded. "
                    "Every word on these screens is produced by the platform's own code; screens whose content would come from an Azure model are described in Chapter 4 instead."))
