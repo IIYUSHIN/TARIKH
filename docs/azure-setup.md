@@ -46,6 +46,10 @@ Understanding and Agent Service.
 If Southeast Asia is missing from the list (student subscriptions sometimes limit regions), choose one of these, which I
 verified for all of the same services: **Sweden Central, UK South, Australia East, Japan East, East US 2**. Tell me which.
 
+**If only an Indian region is allowed (for example South India):** Content Understanding is not offered there. Tarikh
+still works: add `TARIKH_EXTRACTOR=model` to `.env` and the deployed model reads the papers instead (decision 0006). You
+lose the location boxes on the paper; every value read that way is flagged for a person to check.
+
 **Done when:** you have the project endpoint copied into a note.
 
 ## 4. Deploy the three models

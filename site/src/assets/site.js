@@ -163,7 +163,7 @@
       '<text class="s-num" x="86" y="114" text-anchor="middle" font-family="Anton, sans-serif" font-size="62" font-weight="400" fill="currentColor"></text>' +
       '<text class="s-word" x="86" y="138" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-size="11" font-weight="700" letter-spacing="2.4" fill="currentColor"></text>' +
       '<path d="M42 58h88" stroke="currentColor" stroke-width="1"/>' +
-      '<text x="86" y="48" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-size="9" font-weight="700" letter-spacing="2.2" fill="currentColor">SAMPLE MATTER</text>' +
+      '<text x="86" y="48" text-anchor="middle" font-family="Schibsted Grotesk, sans-serif" font-size="9" font-weight="700" letter-spacing="2.2" fill="currentColor">COMPLAINT</text>' +
       '</svg>';
     var pill = el('span', 'pill'); stampWrap.appendChild(pill);
     stampWrap.style.color = 'var(--ramp)';

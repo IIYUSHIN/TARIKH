@@ -74,13 +74,14 @@ def run() -> int:
 
     def content():
         from app.models import DocType
-        from app.services.extraction import ContentUnderstandingExtractor
-        facts = ContentUnderstandingExtractor(s, credential=cred).extract(DocType.CHEQUE, SAMPLE.read_bytes(), "image/png")
+        from app.services.extraction import ContentUnderstandingExtractor, ModelExtractor
+        reader = ModelExtractor(s, credential=cred) if s.extractor == "model" else ContentUnderstandingExtractor(s, credential=cred)
+        facts = reader.extract(DocType.CHEQUE, SAMPLE.read_bytes(), "image/png")
         read = {f.key: f.value for f in facts if f.value}
         if "cheque_number" not in read:
             raise RuntimeError(f"the analyzer ran but read no cheque number; got {read}")
         return f"read {len(read)} fields from the sample cheque, cheque number {read['cheque_number']}"
-    check("Content Understanding reads the sample cheque", content)
+    check("Paper reading (" + ("the model" if s.extractor == "model" else "Content Understanding") + ") reads the sample cheque", content)
 
     def language():
         from app.services.language import AzureTextAnalyzer

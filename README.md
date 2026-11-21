@@ -1,46 +1,80 @@
-# Tarikh — cheque-bounce case desk
+# Tarikh
 
-A working tool for an advocate handling a dishonoured cheque under Section 138 of the Negotiable Instruments Act. It reads
-the cheque, the bank's return memo and the demand notice; counts the statutory windows; drafts a cited brief for the advocate
-to approve; takes the client's account by voice in English, Hindi or Punjabi (masking personal details before any model
-sees it); and answers questions about the matter through an agent that can only read that matter's facts and its deadlines.
+**The litigation platform for cheque-bounce cases in India.** Tarikh reads the cheque, the bank's return memo and the
+demand notice, counts every deadline under Section 138 of the Negotiable Instruments Act, drafts the papers an advocate
+needs, keeps the hearing diary and prices a settlement. It is built on Microsoft Azure AI as the industrial internship
+project for Microsoft Azure AI Fundamentals (AI-901).
 
-Built for the Microsoft Azure AI Fundamentals (AI-901) industrial internship, Chandigarh University, 3 July – 31 October 2026.
-Student: Piyush Kumar Brahmbhatt, UID 24BAI70769, 24AML4 A, B.Tech CSE (AIML). Program leader: Hari Haran.
+- A model reads. A rule counts. A person decides. No model ever produces a deadline.
+- Every fact keeps its source: the paper and the box it was read from, or the person who entered it.
+- Nothing is filed or sent by Tarikh. Drafts leave draft only when an advocate approves them by name.
 
-## Azure services used, and why each is needed
+## Run it on Windows
 
-| Need in the matter | Service | Where in the code |
-|---|---|---|
-| Read cheque, memo, notice into fields with the place on the page | Azure Content Understanding (custom analyzers) | `app/services/extraction.py` |
-| Mask names, numbers, addresses in the client's account | Azure AI Language (PII) | `app/services/language.py` |
-| Client's spoken account to text; approved brief read aloud | Azure Speech (fast transcription, neural voices) | `app/services/speech.py` |
-| Draft the brief; look at the cheque image | Foundry model deployment (gpt-4.1) | `app/services/reasoning.py` |
-| Ask questions about one matter | Foundry Agent Service (function tools) | `app/services/agent.py` |
+You need Python 3.11 or newer and Git. Open **PowerShell**:
 
-The deadlines are **not** model output. They come from a rule engine with written tests (`app/deadlines.py`).
+```powershell
+git clone https://github.com/IIYUSHIN/TARIKH.git
+cd TARIKH
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
 
-## Run it
+If PowerShell refuses to run `Activate.ps1`, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once, answer `Y`,
+and try again.
 
-1. Azure setup, once: [docs/azure-setup.md](docs/azure-setup.md) (about 30 minutes, verified against Microsoft's documentation).
-2. `python -m tools.check_setup` until every line says PASS.
-3. `python -m uvicorn app.main:build_app --factory --port 8000`, then open <http://localhost:8000>.
+### With Azure (the real thing)
 
-Recording and replay: in live mode every Azure reply is saved under `data/cassettes/`. Set `TARIKH_MODE=replay` to run the whole
-app from those recordings with no network; a banner on every screen says it is a replay.
+1. Follow [docs/azure-setup.md](docs/azure-setup.md) once. It creates the Foundry project, the three model deployments
+   and your access roles, and it ends with your `.env` file.
+2. Sign in to Azure from the same PowerShell window: `az login`
+3. Check every Azure service with one command. Each line says PASS, or what to fix:
+   ```powershell
+   python -m tools.check_setup
+   ```
+4. Start Tarikh:
+   ```powershell
+   python -m uvicorn app.main:build_app --factory --port 8000
+   ```
+5. Open <http://localhost:8000>, choose **Start free**, create your account, and open your first matter.
+
+### Without Azure (recorded replies)
+
+Every Azure reply from a live run is saved under `data/cassettes`. To run the whole app offline from those recordings:
+
+```powershell
+$env:TARIKH_MODE = "replay"
+python -m uvicorn app.main:build_app --factory --port 8000
+```
+
+## What is where
+
+| Folder | What it holds |
+|---|---|
+| `app/` | The server: accounts, matters, the deadline engine, the pipeline and one adapter per Azure service |
+| `site/` | The website and the desk: templates, one stylesheet, the browser engine, the build script, browser tests |
+| `tests/` | 114 server tests, run with `pytest` |
+| `tools/` | `check_setup` (tests each Azure service), `deploy_models`, `make_samples` |
+| `samples/` | Fictional papers, sample matters and a sample return file |
+| `docs/` | Engineering record: architecture, decisions, design system, research, Azure guide, testing, prompt ledger |
+| `report/` | The project report and the script that builds it |
 
 ## Tests
 
-`pytest` runs 90+ checks, including browser tests of the real front end in Chromium (`pip install -r requirements-dev.txt` then
-`playwright install chromium`). Azure is never called by the tests; the test doubles live only in `tests/`.
+```powershell
+pytest                                  # server: accounts, engine, pipeline, Azure adapters (with doubles)
+cd site; python build.py; python -m pytest tests; node --test tests/engine.test.js
+```
 
-## Design
+The site tests drive a real browser against both the static site and a running Tarikh server, end to end: sign up,
+load samples, enter a date, record a hearing, open a matter, import a return file, allocate, sign out.
 
-[DESIGN.md](DESIGN.md) records every visual decision and why. Fonts are self-hosted (Newsreader, IBM Plex Sans and Mono; Noto
-for Devanagari and Gurmukhi), licences in `app/static/fonts/`.
+## Read next
 
-## Limits stated plainly
+- [docs/DEVELOPER.md](docs/DEVELOPER.md): how it is built, how a request moves, where each thing lives
+- [docs/decisions/](docs/decisions/): why each important choice was made, and what it costs
+- [docs/design/system.md](docs/design/system.md): the design system
+- [docs/requirements/prompt-ledger.md](docs/requirements/prompt-ledger.md): every instruction from the project owner, and its status
 
-Court holidays and condonation of delay are for the advocate to confirm. Sources disagree on whether Section 138's text says three
-or six months for cheque validity; the app uses the three months in force through RBI's validity rule and flags it. This is a
-student project and not legal advice. All sample papers are fictional and labelled so.
+Not legal advice. Every party, lender and case number in the samples is fictional.

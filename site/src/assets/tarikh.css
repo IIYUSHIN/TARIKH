@@ -613,7 +613,7 @@ dialog.modal::backdrop{background:rgba(11,11,11,.45)}
 /* Mark: a red calendar leaf with two binding holes and the Devanagari ता. Wordmark: the i is dotted with the red square. */
 .mark{width:30px;height:32px;flex:none;display:block}
 .brand{gap:11px}
-.brand .wm{font-weight:800;font-size:21px;letter-spacing:-.035em;line-height:1;position:relative}
+.brand .wm{font-family:var(--sans);font-weight:800;font-size:21px;letter-spacing:-.035em;line-height:1;position:relative;color:#fff}
 .brand .wm .i{position:relative;display:inline-block}
 .brand .wm .i::after{content:'';position:absolute;left:50%;top:.02em;width:.2em;height:.2em;background:var(--red);transform:translateX(-50%)}
 .brand .hi{font-family:var(--deva);font-size:16px;color:#8D8D87;margin-left:1px}
@@ -681,7 +681,8 @@ body.menu-open .scrim{opacity:1;pointer-events:auto}
 .auth{min-height:100vh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);background:var(--bk)}
 .auth-art{position:relative;overflow:hidden;color:#fff;padding:40px clamp(24px,4vw,56px);display:flex;flex-direction:column;justify-content:space-between}
 .auth-art .quote{color:#fff;max-width:14ch;font-size:clamp(30px,3.4vw,48px)}
-.auth-art .pad{position:absolute;right:-30px;bottom:-40px;--lw:320px;transform:rotate(-7deg)}
+.auth-art .pad{position:absolute;right:-28px;bottom:-70px;--lw:230px;transform:rotate(-7deg)}
+.auth-art>div,.auth-art>p{position:relative;z-index:2}
 .auth-form{background:#fff;border-radius:28px 0 0 28px;display:flex;align-items:center;justify-content:center;padding:48px clamp(20px,5vw,80px)}
 .auth-form form{width:100%;max-width:420px;display:grid;gap:18px}
 .auth-form h1{font-weight:800;font-size:clamp(32px,3.4vw,44px);letter-spacing:-.04em;line-height:1}
