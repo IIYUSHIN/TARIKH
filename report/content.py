@@ -306,7 +306,7 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
     add(("fig", "flow", "fig_workflow.png", "The six steps of a matter. Shaded steps are decisions taken by a person.", 5.4))
     add(("h2", "Choice of Azure services"))
     add(("p", "Each service was chosen for one job and tied to the AI-901 skill it exercises {c:exam}, as in {tab:svc}. The student subscription permits a fixed list of regions: "
-              "Central India, East Asia, Korea Central, UAE North and Indonesia Central. Of these, Korea Central and UAE North offer the Foundry Agent Service {c:reg}, and none offers "
+              "Central India, East Asia, Korea Central, UAE North and Indonesia Central. Of these, Korea Central and UAE North offer the Foundry Agent Service {c:reg}, Speech lists Korea Central among its regions {c:spreg}, and none offers "
               "Content Understanding, which is listed in twelve other regions {c:curg}. Tarikh is therefore deployed in **Korea Central**. Papers are read by the deployed vision model, "
               "which fills the same fields through a strict JSON schema; because that reading carries no location on the page, every value it returns is flagged for the advocate to check "
               "against the paper. The Content Understanding reader remains in the code and is selected by one setting where the region allows it (decision record 0006)."))
