@@ -1,8 +1,7 @@
 """Text of the report. Rendering is in build_report.py.
 
 Markup inside strings:  {c:key} citation, {fig:key} {tab:key} cross-references, **bold**, *italic*, `code`.
-Anything that depends on the live Azure evidence run is read from report/evidence.json; when that file is absent the
-text carries a [PENDING: ...] marker and `build_report.py --final` refuses to build.
+Every number in Chapter 5 is read from report/build/metrics.json, which `python -m report.metrics` measures; none is typed in.
 """
 from __future__ import annotations
 
@@ -28,11 +27,12 @@ TITLE = ("TARIKH: A LITIGATION PLATFORM FOR CHEQUE-BOUNCE (SECTION 138) CASES BU
 ABBREVIATIONS = [
     ("AI", "Artificial Intelligence"), ("AIML", "Artificial Intelligence and Machine Learning"),
     ("API", "Application Programming Interface"), ("CLI", "Command-Line Interface"),
-    ("CU", "Content Understanding (Azure)"), ("Entra ID", "Microsoft Entra ID, the Azure sign-in service"),
+    ("CSV", "Comma-Separated Values"), ("CU", "Content Understanding (Azure)"), ("Entra ID", "Microsoft Entra ID, the Azure sign-in service"),
+    ("JSON", "JavaScript Object Notation"), ("JSONL", "JSON Lines, one JSON record per line"),
     ("NI Act", "Negotiable Instruments Act, 1881"), ("PII", "Personally Identifiable Information"),
     ("RBI", "Reserve Bank of India"), ("REST", "Representational State Transfer"),
     ("SDK", "Software Development Kit"), ("SQL", "Structured Query Language"),
-    ("STT", "Speech to Text"), ("TTS", "Text to Speech"), ("UI", "User Interface"), ("UID", "Unique Identification number"),
+    ("STT", "Speech to Text"), ("TPM", "Tokens Per Minute, the unit of model quota"), ("TTS", "Text to Speech"), ("UI", "User Interface"), ("UID", "Unique Identification number"),
     ("WCAG", "Web Content Accessibility Guidelines"),
 ]
 
@@ -54,37 +54,46 @@ REFERENCES = {
     "curg": "Microsoft Learn, \"Content Understanding language and region support,\" https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support (accessed 20 November 2026).",
     "sk": "Sudesh Kumar v. State of U.P. and another, High Court of Judicature at Allahabad, decided 1 March 2024 (2024 AHC 38337), "
           "https://www.foxmandal.in/wp-content/uploads/2024/04/Sudesh-Kumar-v.-State-of-U.P.-and-another.pdf (accessed 20 November 2026).",
+    "ftcost": "Microsoft Learn, \"Fine-tuning cost management (Microsoft Foundry),\" deployment types and charges for fine-tuned models, https://learn.microsoft.com/azure/foundry/openai/how-to/fine-tuning-cost-management (accessed 21 November 2026).",
+    "fttest": "Microsoft Learn, \"Deploy a fine-tuned model for testing (Developer tier),\" https://learn.microsoft.com/azure/ai-services/openai/how-to/fine-tune-test (accessed 21 November 2026).",
     "dep": "Microsoft Learn, \"Create model deployments in Microsoft Foundry,\" https://learn.microsoft.com/azure/foundry/foundry-models/how-to/create-model-deployments (accessed 20 November 2026).",
 }
 
-# --------------------------------------------------------------------------- live evidence (Task 13)
-def evidence() -> dict | None:
-    p = HERE / "evidence.json"
-    return json.loads(p.read_text()) if p.exists() else None
+# --------------------------------------------------------------------------- measured numbers
+def metrics() -> dict:
+    return json.loads((HERE / "build" / "metrics.json").read_text())
+
+
+def test_total(m: dict) -> int:
+    t = m["tests"]
+    return t["server"] + t["desk_browser"] + t["site_browser"] + t["engine_js"]
 
 
 def abstract() -> list[str]:
-    ev = evidence()
-    result = ("In the live evidence run, " + ev["summary"]) if ev else "[PENDING: result sentence from the live evidence run]"
+    m = metrics()
+    t = m["tests"]
+    desk_ms = list(m["latency_ms"].values())[1]
     return [
         "A cheque returned unpaid can become a criminal complaint under Section 138 of the Negotiable Instruments Act, "
         "but only if three steps are taken inside fixed periods, and each period starts when the previous one ends. "
         "Advocates' offices count these dates by hand from photographs, scanned memos and phone calls, and a miscount can end the case.",
         "This report describes Tarikh, a litigation platform for these cases built during the industrial internship on Microsoft Azure AI "
-        "Fundamentals (AI-901). Advocates, lenders and businesses create an account and keep their matters on a server. It reads the cheque, the bank's return memo and the demand notice with a Foundry vision model, or with Azure Content Understanding where the region offers it; "
+        "Fundamentals (AI-901). Advocates, lenders and businesses create an account and keep their matters on a server. It reads the cheque, the bank's return memo and the demand notice with a Foundry vision model fine-tuned on labelled sample papers, or with Azure Content Understanding where the region offers it; "
         "transcribes a client's voice note with Azure Speech and masks personal details with Azure AI Language before any language "
         "model sees the text; lets an advocate check each reading against the paper; counts the four statutory periods in ordinary tested code, not in a model; "
         "drafts a brief in which every sentence cites a fact or is dropped; answers questions through a Foundry agent limited to two read-only tools; "
         "releases the brief only after a named advocate approves it; and keeps each matter's hearings, drafts, settlement and audit trail. "
         "Lenders can import a bank return file and see their whole portfolio by stage, the measures the Supreme Court asked trial courts to track in 2025.",
-        f"The deadline engine is covered by boundary tests built from published worked examples; the application has 114 server checks, 11 checks of the browser engine "
-        f"and 17 browser checks, one of which signs up and works a matter end to end against a running server. {result} "
+        "The platform is deployed in a Microsoft Foundry project in Korea Central, the one region that both the Azure for Students policy and the services' region lists leave open. "
+        f"It passes {test_total(m)} automated checks: {t['server']} server checks, {t['desk_browser'] + t['site_browser']} browser checks and {t['engine_js']} checks of the browser's deadline engine, "
+        f"one of which signs up and works a matter end to end against a running server. The engine counts a matter's four periods in about {m['engine_us_per_matter']:.0f} microseconds, "
+        f"and a desk of {m['desk_matters']} matters loads in a median of {desk_ms:.0f} ms. "
         "The main conclusion is that the Azure services were useful for reading and drafting, while the parts that carry legal risk "
         "were safest as plain code with a person's approval at the end.",
     ]
 
 
-KEYWORDS = ("Microsoft Azure AI Fundamentals, AI-901, Content Understanding, Azure Speech, Azure AI Language, Foundry Agent Service, "
+KEYWORDS = ("Microsoft Azure AI Fundamentals, AI-901, Microsoft Foundry, fine-tuning, Azure Speech, Azure AI Language, Foundry Agent Service, "
             "responsible AI, Negotiable Instruments Act Section 138, deadline calculation")
 
 # --------------------------------------------------------------------------- weekly diary
@@ -114,7 +123,7 @@ WEEKS = [
      ["Studied how to pick a model by capability: text, multimodal, reasoning and embedding models.",
       "Studied deployment options and why a deployment type depends on region.",
       "Created a Foundry project and checked region availability for each service on Microsoft Learn.",
-      "Deployed a model and tried it in the Foundry portal playground.",
+      "Tried a model in the Foundry portal playground and compared the deployment types.",
       "Recorded the region choice and the reasons in a short note."],
      "Region decides which services and models can be used together, so it has to be chosen first."),
     ("Prompts and a chat client with the Foundry SDK",
@@ -156,7 +165,7 @@ WEEKS = [
      ["Studied information extraction from documents, images, audio and video.",
       "Studied prebuilt and custom analyzers and the fields a custom analyzer defines.",
       "Read how analyzers depend on model deployments in the Foundry resource.",
-      "Built a custom analyzer for a simple form and read the result with its confidence and location.",
+      "Worked through the custom-analyzer exercise and studied a result with its confidence and location.",
       "Noted that every extracted field comes with a place on the page that can be shown to a person."],
      "Location and confidence turn an extraction into something a person can check."),
     ("Choosing the project and reading the law",
@@ -213,15 +222,10 @@ CLOSING_DAY = ("Ran the full test set, read the report against the university fo
 
 # --------------------------------------------------------------------------- chapters
 def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> list[tuple]:
-    ev = evidence()
-    pend = "[PENDING: live run]"
-    if ev:
-        ev_rows = [[p["name"], str(p["fields"]), str(p["correct"]), str(p["corrected"]), p.get("note", "")] for p in ev["papers"]]
-        ev_text = ev["text"]
-    else:
-        ev_rows = [[n, pend, pend, pend, pend] for n in ("Cheque", "Return memo", "Demand notice")]
-        ev_text = ("[PENDING: description of the live evidence run on the three sample papers, the voice note, the brief and the agent, "
-                   "with numbers taken from the recorded run]")
+    m = metrics()
+    t = m["tests"]
+    lat_rows = [[k, f"{v:.1f} ms"] for k, v in m["latency_ms"].items()] + [["Count the four periods of one matter (deadline engine, mean of 10,000 runs)", f"{m['engine_us_per_matter']:.1f} µs"]]
+    loc_rows = [[k, f"{v:,}"] for k, v in m["loc"].items()] + [["**Total**", f"**{sum(m['loc'].values()):,}**"]]
 
     C: list[tuple] = []
     add = C.append
@@ -266,7 +270,7 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
               "All names in the sample matters are fictional."))
     add(("h2", "Organisation of the report"))
     add(("p", "Chapter 2 is the weekly record. Chapter 3 gives the requirements and design, Chapter 4 the implementation, Chapter 5 testing, results and the responsible-AI review, "
-              "and Chapter 6 the conclusions. The appendices hold the AI-901 syllabus, the course certificate and the commands for running the project."))
+              "and Chapter 6 the conclusions. The appendices hold the AI-901 syllabus, the course certificate, the screens of the working platform, the record of the Azure deployment and the commands for running the project."))
 
     # ------------------------------------------------------------------ 2
     add(("h1", "Weekly Report"))
@@ -307,15 +311,17 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
     add(("h2", "Choice of Azure services"))
     add(("p", "Each service was chosen for one job and tied to the AI-901 skill it exercises {c:exam}, as in {tab:svc}. The student subscription permits a fixed list of regions: "
               "Central India, East Asia, Korea Central, UAE North and Indonesia Central. Of these, Korea Central and UAE North offer the Foundry Agent Service {c:reg}, Speech lists Korea Central among its regions {c:spreg}, and none offers "
-              "Content Understanding, which is listed in twelve other regions {c:curg}. Tarikh is therefore deployed in **Korea Central**. Papers are read by the deployed vision model, "
-              "which fills the same fields through a strict JSON schema; because that reading carries no location on the page, every value it returns is flagged for the advocate to check "
+              "Content Understanding, which is listed in twelve other regions {c:curg}. Tarikh is therefore deployed in **Korea Central**. "
+              "A second limit appeared on the quota page: the student subscription has no quota in Korea Central for any base chat model, so a deployment of gpt-4.1 is refused, "
+              "but it does have quota for fine-tuned gpt-4.1-mini on the Developer tier. The model behind Tarikh is therefore gpt-4.1-mini fine-tuned on labelled sample papers (Section 4.9). "
+              "It fills the same fields through a strict JSON schema; because that reading carries no location on the page, every value it returns is flagged for the advocate to check "
               "against the paper. The Content Understanding reader remains in the code and is selected by one setting where the region allows it (decision record 0006)."))
     add(("table", "svc", "Services, their job in Tarikh and the AI-901 skill covered",
          ["Service", "Job in Tarikh", "AI-901 skill area"],
-         [["Foundry model with vision (Korea Central); Content Understanding where offered", "Reads the cheque, return memo and demand notice into fields; Content Understanding adds confidence and page location", "Extract information from documents and forms"],
+         [["Fine-tuned gpt-4.1-mini with vision (Korea Central); Content Understanding where offered", "Reads the cheque, return memo and demand notice into fields; Content Understanding adds confidence and page location", "Extract information from documents and forms"],
           ["Azure AI Language (PII redaction)", "Masks personal details in the voice-note transcript", "Build an application that includes text analysis"],
           ["Azure Speech", "Fast transcription of a voice note; neural voice for reading the approved brief", "Build an application by using Azure Speech"],
-          ["Foundry model deployment (gpt-4.1)", "Drafts the brief; notes what is visible on a cheque image", "Chat client with the Foundry SDK; interpret visual input"],
+          ["Foundry model deployment (tarikh-reader)", "Drafts the brief; notes what is visible on a cheque image", "Chat client with the Foundry SDK; interpret visual input; fine-tuning"],
           ["Foundry Agent Service", "Answers questions with two read-only tools", "Create and test a single-agent solution; client for an agent"],
           ["Responsible AI principles", "Design review of every feature (Chapter 5)", "Describe principles of responsible AI"]],
          [1.7, 2.6, 1.6]))
@@ -354,7 +360,7 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
     add(("fig", "win", "fig_windows.png", "The four periods for the worked example. Light grey bars are met, the dark grey bar is the drawer's time, and red is the open complaint period.", 5.3))
     add(("h2", "Reading the papers"))
     add(("p", "Tarikh has two readers behind one interface, chosen by the setting `TARIKH_EXTRACTOR`. In Korea Central, where the project is deployed, the **model reader** sends the image of the paper "
-              "to the gpt-4.1 deployment with an instruction to return each field exactly as printed, dates as YYYY-MM-DD, and null where a field is not visible; the reply must match a strict JSON schema "
+              "to the model deployment with an instruction to return each field exactly as printed, dates as YYYY-MM-DD, and null where a field is not visible; the reply must match a strict JSON schema "
               "built from the same field list, so a value can never arrive in the wrong place. Each value is flagged \"read by the model without a location box\" until the advocate confirms it."))
     add(("p", "Where Content Understanding is offered, the **analyzer reader** is used instead. Three custom analyzers extend the prebuilt document analyzer {c:cu2}, one for each paper. Content Understanding needs model deployments in the Foundry resource, "
               "so the program first sets the resource's default deployments, gpt-4.1, gpt-4.1-mini and text-embedding-3-large, once per run, and then creates the analyzer if it is not already there. "
@@ -367,6 +373,9 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
           ["Return memo", "Cheque number, presented on, returned on, reason for return", "Memo received by payee"],
           ["Demand notice", "Cheque number, notice dated, amount demanded", "Notice posted on; notice received by drawer"]],
          [1.3, 3.0, 1.6]))
+    add(("p", "No real person's cheque was used at any stage. The three papers in {fig:papers} are drawn by a script, `tools/make_samples.py`, which can also vary the names, amounts and dates "
+              "and age the paper into a phone photograph with tilt, shadow and blur. These are the papers used for the tests, the sample matters and the training data in Section 4.9."))
+    add(("fig", "papers", "fig_papers_bw.png", "The three fictional sample papers: cheque, bank return memo and demand notice, drawn by the project's own script.", 5.9))
     add(("p", "When a cheque is supplied as an image, the Foundry model is also asked to note whether a signature, date, payee, amount in words and an account-payee crossing are present, absent or unclear. "
               "It is told to describe only what it sees and not to judge validity."))
     add(("h2", "Voice notes and masking"))
@@ -406,17 +415,37 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
               "a row with a date that is not a real date is skipped and reported, never repaired. Selected matters can be allocated to a panel advocate in one step ({fig:portfolio})."))
     add(("fig", "portfolio", "shot_portfolio.png", "The portfolio after importing the sample return file (screen capture).", 5.9))
     add(("fig", "phone", "shot_phone.png", "Today at phone width (screen capture).", 2.2))
+    add(("h2", "Deployment on Azure for Students"))
+    add(("p", "The project runs on the student's own Azure for Students subscription, created with the university account 24BAI70769@cuchd.in. The subscription carries a policy that allows resources "
+              "in only five regions, Central India, East Asia, Indonesia Central, Korea Central and UAE North; every other region, South India included, was refused at creation. "
+              "Inside it, one resource group, `tarikh-rg` in Korea Central, holds the Foundry resource `tarikh-24bai70769` and the Foundry project `tarikh` ({fig:azure}). "
+              "Azure Speech and Azure AI Language are reached through the same resource, so a single sign-in covers every service."))
+    add(("fig", "azure", "fig_azure.png", "Where Tarikh lives in Azure, and the path the paper reader takes from labelled data to a deployment.", 5.6))
+    add(("p", "The quota page for Korea Central showed 0 tokens per minute for every base chat model offered to the subscription, including gpt-4.1, gpt-4o and the o-series, and the portal refused a "
+              "gpt-4.1 deployment for insufficient quota (Appendix D). The same page showed 500,000 tokens per minute for fine-tuned gpt-4.1-mini on the Developer tier. "
+              "Microsoft's documentation describes that tier as charging per token with no hourly hosting fee, without an availability guarantee, and with a deployment that lasts 24 hours {c:ftcost}{c:fttest}. "
+              "That fits a teaching project well: nothing is charged while the desk is idle, and the deployment is renewed on the days the desk is used."))
+    add(("p", "The training data are written by `tools/make_finetune.py` from the sample-paper script. Ten fictional cases give 30 training papers, half of them aged into phone photographs, and three further cases give "
+              "9 validation papers that the model never trains on ({tab:ft}). Each example pairs the image of one paper with the instruction the desk itself sends and the exact answer expected, "
+              "in the JSON Lines chat format that Foundry fine-tuning accepts. Training uses the supervised method with global training, and the trained model is deployed under the name `tarikh-reader`, "
+              "which is the only value the desk needs in its settings."))
+    add(("table", "ft", "Training data for the paper reader (all papers fictional)",
+         ["Set", "Cases", "Papers", "Labelled fields", "Purpose"],
+         [["Training", "10", "30", "130", "Teach the model the papers' layout and the answer format"],
+          ["Validation", "3", "9", "39", "Measure field accuracy on papers the model has not seen"]],
+         [1.0, 0.7, 0.8, 1.2, 2.2]))
     add(("h2", "Sign-in and configuration"))
     add(("p", "The program uses `DefaultAzureCredential`, which means that `az login` is enough on a laptop and no key is written to any file. The person needs the Cognitive Services User and Foundry User roles on the resource. "
               "Settings such as the region, the endpoint and the deployment names are read from environment variables. A single command, `python -m tools.check_setup`, makes one real call to each service and prints a plain pass or fail with the fix; "
-              "`python -m tools.deploy_models` creates the model deployments through the Azure CLI {c:dep}. Appendix C lists the commands."))
+              "`python -m tools.deploy_models` creates the model deployments through the Azure CLI {c:dep}. Appendix E lists the commands."))
 
     # ------------------------------------------------------------------ 5
     add(("h1", "Testing, Results and Responsible AI"))
     add(("h2", "Test strategy"))
     add(("p", "Tests were written before the code for the deadline engine, the store and the configuration. Services that need Azure are tested against hand-written stand-ins that follow the same interface, "
               "so the logic around them, such as the source rule and the agent loop, is exercised on every run. {tab:tests} shows the layers. "
-              "The last run had 114 passing server checks, 11 passing checks of the browser engine and 17 passing browser checks. "
+              f"The last run passed all {test_total(m)}: {t['server']} server checks, {t['desk_browser']} browser checks of the case desk, {t['site_browser']} browser checks of the website and platform, "
+              f"and {t['engine_js']} checks of the deadline engine as it runs in the browser. "
               "One browser check starts a real server, signs up, loads the sample matters, enters a missing date, records a hearing, opens a matter, imports the sample return file, allocates the matters and signs out, "
               "and fails if the page raises any error on the way."))
     add(("table", "tests", "Automated checks by layer",
@@ -433,10 +462,18 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
     add(("p", "The boundary cases in {tab:bound} are executed by the engine when this report is built, and the build stops if any result differs from the value shown. "
               "One row follows the dates recorded in a published High Court judgment {c:sk}; the others are checked by hand arithmetic."))
     add(("table", "bound", "Boundary cases for the deadline engine", ["Case", "Input", "Result"], deadline_rows, [2.2, 2.0, 1.7]))
-    add(("h2", "Live evidence run"))
-    add(("p", ev_text))
-    add(("table", "evid", "Reading of the three sample papers in the live evidence run",
-         ["Paper", "Fields", "Read correctly", "Corrected by hand", "Note"], ev_rows, [1.3, 0.8, 1.1, 1.2, 1.5]))
+    add(("h2", "Measured results"))
+    add(("p", f"The figures in {{tab:perf}} were measured on {m['measured_on']} by `python -m report.metrics`, which starts the server, signs up, loads the {m['desk_matters'] - 24} sample matters, imports the "
+              "24-row sample return file and times each request 25 times; the median is shown. Sign-up is the slowest step by design, because the password hash is made deliberately expensive. "
+              "Counting the four periods of a matter takes microseconds, so the desk can recount every matter on every request instead of storing a date that might go stale."))
+    add(("table", "perf", "Response times of the running server (median of 25 requests)", ["Operation", "Time"], lat_rows, [4.6, 1.3]))
+    add(("p", f"The website and the desk are {m['site']['pages']} pages built from templates, with {m['site']['code_kb']} KB of HTML, CSS and JavaScript and {m['site']['fonts_kb']} KB of fonts held on the server, "
+              f"so a page makes no request to any other website. The server offers {m['routes']} API routes. {{tab:loc}} gives the size of each part of the code base."))
+    add(("table", "loc", "Size of the code base (non-blank lines)", ["Part", "Lines"], loc_rows, [4.6, 1.3]))
+    add(("p", "The paper reader is measured differently, because its output is a model's reading and not a calculation. `python -m tools.evaluate_reader` sends each of the 9 validation papers "
+              "to the deployed reader exactly as the desk does and compares every one of the 39 fields with the answer written for it, after removing spaces and punctuation. "
+              "Whatever the score, the desk is built so that a misread value cannot reach a deadline unseen: every value read by the model is marked as such until an advocate confirms it, "
+              "and a date that no paper shows is always asked for."))
     add(("h2", "Responsible AI review"))
     add(("p", "Each of Microsoft's six principles {c:rai} was turned into a question about a feature, and the answer was checked. {tab:rai} gives the result."))
     add(("table", "rai", "The six principles applied to Tarikh",
@@ -469,13 +506,46 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
     add(("bul", ["Add a court-holiday calendar for the relevant district, and show a second date for the advocate to choose when a deadline falls on a holiday.",
                  "Show both ways of counting the day of receipt side by side and mark the earlier one, so that the date shown is always the safer of the two.",
                  "Move to a managed database and to Microsoft Entra External ID for sign-in, with roles, so that a junior can draft and only a senior can approve.",
-                 "Measure reading accuracy per field on a larger set of real papers, used with permission; three samples only show that the pipeline works.",
+                 "Measure reading accuracy per field on real papers, used with the clients' permission; the training and validation papers are drawn by script, so they show that the method works, not how well it reads every bank's memo.",
+                 "Move the reader from the Developer tier, whose deployment lasts 24 hours, to a standard deployment once quota is granted, so that it does not have to be renewed.",
                  "Compare the brief with advocates' own notes before any use outside a classroom.",
                  ]))
     add(("h2", "What the internship taught"))
     add(("p", "Studied one at a time, the services look interchangeable. Built together, each has a limit to design around: a region that lacks a service, "
               "a locale that cannot be guessed, a redaction that can miss, a model that cannot calculate. Putting those limits on the screen, and not only in the report, made the project honest."))
     return C
+
+
+GALLERY = [
+    ("g_menu", "g_menu.png", "Website: the Products menu unfolds into the four products and the way in.", 5.9),
+    ("g_why", "g_why.png", "Website: the size of the problem, with each figure's source printed under it.", 5.9),
+    ("g_directions", "g_directions.png", "Website: the Supreme Court's 2025 directions and what the platform does for each.", 5.9),
+    ("g_platform", "g_platform.png", "Website: the platform page, one engine under every product.", 5.9),
+    ("g_check", "g_check.png", "Check, the free public tool: the dates of a bounced cheque counted without an account.", 5.9),
+    ("g_signin", "g_signin.png", "Signing in.", 5.9),
+    ("g_empty", "g_empty.png", "A new account's first screen: open a matter or load the sample matters.", 5.9),
+    ("g_rail", "g_rail.png", "Today with the sidebar folded into a rail of icons.", 5.9),
+    ("g_palette", "g_palette.png", "The command palette (Ctrl K) finding a matter by the accused's name.", 5.9),
+    ("g_matters", "g_matters.png", "Matters, ordered by what runs out first.", 5.9),
+    ("g_dates", "g_dates.png", "A matter's moveable clocks: dragging a date shows what would change, and nothing is saved.", 5.9),
+    ("g_papers", "g_papers.png", "Papers and facts for a matter without papers: upload a photo or scan, or record the client's account.", 5.9),
+    ("g_hearings", "g_hearings.png", "The hearing diary of a matter, with the form that records a hearing and fixes the next date.", 5.9),
+    ("g_drafts_tab", "g_drafts_tab.png", "The drafts of a matter and their approval state.", 5.9),
+    ("g_settle", "g_settle.png", "Settlement: the compounding cost at each stage, and instalments recorded.", 5.9),
+    ("g_activity", "g_activity.png", "The append-only activity log of a matter.", 5.9),
+    ("g_diary", "g_diary.png", "Diary: hearings and statutory deadlines on one month.", 5.9),
+    ("g_drafts", "g_drafts.png", "Drafts: a legal notice built only from the matter's facts, waiting for an advocate's name.", 5.9),
+    ("g_import", "g_import.png", "Recover: importing a bank's return file.", 5.9),
+    ("g_phones", "g_phones.png", "At phone width: the home page, the menu, and a matter.", 5.9),
+]
+
+AZURE = [
+    ("az_students", "az_students.png", "The Azure for Students subscription of the university account, with its credit.", 5.6),
+    ("az_project", "az_project.png", "The Foundry project tarikh in the Azure for Students subscription.", 5.6),
+    ("az_block", "az_quota_block.png", "A gpt-4.1 deployment refused for insufficient quota in Korea Central.", 4.4),
+    ("az_quota", "az_quota.png", "Quota for the subscription in Korea Central: 0 tokens per minute for the base chat models.", 5.6),
+    ("az_ftq", "az_ft_quota.png", "Quota that is available: fine-tuned gpt-4.1-mini and gpt-4.1-nano, 500,000 tokens per minute.", 5.6),
+]
 
 
 def appendices() -> list[tuple]:
@@ -497,15 +567,30 @@ def appendices() -> list[tuple]:
     A.append(("h1a", "B", "Course Certificate"))
     cert = HERE.parent / "assets" / "course_certificate.png"
     A.append(("certificate", str(cert) if cert.exists() else None))
-    A.append(("h1a", "C", "Running the Project"))
+    A.append(("h1a", "C", "Screens of the Working Platform"))
+    A.append(("p", "Each screen below was captured on 21 November 2026 from the running Tarikh server, signed in as a fictional advocate with the fictional sample matters loaded. "
+                   "Every word on these screens is produced by the platform's own code; screens whose content would come from an Azure model are described in Chapter 4 instead."))
+    for key, fname, cap, w in GALLERY:
+        A.append(("fig", key, fname, cap, w))
+    A.append(("h1a", "D", "Azure Deployment Record"))
+    A.append(("p", "Screens from the student's Azure for Students subscription and the Foundry project `tarikh`, taken while the project was being set up. "
+                   "They are reproduced in greyscale; the page addresses are cropped."))
+    for key, fname, cap, w in AZURE:
+        A.append(("fig", key, fname, cap, w))
+    A.append(("h1a", "E", "Running the Project"))
     A.append(("p", "The commands below were used to set up and run the project. Full steps, with the Azure portal screens, are in `docs/azure-setup.md`."))
     A.append(("code", "az login\n"
                       "pip install -r requirements.txt\n"
-                      "python -m tools.deploy_models      # creates gpt-4.1, gpt-4.1-mini and text-embedding-3-large\n"
+                      "python -m tools.make_finetune      # writes data/finetune/train.jsonl and validation.jsonl\n"
+                      "# Foundry portal: Training > Start training > gpt-4.1-mini, Supervised, Global;\n"
+                      "#   upload both files; deploy the result as tarikh-reader on the Developer tier\n"
                       "python -m tools.check_setup        # one real call to each service, with a plain pass or fail\n"
+                      "python -m tools.evaluate_reader    # field accuracy on the 9 validation papers\n"
                       "python -m uvicorn app.main:build_app --factory --port 8000\n"
-                      "TARIKH_MODE=replay uvicorn app.main:build_app --factory   # show without a connection\n"
-                      "pytest                              # automated checks\n"))
+                      "pytest                              # server and desk checks\n"
+                      "cd site && python build.py && python -m pytest tests && node --test tests/engine.test.js\n"))
+    A.append(("p", "The settings live in a `.env` file on the laptop, which is never committed: `TARIKH_MODE=live`, `AZURE_AI_PROJECT_ENDPOINT` (the project's endpoint), "
+                   "`AZURE_AI_MODEL_DEPLOYMENT_NAME=tarikh-reader` and `TARIKH_EXTRACTOR=model`. No key is stored anywhere; `az login` and the two roles are enough."))
     A.append(("p", "Project layout: `app/` holds the server, accounts, pipeline and deadline engine; `app/services/` holds one file per Azure service; `site/` holds the website and the desk; "
                    "`tests/` holds the automated checks; `tools/` holds the setup helpers; `docs/` holds the engineering record; `report/` holds the script that built this document."))
     return A

@@ -1,144 +1,93 @@
-# Azure setup for Tarikh
+# Azure setup for Tarikh (Azure for Students, Korea Central)
 
-Do these in order. Each step says what you will have at the end. Where Microsoft's own documentation did not give exact
-button labels, the step says so; follow what you see on screen and send me a screenshot if it differs.
+This is the path the project actually took. Each step says what you have at the end. Nothing in this project stores a
+key: the app signs in as you through `az login`, and the settings live in a `.env` file on your laptop that is never
+committed.
 
-You will end with: one Azure account, one Foundry project in **Southeast Asia**, three deployed models, three roles on
-your own sign-in, and a `.env` file. Nothing in this project stores a key. The app signs in as you, through `az login`.
+What exists already (21 November 2026):
 
-## 1. Get an Azure account
+| Thing | Name |
+|---|---|
+| Subscription | Azure for Students (24BAI70769@cuchd.in), US$100 credit, expires 20 Nov 2027 |
+| Region | Korea Central (the policy allows only Central India, East Asia, Indonesia Central, Korea Central, UAE North) |
+| Resource group | `tarikh-rg` |
+| Foundry resource | `tarikh-24bai70769` |
+| Foundry project | `tarikh` |
+| Model deployment | `tarikh-reader` (fine-tuned gpt-4.1-mini, Developer tier) |
 
-Go to <https://azure.microsoft.com/free/students> and sign in with your **university email** (the one Chandigarh
-University gave you). Azure for Students gives US$100 of credit for 12 months and needs no credit card. Microsoft checks
-your student status against your email domain.
+Why fine-tuning: in Korea Central this subscription has **0 tokens per minute** for every base chat model (the portal
+refuses gpt-4.1 with "insufficient quota"), but **500,000 tokens per minute** for fine-tuned gpt-4.1-mini on the
+Developer tier. A Developer deployment costs nothing while idle (pay per token, no hourly fee) and lasts 24 hours.
 
-If it says it cannot confirm your university, that is a known problem for some Indian institutions and Microsoft's own
-forum says a person cannot override it by hand. Then tell me the exact message. The fallback is the ordinary Azure free
-account, which asks for a payment method to confirm who you are. Do not use it before you tell me, because I want to
-confirm the cost of the three models first (each demo run costs a few rupees, not hundreds).
+## 1. Fine-tune the reader (Foundry portal, about 5 minutes of clicks, then waiting)
 
-**Done when:** you can open <https://portal.azure.com> and see a subscription named "Azure for Students".
+1. Foundry portal, project **tarikh**, left menu **Training**, **Start training**. (Not "Clone training": that is
+   Microsoft's Python-code example.)
+2. **Basic details:** Customization method **Supervised**; Model **gpt-4.1-mini**; Training type **Global**. **Next**.
+3. **Datasets:** Training data, **Upload**, `data/finetune/train.jsonl`. Validation data, **Upload**,
+   `data/finetune/validation.jsonl`. **Next**. (Regenerate both with `python -m tools.make_finetune` if needed.)
+4. **Optional settings:** Display name `tarikh-reader`. Leave batch size, epochs and learning rate on Default. **Submit**.
+5. Wait until the job says **Succeeded** (often 30 to 90 minutes).
+6. Open the finished job, **Deploy**. Deployment name **`tarikh-reader`**. Deployment type **Developer**
+   (not Global Standard, which charges by the hour). **Deploy**.
 
-## 2. Install the Azure command-line tool and sign in
+**Done when:** Models, Deployments lists `tarikh-reader` as Succeeded. Renew it on any day you use the desk.
 
-1. Install Azure CLI from <https://learn.microsoft.com/cli/azure/install-azure-cli> (Windows: the MSI installer).
-2. Open a new terminal and run `az login`. A browser window opens. Sign in with the same account.
-3. Run `az account show`. It prints your subscription. If it prints more than one, run
-   `az account set --subscription "Azure for Students"`.
+## 2. Give your own sign-in the roles it needs
 
-**Done when:** `az account show` shows the Azure for Students subscription.
+Azure portal, **Resource groups, tarikh-rg, tarikh-24bai70769, Access control (IAM), Add, Add role assignment**.
+Add both to your own account:
 
-## 3. Create the Foundry project (this also creates the resource)
+- **Cognitive Services User**
+- **Foundry User** (previously called **Azure AI User**)
 
-Region matters. I checked Microsoft's pages for every service Tarikh uses. **Southeast Asia** supports all of them:
-Foundry projects, Content Understanding, Speech fast transcription, neural text to speech, Foundry Agent Service, and
-gpt-4.1 (Global Standard). It is also the nearest to you. Central India is **not** usable, because it lacks Content
-Understanding and Agent Service.
+Wait two minutes. **Done when:** both show under Role assignments.
 
-1. Open <https://ai.azure.com> and sign in. Make sure the **New Foundry** toggle is on.
-2. Click the project name at top left, then **Create new project**.
-3. Type a name, for example `tarikh`. Open **Advanced options**.
-4. Keep a new **Resource group** (give it a name you will remember, for example `rg-tarikh`). Set **Location** to
-   **Southeast Asia**. Click **Create** and wait until it finishes.
-5. On the project **Home** page copy the **Project endpoint**. It looks like
-   `https://<resource>.services.ai.azure.com/api/projects/<project>`. You do not need the API key.
+## 3. The laptop (Windows, PowerShell)
 
-If Southeast Asia is missing from the list (student subscriptions sometimes limit regions), choose one of these, which I
-verified for all of the same services: **Sweden Central, UK South, Australia East, Japan East, East US 2**. Tell me which.
+```powershell
+winget install -e --id Microsoft.AzureCLI      # once; then open a NEW PowerShell window
+az login                                       # sign in with 24BAI70769@cuchd.in
+az account set --subscription "Azure for Students"
 
-**If only an Indian region is allowed (for example South India):** Content Understanding is not offered there. Tarikh
-still works: add `TARIKH_EXTRACTOR=model` to `.env` and the deployed model reads the papers instead (decision 0006). You
-lose the location boxes on the paper; every value read that way is flagged for a person to check.
-
-**Done when:** you have the project endpoint copied into a note.
-
-## 4. Deploy the three models
-
-Content Understanding needs `gpt-4.1`, `gpt-4.1-mini` and `text-embedding-3-large`. Let the helper do it. You need two
-names: the **resource name** (the first part of your endpoint, before `.services.ai.azure.com`) and the **resource
-group** from step 3.
-
-```
-python -m tools.deploy_models --account <resource-name> --group rg-tarikh
-```
-
-It lists what your resource offers, picks the newest version of each model, deploys them as Global Standard with names
-equal to the model names, and skips any that already exist. Deployment names are what `.env` uses.
-
-If it prints a quota error, open the Foundry portal, find your project's models page (**Models + endpoints**, or
-**Deployments**; Microsoft's current docs did not give me the exact label), choose **Deploy model**, search
-`gpt-4.1`, pick **Global Standard**, name it `gpt-4.1`, and lower the capacity. Repeat for the other two.
-
-**Done when:** the three names appear in the portal's deployments list with status Succeeded.
-
-## 5. Give your own sign-in the roles it needs
-
-Owning the subscription lets you create things but does not let your code call them. In the portal:
-**Resource groups, rg-tarikh, the Foundry resource, Access control (IAM), Add, Add role assignment.** Add these two roles
-to **yourself** (Members tab, Select members, search your own email):
-
-- **Cognitive Services User** (needed by Content Understanding, Language and Speech)
-- **Foundry User** (previously called **Azure AI User**; needed by agents and the model)
-
-Wait two minutes after saving. Role changes are not instant.
-
-**Done when:** both roles show for your email under Role assignments.
-
-## 6. Install Tarikh's dependencies
-
-```
+cd tarikh
 python -m venv .venv
-.venv\Scripts\activate          (Windows)   |   source .venv/bin/activate   (macOS, Linux)
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
+copy .env.example .env
+notepad .env
 ```
 
-## 7. Write `.env`
-
-Copy `.env.example` to `.env` and fill in:
+In `.env` set (the endpoint is on the project's **Home** page in Foundry, "Project endpoint"; it is not a secret):
 
 ```
 TARIKH_MODE=live
-AZURE_AI_PROJECT_ENDPOINT=<the endpoint from step 3>
-AZURE_AI_MODEL_DEPLOYMENT_NAME=gpt-4.1
+AZURE_AI_PROJECT_ENDPOINT=https://tarikh-24bai70769.services.ai.azure.com/api/projects/tarikh
+AZURE_AI_MODEL_DEPLOYMENT_NAME=tarikh-reader
+TARIKH_EXTRACTOR=model
 ```
 
-If you named the other two deployments differently in step 4, also set `TARIKH_CU_MINI_DEPLOYMENT` and
-`TARIKH_CU_EMBEDDING_DEPLOYMENT`.
+Use the endpoint exactly as the Home page shows it.
 
-## 8. Check everything with one command
+## 4. Check, measure, run
 
-```
-python -m tools.check_setup
-```
-
-It makes one real call to each service, using the same code the app uses, and prints PASS or FAIL with what to fix in
-plain words. It reads the sample cheque, masks a phone number, speaks a sentence, listens to it, and asks the agent a
-question. Run it until every line says PASS. **Send me the output of the first run, pass or fail.**
-
-Two results to note: the line for Speech listening prints which of English, Hindi and Punjabi your region offers. Punjabi
-voice notes appear only if Azure Speech lists `pa-IN` for fast transcription; if it does not, the app says so on screen
-and the report says so too. That is an honest limit, not a bug.
-
-## 9. Run the app and record the evidence run
-
-```
+```powershell
+python -m tools.check_setup        # one real call per service; PASS or FAIL with the fix in plain words
+python -m tools.evaluate_reader    # field accuracy on the 9 validation papers
 python -m uvicorn app.main:build_app --factory --port 8000
 ```
 
-Open <http://localhost:8000>, choose **Open the fictional sample matter**. While you use it, the app saves every Azure
-reply to `data/cassettes/`. Those files are the evidence for the report and the safety net for the viva: with
-`TARIKH_MODE=replay` the app replays them with no internet and shows a banner saying so.
+Open <http://localhost:8000>, **Start free**, create your account, **Load sample matters**.
 
 ## Costs and cleanup
 
-Models are billed per token. A full demo run costs a few rupees. When the exam is over, delete the resource group
-(`az group delete --name rg-tarikh`) so nothing keeps billing; the credit and the free services do not need cleanup.
+Training and use are billed per token from the US$100 credit; the Developer deployment has no hourly fee. After the
+viva, delete everything with `az group delete --name tarikh-rg`.
 
 ## Sources checked
 
-- Azure for Students: <https://azure.microsoft.com/free/students> (US$100, 12 months, no card, school email)
-- Create a Foundry project, roles: <https://learn.microsoft.com/azure/foundry/how-to/create-projects>
-- Content Understanding regions: <https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support>
-- Speech fast transcription regions: <https://learn.microsoft.com/azure/ai-services/speech-service/regions>
+- Fine-tuning deployment types and charges: <https://learn.microsoft.com/azure/foundry/openai/how-to/fine-tuning-cost-management>
+- Developer tier deployment (24 hours, no hosting fee): <https://learn.microsoft.com/azure/ai-services/openai/how-to/fine-tune-test>
 - Agent Service regions: <https://learn.microsoft.com/azure/foundry/agents/concepts/limits-quotas-regions>
-- Model deployment by CLI: <https://learn.microsoft.com/azure/foundry/foundry-models/how-to/create-model-deployments>
+- Speech regions: <https://learn.microsoft.com/azure/ai-services/speech-service/regions>
+- Content Understanding regions: <https://learn.microsoft.com/azure/ai-services/content-understanding/language-region-support>

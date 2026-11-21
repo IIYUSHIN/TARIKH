@@ -40,7 +40,7 @@ def page(server):
 
 
 def open_sample(pg):
-    pg.goto(URL)
+    pg.goto(URL + "classic/")
     pg.click("text=Open the fictional sample matter")
     pg.wait_for_selector("[data-testid=clock]")
 

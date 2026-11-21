@@ -4,9 +4,9 @@ Read this twice. Answers are short on purpose: say the first sentence, then stop
 
 ## 1. The 60-second pitch
 
-Tarikh is a desk for one cheque-bounce case under Section 138 of the Negotiable Instruments Act. It reads the cheque, the bank's return memo and the demand notice with Azure Content Understanding, asks the advocate for the dates that are on no paper, counts the four statutory periods in ordinary Python, and drafts a short brief in which every sentence cites a fact. A named advocate approves it before it can be read aloud. A voice note is transcribed with Azure Speech and masked with Azure AI Language before any model sees it.
+Tarikh is a litigation platform for cheque-bounce cases under Section 138 of the Negotiable Instruments Act. Advocates and lenders create an account and keep their matters on the server. It reads the cheque, the bank's return memo and the demand notice with a gpt-4.1-mini model I fine-tuned on labelled sample papers, asks the advocate for the dates that are on no paper, counts the four statutory periods in ordinary Python, keeps hearings, drafts, settlements and an audit log, and drafts a brief in which every sentence cites a fact. A named advocate approves it before it can be read aloud. A voice note is transcribed with Azure Speech and masked with Azure AI Language before any model sees it.
 
-**Demo order (3 minutes):** open the sample matter, say "the page tells me which date is missing", type the three dates, watch the clock, drag today's marker, press Show on paper, draft the brief, point at one source chip, try Approve without a name, approve, ask the agent when to file and open its tool calls.
+**Demo order (3 minutes):** create an account, load the sample matters, read Today ("what runs out first"), open Sharma Steel Traders v. Kalra Fabricators, show the calendar leaf with the last day to file, drag a date on the clocks and say "nothing is saved", record a hearing, open Settlement, open Activity to show the audit log, then Portfolio: import the sample return file and allocate three matters. Finish on Check, the free public tool.
 
 ## 2. AI-901 concepts, each tied to something you built
 
@@ -26,11 +26,15 @@ Tarikh is a desk for one cheque-bounce case under Section 138 of the Negotiable 
 
 **System prompt versus user prompt?** The system prompt sets the rules and role (Tarikh's agent prompt forbids calculating dates). The user prompt is the question.
 
-**How did you choose the model?** By capability: gpt-4.1 handles text and images and structured output, and Content Understanding needs gpt-4.1, gpt-4.1-mini and text-embedding-3-large deployed. An embedding model turns text into numbers for similarity; it does not write text.
+**How did you choose the model?** By capability first, then by what my subscription allowed. I needed a model that reads images and returns structured output. In Korea Central my Azure for Students subscription had 0 tokens per minute for every base chat model, and the portal refused gpt-4.1 for insufficient quota. It did have 500,000 tokens per minute for fine-tuned gpt-4.1-mini on the Developer tier. So I fine-tuned gpt-4.1-mini on 30 labelled sample papers, kept 9 aside for validation, and deployed it as `tarikh-reader`.
 
-**Deployment options and configuration?** A model must be deployed to a Foundry resource before it can be called; the deployment has a name, a model and a capacity type, and availability depends on the region. I created mine with `tools.deploy_models` through the Azure CLI.
+**What is fine-tuning, and why did it help here?** Supervised fine-tuning trains a base model further on examples of input and the exact answer wanted. Each of my examples is one paper image, the same instruction the desk sends, and the JSON answer. It teaches the layout of Indian cheques, memos and notices and the answer format. The Developer tier charges per token with no hourly hosting fee, and a deployment lasts 24 hours, so I renew it on the days I use the desk.
 
-**Which AI workloads does Tarikh use?** Information extraction (Content Understanding), text analysis (PII), speech recognition and synthesis (Azure Speech), generative AI (brief), agentic AI (the two-tool agent), and a little computer vision (cheque image observations).
+**How do you know the reader is right?** I don't trust it blindly. `tools.evaluate_reader` checks all 39 fields on the 9 validation papers it never trained on. And in the desk every value read by the model is marked until an advocate confirms it, and the dates no paper shows are always asked for.
+
+**Deployment options and configuration?** A model must be deployed to a Foundry resource before it can be called; the deployment has a name, a model and a deployment type (Standard, Global Standard, Provisioned, and Developer for fine-tuned models), and availability and quota depend on the region. Mine is `tarikh-reader`, Developer tier, in the project `tarikh` of the resource `tarikh-24bai70769`, resource group `tarikh-rg`, Korea Central.
+
+**Which AI workloads does Tarikh use?** Information extraction (the fine-tuned reader; Content Understanding where the region has it), text analysis (PII), speech recognition and synthesis (Azure Speech), generative AI (brief), agentic AI (the two-tool agent), and a little computer vision (cheque image observations).
 
 **Text analysis techniques?** Keyword extraction, entity detection, sentiment analysis, summarisation, and PII detection. I used PII redaction.
 
@@ -60,7 +64,7 @@ Tarikh is a desk for one cheque-bounce case under Section 138 of the Negotiable 
 
 **Why one conversation per question for the agent?** So that nothing from an earlier answer leaks into the next, and so that the tools only ever see the one matter.
 
-**Why Southeast Asia?** I checked Microsoft Learn for the Foundry project, Content Understanding, Speech fast transcription, neural voices, the Agent Service and gpt-4.1. Southeast Asia had all of them. Central India lacked Content Understanding and the Agent Service.
+**Why Korea Central?** The Azure for Students policy allowed only five regions: Central India, East Asia, Indonesia Central, Korea Central and UAE North. South India and every other region were refused. Of the five, only Korea Central and UAE North have the Foundry Agent Service, and Speech lists Korea Central. None has Content Understanding, which is why the reader is a model with a strict JSON schema; the Content Understanding reader stays in the code behind one setting.
 
 **Why Entra ID and no keys?** `az login` and `DefaultAzureCredential` mean no secret sits in a file or a repository. The roles needed are Cognitive Services User and Foundry User.
 
@@ -68,7 +72,11 @@ Tarikh is a desk for one cheque-bounce case under Section 138 of the Negotiable 
 
 **Why no front-end framework?** The interface is a few hundred lines of plain HTML, CSS and JavaScript. No build step means nothing extra to break on the day.
 
-**Why does the interface look like paper?** The theme is "exact, accountable, docket". Three colours carry meaning (red for a deadline, green for checked by a person, blue for where something came from), and every status also has a word.
+**Why does the interface look like a calendar?** A cheque case is a sequence of dates, so the recurring object is the Indian tear-off wall calendar: a red month band, a black numeral and the Hindi weekday. Black, white and calendar red; amber means a person must act, green means settled or approved. Every status is also written in words.
+
+**How are accounts kept safe?** Passwords are hashed with scrypt and a random salt and never stored; the session is a random 32-byte token in an HttpOnly cookie for 14 days. Every matter has an owner, and someone else's matter answers as if it does not exist.
+
+**How many tests?** 145 automated checks: 108 server checks, 26 browser checks (9 of the case desk, 17 of the website and platform) and 11 checks of the deadline engine in the browser.
 
 ## 4. Questions about the report
 

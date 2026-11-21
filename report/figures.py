@@ -17,7 +17,7 @@ OUT = Path(__file__).resolve().parent / "build"
 for f in (ROOT / "tools" / "fonts").glob("*.ttf"):
     font_manager.fontManager.addfont(str(f))
 SERIF, MONO = "Gelasio", "IBM Plex Mono"
-INK, GREY, LIGHT, RED = "#17140F", "#5E5748", "#EAE3D3", "#A3221B"
+INK, GREY, LIGHT, RED = "#111111", "#555555", "#E6E6E6", "#111111"   # pure greys: every diagram prints in black and white
 plt.rcParams.update({"font.family": SERIF, "text.color": INK, "axes.edgecolor": INK})
 
 
@@ -92,9 +92,9 @@ def windows():
         y = len(ws) - 1 - i
         s, e = w.opens.toordinal(), w.closes.toordinal()
         hatch = {"met": "", "open": "", "expired": "////"}.get(w.status, "")
-        color = {"met": "#C9C1AE", "open": RED, "expired": "white"}.get(w.status, "white")
+        color = {"met": "#CFCFCF", "open": RED, "expired": "white"}.get(w.status, "white")
         if w.key == "payment":
-            color, hatch = GREY, ""
+            color, hatch = "#7A7A7A", ""
         ax.barh(y, e - s + 1, left=s - d0, height=0.42, zorder=2, color=color, edgecolor=INK, hatch=hatch, lw=1.0)
         ax.text(-47, y + 0.0, w.label.replace("Cheque presented within validity","Cheque presented in time"), ha="left", va="center", fontsize=8)
         ax.text(e - d0 + 2.0, y, f"to {w.closes.day} {w.closes.strftime('%b')}", va="center", fontsize=7.2, family=MONO, color=GREY,
@@ -127,7 +127,39 @@ def datamodel():
     fig.savefig(OUT / "fig_datamodel.png", dpi=220, bbox_inches="tight", facecolor="white"); plt.close(fig)
 
 
+def azure():
+    """How Tarikh sits in the student subscription, and the path the paper reader takes into it."""
+    fig, ax = canvas(6.3, 3.55)
+    ax.add_patch(FancyBboxPatch((0.05, 0.1), 6.2, 3.35, boxstyle="round,pad=0,rounding_size=0.05", fc="white", ec=INK, lw=1.0, ls="--"))
+    ax.text(0.18, 3.22, "Subscription: Azure for Students  ·  region policy allows five regions", fontsize=7.6, color=GREY, style="italic")
+    ax.add_patch(FancyBboxPatch((0.2, 0.25), 5.9, 2.8, boxstyle="round,pad=0,rounding_size=0.05", fc="white", ec=INK, lw=1.0))
+    ax.text(0.33, 2.85, "Resource group tarikh-rg  ·  Korea Central", fontsize=7.8, fontweight="bold")
+    box(ax, 0.35, 1.75, 2.0, 0.8, "Foundry resource", "tarikh-24bai70769", fill=LIGHT, tfs=8.6, sfs=7)
+    box(ax, 0.35, 0.45, 2.0, 0.8, "Foundry project", "tarikh", fill=LIGHT, tfs=8.6, sfs=7)
+    arrow(ax, 1.35, 1.75, 1.35, 1.25)
+    box(ax, 2.85, 1.75, 1.45, 0.8, "Training job", "gpt-4.1-mini\nglobal training", tfs=8.2, sfs=6.6)
+    box(ax, 2.85, 0.45, 1.45, 0.8, "Training data", "30 + 9 papers\nJSONL", tfs=8.2, sfs=6.6)
+    arrow(ax, 3.575, 1.25, 3.575, 1.75, "")
+    box(ax, 4.6, 1.75, 1.35, 0.8, "Deployment", "tarikh-reader\nDeveloper tier", lw=2.0, tfs=8.2, sfs=6.6)
+    box(ax, 4.6, 0.45, 1.35, 0.8, "Speech, Language", "same resource", tfs=8.0, sfs=6.6)
+    arrow(ax, 2.35, 0.85, 2.85, 0.85)
+    arrow(ax, 4.3, 2.15, 4.6, 2.15)
+    fig.savefig(OUT / "fig_azure.png", dpi=220, bbox_inches="tight", facecolor="white"); plt.close(fig)
+
+
+def papers():
+    """The three fictional sample papers side by side, in grey for black-and-white printing."""
+    from PIL import Image, ImageOps
+    ims = [Image.open(ROOT / "samples" / n).convert("RGB") for n in ("cheque.png", "return_memo.png", "demand_notice.png")]
+    h, gap = 900, 40
+    ims = [i.resize((int(i.width * h / i.height), h)) for i in ims]
+    c = Image.new("RGB", (sum(i.width for i in ims) + gap * 2, h), "white"); x = 0
+    for i in ims:
+        c.paste(i, (x, 0)); x += i.width + gap
+    ImageOps.grayscale(c).save(OUT / "fig_papers_bw.png")
+
+
 if __name__ == "__main__":
     OUT.mkdir(exist_ok=True)
-    architecture(); workflow(); windows(); datamodel()
+    architecture(); workflow(); windows(); datamodel(); azure(); papers()
     print("figures ok")

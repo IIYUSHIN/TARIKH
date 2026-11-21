@@ -43,8 +43,13 @@ def test_the_internship_fills_eighteen_five_day_blocks_ending_on_30_october():
     assert len(C.WEEKS) == 17
 
 
-def test_open_markers_are_collected_so_final_can_refuse(tmp_path, monkeypatch):
-    monkeypatch.setattr(C, "evidence", lambda: None)
+def test_open_markers_are_collected_so_final_can_refuse():
+    b = Build([], {})
+    b.p("Accuracy was [PENDING: number] per field.")
+    assert b.pending == ["[PENDING: number]"]
+
+
+def test_the_finished_report_has_no_open_marker():
     b = Build([], {})
     b.render()
-    assert any("live run" in m or "result sentence" in m for m in b.pending)
+    assert b.pending == []

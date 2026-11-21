@@ -54,7 +54,7 @@ python -m uvicorn app.main:build_app --factory --port 8000
 |---|---|
 | `app/` | The server: accounts, matters, the deadline engine, the pipeline and one adapter per Azure service |
 | `site/` | The website and the desk: templates, one stylesheet, the browser engine, the build script, browser tests |
-| `tests/` | 114 server tests, run with `pytest` |
+| `tests/` | 108 server checks and 9 desk browser checks, run with `pytest` |
 | `tools/` | `check_setup` (tests each Azure service), `deploy_models`, `make_samples` |
 | `samples/` | Fictional papers, sample matters and a sample return file |
 | `docs/` | Engineering record: architecture, decisions, design system, research, Azure guide, testing, prompt ledger |
@@ -69,6 +69,16 @@ cd site; python build.py; python -m pytest tests; node --test tests/engine.test.
 
 The site tests drive a real browser against both the static site and a running Tarikh server, end to end: sign up,
 load samples, enter a date, record a hearing, open a matter, import a return file, allocate, sign out.
+
+## The report
+
+```powershell
+python -m report.figures                # diagrams, all in greys so they print in black and white
+python -m report.screenshots            # captures the running platform (fictional sample matters)
+python -m report.metrics 108 9 17       # measures response times and code size (test counts from pytest --collect-only)
+python -m report.build_report --final   # .docx and .pdf; refuses if any open marker remains or the body leaves 20-30 pages
+python -m report.print_plan             # which pages need colour ink, plus a colour-only and a black-and-white-only PDF
+```
 
 ## Read next
 

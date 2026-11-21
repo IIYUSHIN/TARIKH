@@ -356,7 +356,7 @@ class Build:
         cap = self.p("", align=WD_ALIGN_PARAGRAPH.CENTER, spacing=1.0, after=4, before=6, keep=True)
         r = cap.add_run(f"Table {label}  "); set_fonts(r, 12, True)
         self.runs(cap, caption)
-        self._grid(header, rows, widths)
+        self._grid(header, rows, widths, keep=len(rows) <= 8)     # a short table never leaves a row behind on the next page
         self.p("", spacing=1.0, after=6)
 
     def _grid(self, header, rows, widths, size=11, header_fill="D9D9D9", first_bold=False, keep=False):
@@ -485,7 +485,7 @@ class Build:
             pg = self.pages.get(e["id"], "00")
             para = self.doc.add_paragraph()
             pf = para.paragraph_format
-            pf.alignment, pf.line_spacing, pf.space_after = WD_ALIGN_PARAGRAPH.LEFT, 1.0, Pt(1.5 if e["level"] == 2 else 3)
+            pf.alignment, pf.line_spacing, pf.space_after = WD_ALIGN_PARAGRAPH.LEFT, 1.0, Pt(0 if e["level"] == 2 else 2)
             if e["level"] == 2:
                 pf.left_indent = Inches(1.15)
                 pf.tab_stops.add_tab_stop(Inches(1.7), WD_TAB_ALIGNMENT.LEFT)
@@ -499,7 +499,7 @@ class Build:
                 text = f"{num}\t{e['title']}\t{pg}"
             else:
                 text = f"\t{e['title']}\t{pg}"
-            self.runs(para, text, 11.5, bold=e["level"] == 1)
+            self.runs(para, text, 11, bold=e["level"] == 1)
 
     def abbreviations(self):
         self.p("LIST OF ABBREVIATIONS", align=WD_ALIGN_PARAGRAPH.CENTER, size=14, bold=True, after=12).paragraph_format.page_break_before = True
@@ -541,8 +541,7 @@ class Build:
                 if item[1]:
                     para = self.doc.add_paragraph(); para.alignment = WD_ALIGN_PARAGRAPH.CENTER
                     para.add_run().add_picture(item[1], width=Inches(5.2))
-                else:
-                    self.p("[PENDING: course certificate image, save it as assets/course_certificate.png]", align=WD_ALIGN_PARAGRAPH.CENTER)
+                # without an image the page stays clear, for the printed certificate to be placed on it
             elif kind == "code":
                 self.code(item[1])
         self.references()      # the university lists appendices first and references last
@@ -593,6 +592,8 @@ def locate(outline: list[dict], pages: list[list[str]]) -> tuple[dict[str, str],
 def main() -> int:
     final = "--final" in sys.argv
     BUILD.mkdir(exist_ok=True)
+    for f in (Path(__file__).resolve().parent / "azure").glob("*.png"):     # greyscale crops of the Azure portal screens
+        shutil.copy(f, BUILD / f.name)
     docx = BUILD / f"{OUT_NAME}.docx"
     outline: list[dict] = []
     pages: dict[str, str] = {}
