@@ -136,7 +136,7 @@ class ModelExtractor:
                   "(Indian papers write the day first). Amounts as digits only. Use null when a field is not visible; never guess.")
         try:
             resp = self._openai.responses.create(model=self._model, instructions=prompt,
-                                                 input=[{"role": "user", "content": [part]}],
+                                                 input=[{"role": "user", "content": [{"type": "input_text", "text": f"Paper type: {doc_type.value}"}, part]}],
                                                  text={"format": {"type": "json_schema", "name": "paper", "schema": schema, "strict": True}})
             fields = _json.loads(resp.output_text)["fields"]
         except Exception as exc:  # noqa: BLE001
