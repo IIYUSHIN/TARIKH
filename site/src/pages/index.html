@@ -2,54 +2,34 @@
 {% import "partials/ui.html" as U %}
 {% block main %}
 <section class="band dark hero" aria-labelledby="hero-h">
-  <div class="wrap">
-    <p class="kicker rise">Section 138 · Negotiable Instruments Act, 1881</p>
-    <h1 class="h-xl rise d1" id="hero-h" style="margin-top:24px"><span class="hi" lang="hi">तारीख़ पे तारीख़, नहीं।</span>Every date in a cheque case, <em>handled.</em></h1>
-    <p class="lede rise d2">Tarikh is the litigation platform for cheque-bounce cases in India. It reads the papers, counts every statutory deadline, drafts court-ready documents, tracks each hearing and prices every settlement. For one cheque or ten thousand.</p>
-    <div class="acts rise d3"><a class="btn red" href="{{ root }}check.html">Check a cheque, free <span class="arr">→</span></a><a class="btn" href="{{ root }}app/index.html">Open the live demo</a></div>
-  </div>
-  <div class="wrap hero-stage">
-    <div class="hero-pad"><div class="pad" data-pad='[["2026-12-19","Last day to file","Kalra Fabricators"],["2026-11-25","Last day to file","Dhillon Cold Storage"],["2026-11-24","Next hearing","Bhatia Timber Mart"],["2026-12-02","Notice due","Rana Medicos"]]' data-auto></div></div>
-    <div class="win" role="img" aria-label="The Tarikh Desk Today screen, showing deadlines and hearings for sample matters">
-      <div class="win-bar"><span class="dot"></span><b>Tarikh Desk</b><span>Today</span><span class="sp"></span><span>Search matters, people, dates</span><kbd>Ctrl K</kbd></div>
-      <div class="win-body">
-        <div class="win-side" aria-hidden="true">
-          <span class="it on">Today <em>4</em></span><span class="it">Matters <em>13</em></span><span class="it">Diary</span><span class="it">Drafts <em>4</em></span>
-          <span class="grp">Recover</span><span class="it">Portfolio <em>64</em></span><span class="it">Settlements</span>
-          <span class="grp">Tools</span><span class="it">Check</span><span class="it">Ask the file</span>
-        </div>
-        <div class="win-main" data-mini-today></div>
-      </div>
+  <div class="wrap hero2">
+    <div>
+      <p class="kicker rise">Section 138 · Negotiable Instruments Act, 1881</p>
+      <h1 class="h-xl rise d1" id="hero-h" style="margin-top:24px"><span class="hi" lang="hi">तारीख़ पे तारीख़, नहीं।</span>Every date in a cheque case, <em>handled.</em></h1>
+      <p class="lede rise d2">Tarikh is the litigation platform for cheque-bounce cases in India. Photograph the cheque, the bank’s memo and the notice. Tarikh reads them, counts every statutory deadline, drafts the papers and keeps the next hearing in view.</p>
+      <div class="acts rise d3"><a class="btn red" href="{{ root }}signup.html">Create your account <span class="arr">→</span></a><a class="btn" href="{{ root }}check.html">Check a cheque, free</a></div>
+    </div>
+    <div class="desk-scene rise d2" aria-label="The three papers of a cheque case, with the last day to file">
+      <figure class="p memo"><img src="{{ root }}assets/img/return_memo.jpg" width="820" height="1159" alt="A bank’s cheque return memo, sample"></figure>
+      <figure class="p notice"><img src="{{ root }}assets/img/demand_notice.jpg" width="820" height="1159" alt="A demand notice under Section 138, sample"></figure>
+      <figure class="p cheque"><img src="{{ root }}assets/img/cheque.jpg" width="1200" height="533" alt="A bounced cheque for ₹4,85,000, sample"></figure>
+      <span class="pin" style="left:8%;top:30%"><i></i>Returned 3 Oct · funds insufficient</span>
+      <span class="pin" style="left:52%;top:36%"><i></i>Notice served 3 Nov</span>
+      <span class="pin" style="left:30%;top:88%"><i></i>₹4,85,000 · cheque 004718</span>
+      <div class="stamp"><div class="pad" data-pad='[["2026-12-19","Last day to file","29 days"],["2026-11-24","Next hearing","Ludhiana"],["2026-12-02","Notice due","Mohali"]]' data-auto></div></div>
     </div>
   </div>
 </section>
 
-<section class="band sec" aria-labelledby="why-h">
+<section class="band sec-sm" aria-labelledby="why-h">
   <div class="wrap">
-    <p class="kicker">Why this exists</p>
-    <h2 class="h-l rise" id="why-h" style="margin-top:22px;max-width:15ch">Forty-three lakh cheque cases are waiting for a date.</h2>
-    <div class="facts">
-      <div class="fact rise"><span class="num" data-count="4305932" data-format="in">43,05,932</span><p>cheque-bounce cases pending in Indian courts.</p><cite>Ministry of Law and Justice, reply in the Lok Sabha, 18 December 2024</cite></div>
-      <div class="fact rise d1"><span class="num red">25.9 L</span><p>of them pending for more than two years.</p><cite>Lok Sabha Unstarred Question 1031, 25 July 2025</cite></div>
-      <div class="fact rise d2"><span class="num" data-count="650283" data-format="in">6,50,283</span><p>in the district courts of Delhi alone, nearly half that court’s trial backlog.</p><cite>Supreme Court, Sanjabij Tari v. Kishore S. Borcar, figures as on 1 September 2025</cite></div>
+    <div class="g2" style="align-items:end;margin-bottom:clamp(36px,4vw,56px)"><h2 class="h-l rise" id="why-h" style="max-width:14ch">Forty-three lakh cases are waiting for a date.</h2>
+    <p class="lede">Each began with four deadlines in a row, counted from dates printed on different papers. Miss one and the complaint can fail before it is heard.</p></div>
+    <div class="facts-strip" style="border-top:1.5px solid var(--bk);padding-top:28px">
+      <div><span class="num" data-count="4305932" data-format="in">43,05,932</span><p>cheque-bounce cases pending in Indian courts.</p><cite>Ministry of Law and Justice, Lok Sabha, 18 Dec 2024</cite></div>
+      <div><span class="num red">25.9 L</span><p>of them pending for more than two years.</p><cite>Lok Sabha Unstarred Question 1031, 25 Jul 2025</cite></div>
+      <div><span class="num" data-count="650283" data-format="in">6,50,283</span><p>in Delhi’s district courts alone.</p><cite>Supreme Court, Sanjabij Tari, as on 1 Sep 2025</cite></div>
     </div>
-    <p class="lede" style="margin-top:56px;max-width:760px;color:var(--g700)">Every one of those cases began with four deadlines in a row, each counted from a date printed on a different paper. Miss one and the complaint can fail before it is heard. Tarikh exists so that never happens, and so that what follows in court moves faster.</p>
-  </div>
-</section>
-
-<section class="band grey sec" aria-labelledby="life-h">
-  <div class="wrap">
-    <p class="kicker">The whole life of a case</p>
-    <h2 class="h-l rise" id="life-h" style="margin-top:22px;max-width:16ch">From the bounce to the last hearing, on one platform.</h2>
-    <ol class="rail">
-      <li class="rise"><span class="st">01</span><h3>Cheque returns</h3><span class="when">Day 0</span><p>The bank hands back the cheque with a return memo.</p><div class="does"><b>Tarikh</b>Reads the cheque and memo. Every field keeps its place on the page.</div></li>
-      <li class="rise d1"><span class="st">02</span><h3>Demand notice</h3><span class="when">Within 30 days</span><p>Counted from the day the memo reached the payee.</p><div class="does"><b>Tarikh</b>Drafts the notice and tracks the post until it is delivered.</div></li>
-      <li class="rise d2"><span class="st">03</span><h3>Drawer’s 15 days</h3><span class="when">After delivery</span><p>The drawer’s last chance to pay without a case.</p><div class="does"><b>Tarikh</b>Counts the days and tells you the morning the window opens.</div></li>
-      <li class="hot rise d3"><span class="st">04</span><h3>Complaint</h3><span class="when">Within one month</span><p>The deadline that decides whether there is a case.</p><div class="does"><b>Tarikh</b>Drafts the complaint, the synopsis and the service affidavit.</div></li>
-      <li class="rise"><span class="st">05</span><h3>Summons</h3><span class="when">After cognizance</span><p>Now also by email and WhatsApp, where the rules allow.</p><div class="does"><b>Tarikh</b>Keeps the accused’s contacts and every attempt at service.</div></li>
-      <li class="rise d1"><span class="st">06</span><h3>Trial</h3><span class="when">Hearing by hearing</span><p>Interim compensation, evidence, arguments, adjournments.</p><div class="does"><b>Tarikh</b>Runs the hearing diary and drafts each application.</div></li>
-      <li class="rise d2"><span class="st">07</span><h3>Settlement</h3><span class="when">Any stage</span><p>Compounding costs rise the later the accused pays.</p><div class="does"><b>Tarikh</b>Prices the settlement and tracks every instalment.</div></li>
-    </ol>
   </div>
 </section>
 
@@ -70,7 +50,7 @@
         <ul class="ticks"><li><span><b>Diary that counts.</b> <span>Hearings and statutory deadlines on one calendar, Sundays in red.</span></span></li><li><span><b>Drafts with sources.</b> <span>Notice, complaint, synopsis, affidavits, each fact linked to its paper.</span></span></li><li><span><b>Client updates.</b> <span>Next date and stage, sent in the client’s language after you approve.</span></span></li></ul>
         <div class="acts" style="margin-top:32px"><a class="btn solid" href="{{ root }}desk.html">Explore Desk <span class="arr">→</span></a></div>
       </div>
-      <div class="stage"><div class="list" style="padding:14px"><div class="lh" style="padding:0 0 12px;border:0">December 2026 · diary<span>sample chambers</span></div><div data-mini-month="2026-12"></div></div></div>
+      <div class="win" role="img" aria-label="The Tarikh Desk Today screen"><div class="win-bar"><span class="dot"></span><b>Tarikh Desk</b><span>Today</span><span class="sp"></span><kbd>Ctrl K</kbd></div><div class="win-body" style="grid-template-columns:minmax(0,1fr)"><div class="win-main" data-mini-today></div></div></div>
     </div>
     <div class="aud-panel" role="tabpanel" id="p-rec" aria-labelledby="t-rec" hidden>
       <div>
@@ -86,7 +66,7 @@
           <div class="row"><div><b>Complaint to file</b><span>5 matters · windows open now</span></div><span class="chip hot">8%</span></div>
           <div class="row"><div><b>Settled or compounded</b><span>7 matters</span></div><span class="chip ok">11%</span></div>
         </div>
-        <p class="tiny" style="margin-top:12px">Fictional lender, generated sample. Open the demo to filter and allocate.</p>
+        <p class="tiny" style="margin-top:12px">Sample figures. In your account, the portfolio is built from your own matters and return files.</p>
       </div>
     </div>
     <div class="aud-panel" role="tabpanel" id="p-chk" aria-labelledby="t-chk" hidden>
@@ -118,18 +98,6 @@ POST /v1/clocks
   </div>
 </section>
 
-<section class="band sec rule-top" id="read" aria-labelledby="read-h" style="border-top:1px solid var(--line)">
-  <div class="wrap cap">
-    <div class="cap-copy">
-      <p class="cap-n">01 · Read</p>
-      <h2 class="h-l rise" id="read-h">Photograph the papers. Get the facts.</h2>
-      <p class="lede">The cheque, the return memo, the notice and the postal receipt become fields. Each value shows where it was read and how sure the reading is. A date that no paper shows is asked for, never guessed.</p>
-      <ul class="ticks"><li><span><b>Phone photos and scans</b> <span>in English and Hindi.</span></span></li><li><span><b>Every field traceable</b> <span>to a box on the original.</span></span></li></ul>
-    </div>
-    {{ U.read_stage(root) }}
-  </div>
-</section>
-
 <section class="band dark sec" id="count" aria-labelledby="count-h">
   <div class="wrap">
     <div class="g2" style="align-items:end">
@@ -140,30 +108,7 @@ POST /v1/clocks
   </div>
 </section>
 
-<section class="band sec" id="draft" aria-labelledby="draft-h">
-  <div class="wrap cap flip">
-    <div class="cap-copy">
-      <p class="cap-n">03 · Draft</p>
-      <h2 class="h-l rise" id="draft-h">Court-ready drafts, built from facts you can check.</h2>
-      <p class="lede">Notice, complaint, the synopsis the Supreme Court now requires after the index, the affidavit of the accused’s contact details, applications under Sections 143A and 147. Every fact in the draft is marked by where it came from.</p>
-      <ul class="ticks"><li><span><b>Nothing without a source.</b> <span>A sentence that no paper supports is removed before you see it.</span></span></li><li><span><b>You sign, it doesn’t.</b> <span>Drafts stay drafts until an advocate approves by name.</span></span></li></ul>
-    </div>
-    {{ U.doc_stage() }}
-  </div>
-</section>
-
-<section class="band grey sec" id="settle" aria-labelledby="settle-h">
-  <div class="wrap cap">
-    <div class="cap-copy">
-      <p class="cap-n">04 · Settle</p>
-      <h2 class="h-l rise" id="settle-h">Know what settling costs at every stage.</h2>
-      <p class="lede">Since 2025 the cost of compounding a cheque case rises with each stage it reaches. Tarikh prices it for both sides, and tracks every instalment of a settlement until the case is closed.</p>
-    </div>
-    <div class="stage" style="background:#fff">{{ U.settle() }}</div>
-  </div>
-</section>
-
-<section class="band sec" id="directions" aria-labelledby="dir-h">
+<section class="band grey sec" id="directions" aria-labelledby="dir-h">
   <div class="wrap">
     <div class="g2" style="align-items:end">
       <div><p class="kicker">In force since 1 November 2025</p><h2 class="h-l rise" id="dir-h" style="margin-top:22px">Ready for the Supreme Court’s new rules.</h2></div>
@@ -180,20 +125,8 @@ POST /v1/clocks
         <tr><td>Dashboards of pendency, settlement and adjournments by stage</td><td>Gives lenders and firms the same view of their own portfolio.</td></tr>
       </tbody>
     </table>
-    <p class="src" style="margin-top:20px">Source: Supreme Court of India, Criminal Appeal 1755 of 2010, decided 25 September 2025, 2025 INSC 1158. <a href="{{ root }}law.html#directions">Read the plain-language guide</a>.</p>
-  </div>
-</section>
-
-<section class="band grey sec" aria-labelledby="trust-h">
-  <div class="wrap">
-    <p class="kicker">How AI is used</p>
-    <h2 class="h-l rise" id="trust-h" style="margin-top:22px;max-width:14ch">A model reads. A rule counts. A person decides.</h2>
-    <div class="g3" style="margin-top:56px">
-      <div class="cell rise"><span class="n">READS</span><h3 class="h-s">AI turns paper into facts</h3><p>Document reading, speech in English, Hindi and Punjabi, and masking of personal details before any model drafts.</p></div>
-      <div class="cell rise d1"><span class="n">COUNTS</span><h3 class="h-s">Rules decide every date</h3><p>No model ever produces a deadline. The engine is plain code with published tests and a public rule register.</p></div>
-      <div class="cell rise d2"><span class="n">DECIDES</span><h3 class="h-s">An advocate approves</h3><p>Nothing is filed or sent by Tarikh. Every approval is recorded with a name and a time.</p></div>
-    </div>
-    <div class="acts" style="margin-top:40px"><a class="tlink" href="{{ root }}trust.html">Trust, security and privacy</a></div>
+    <p class="src" style="margin-top:20px">Source: Supreme Court of India, Criminal Appeal 1755 of 2010, decided 25 September 2025, 2025 INSC 1158.</p>
+    <div class="acts" style="margin-top:32px"><a class="tlink" href="{{ root }}platform.html">See all eight capabilities</a><a class="tlink" href="{{ root }}trust.html" style="margin-left:24px">How AI is used, and where it is not</a></div>
   </div>
 </section>
 

@@ -15,6 +15,7 @@ class Settings:
     model_deployment: str = ""
     cu_mini_deployment: str = "gpt-4.1-mini"          # Content Understanding needs three deployments
     cu_embedding_deployment: str = "text-embedding-3-large"
+    extractor: str = "content_understanding"          # or "model" where Content Understanding is not offered
     cassette_dir: Path = Path("data/cassettes")
     data_dir: Path = Path("data")
 
@@ -45,6 +46,7 @@ class Settings:
             model_deployment=e.get("AZURE_AI_MODEL_DEPLOYMENT_NAME", ""),
             cu_mini_deployment=e.get("TARIKH_CU_MINI_DEPLOYMENT", "gpt-4.1-mini"),
             cu_embedding_deployment=e.get("TARIKH_CU_EMBEDDING_DEPLOYMENT", "text-embedding-3-large"),
+            extractor=e.get("TARIKH_EXTRACTOR", "content_understanding"),
             cassette_dir=Path(e.get("TARIKH_CASSETTE_DIR", "data/cassettes")),
             data_dir=Path(e.get("TARIKH_DATA_DIR", "data")),
         )

@@ -92,6 +92,8 @@ class Brief(BaseModel):
 class Matter(BaseModel):
     id: str
     title: str
+    owner: str = ""                       # user id; "" only in single-user test setups
+    profile: dict = Field(default_factory=dict)   # parties, court, stage, hearings, settlement, entered dates
     created_at: datetime = Field(default_factory=utcnow)
     documents: list[Document] = Field(default_factory=list)
     transcript: Transcript | None = None

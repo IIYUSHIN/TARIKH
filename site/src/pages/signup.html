@@ -1,0 +1,33 @@
+{% extends "_layout.html" %}
+{% import "partials/ui.html" as U %}
+{% set title = "Create your account" %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block main %}
+<div class="auth">
+  <div class="auth-art">
+    {{ U.brand(root) }}
+    <div>
+      <p class="kicker" style="color:#8D8D87">The next tarikh, never a surprise</p>
+      <p class="quote" style="margin-top:18px">Every date in a cheque case, counted and kept.</p>
+    </div>
+    <p class="tiny" style="color:#77776F;position:relative;z-index:2">Not legal advice. Your matters are visible only to your account.</p>
+    <div class="pad" data-pad='[["2026-12-19","Last day to file",""]]'></div>
+  </div>
+  <div class="auth-form">
+    <form id="auth-form" data-kind="signup" novalidate>
+      <h1>Open your desk.</h1>
+      <p class="alt">Already have an account? <a href="signin.html">Sign in</a></p>
+      <fieldset style="border:0;margin:0;padding:0"><legend class="field" style="font-size:13px;font-weight:700;margin-bottom:8px">I am</legend>
+        <div class="seg2"><label><input type="radio" name="kind" value="advocate" checked>An advocate</label><label><input type="radio" name="kind" value="lender">A lender</label><label><input type="radio" name="kind" value="business">A business</label></div></fieldset>
+      <div class="field"><label for="a-name">Your name</label><input class="inp" id="a-name" autocomplete="name" required></div>
+      <div class="field"><label for="a-chambers">Chambers, firm or company</label><input class="inp" id="a-chambers" autocomplete="organization"></div>
+      <div class="field"><label for="a-email">Email</label><input class="inp" id="a-email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="a-pass">Password</label><input class="inp" id="a-pass" type="password" autocomplete="new-password" minlength="8" required aria-describedby="a-pass-h"><span class="hint" id="a-pass-h">At least 8 characters.</span></div>
+      <p class="form-msg" id="a-msg" role="alert"></p>
+      <button class="btn red" type="submit" style="width:100%">Create account <span class="arr">→</span></button>
+      <p class="tiny">By creating an account you accept the <a href="terms.html">terms</a>. Tarikh is not a law firm and does not give legal advice.</p>
+    </form>
+  </div>
+</div>
+{% endblock %}

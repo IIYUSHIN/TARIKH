@@ -14,12 +14,12 @@ PRODUCTS = [
     ("C", "Tarikh Check", "Free for anyone. Is your cheque case still in time?", "check.html"),
     ("A", "Tarikh API", "The deadline engine and paper reading, inside your own systems.", "api.html"),
 ]
-NAV = [("platform", "Platform", "platform.html"), ("law", "The law", "law.html"), ("pricing", "Pricing", "pricing.html"), ("trust", "Trust", "trust.html"), ("company", "Company", "company.html")]
+NAV = [("platform", "Platform", "platform.html"), ("law", "The law", "law.html"), ("trust", "Trust", "trust.html"), ("pricing", "Pricing", "pricing.html"), ("company", "Company", "company.html")]
 FOOT = {
-    "Products": [("Tarikh Desk", "desk.html"), ("Tarikh Recover", "recover.html"), ("Tarikh Check", "check.html"), ("Tarikh API", "api.html"), ("Open the demo", "app/index.html")],
+    "Products": [("Tarikh Desk", "desk.html"), ("Tarikh Recover", "recover.html"), ("Tarikh Check", "check.html"), ("Tarikh API", "api.html"), ("Sign in", "signin.html")],
     "Platform": [("Read", "platform.html#read"), ("Count", "platform.html#count"), ("Draft", "platform.html#draft"), ("Diary", "platform.html#diary"), ("Settle", "platform.html#settle")],
     "Resources": [("The law, counted", "law.html"), ("The 2025 Supreme Court directions", "law.html#directions"), ("Compounding costs", "law.html#compounding"), ("Pricing", "pricing.html")],
-    "Company": [("About", "company.html"), ("Trust and security", "trust.html"), ("Early access", "contact.html"), ("Privacy", "privacy.html"), ("Terms", "terms.html")],
+    "Company": [("About", "company.html"), ("Trust and security", "trust.html"), ("Contact", "contact.html"), ("Privacy", "privacy.html"), ("Terms", "terms.html")],
 }
 GITHUB = "https://github.com/IIYUSHIN/TARIKH"
 

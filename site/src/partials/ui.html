@@ -1,10 +1,14 @@
-{% macro close(root, title='Your next tarikh should never be a surprise.', sub='Start with the free checker, or walk through the full desk with sample matters.') %}
+{% macro brand(root, hi=True, cls='brand') %}
+<a class="{{ cls }}" href="{{ root }}index.html" aria-label="Tarikh home"><svg class="mark" viewBox="0 0 30 32" aria-hidden="true"><rect x="0" y="3" width="30" height="29" rx="7" fill="#E2321B"/><rect x="7" y="0" width="3.2" height="8" rx="1.6" fill="#fff"/><rect x="19.8" y="0" width="3.2" height="8" rx="1.6" fill="#fff"/><path d="M5 12.5h20" stroke="#fff" stroke-opacity=".35" stroke-width="1" stroke-dasharray="1.5 2"/><text x="15" y="27.5" text-anchor="middle" font-family="Tiro Devanagari Hindi, Noto Sans Devanagari, serif" font-size="15" fill="#fff">ता</text></svg><span class="wm">Tar<span class="i">ı</span>kh</span>{% if hi %}<span class="hi" lang="hi" aria-hidden="true">तारीख़</span>{% endif %}</a>
+{% endmacro %}
+
+{% macro close(root, title='Your next tarikh should never be a surprise.', sub='Create an account in a minute. Open your first matter, or load sample matters and see every screen working.') %}
 <section class="band dark sec close-band" aria-labelledby="close-h">
   <div class="wrap">
     <p class="kicker">Get started</p>
     <h2 class="h-xl" id="close-h" style="margin-top:22px">{{ title }}</h2>
     <p class="lede" style="margin-top:24px;color:#B5B5AF">{{ sub }}</p>
-    <div class="acts"><a class="btn red" href="{{ root }}check.html">Check a cheque, free <span class="arr">→</span></a><a class="btn" href="{{ root }}app/index.html">Open the demo</a><a class="btn" href="{{ root }}contact.html">Request early access</a></div>
+    <div class="acts"><a class="btn red" href="{{ root }}signup.html">Create your account <span class="arr">→</span></a><a class="btn" href="{{ root }}check.html">Check a cheque, free</a></div>
   </div>
   <div class="pad" data-pad='[["2026-12-19","Last day to file","KF-1042"],["2026-11-24","Hearing","BT-0611"],["2026-12-02","Notice due","RM-1121"]]' data-auto></div>
 </section>

@@ -50,10 +50,17 @@
   var hdr = doc.querySelector('.hdr'), mb = doc.querySelector('.menu-btn');
   if (hdr && mb) mb.addEventListener('click', function () { var o = hdr.classList.toggle('open'); mb.setAttribute('aria-expanded', String(o)); mb.textContent = o ? 'Close' : 'Menu'; });
   var dds = doc.querySelectorAll('.dd');
-  function closeAll(except) { dds.forEach(function (d) { if (d !== except) { d.classList.remove('open'); var b = d.querySelector('button'); if (b) b.setAttribute('aria-expanded', 'false'); } }); }
+  function syncScrim() { doc.body.classList.toggle('menu-open', !!doc.querySelector('.dd.open') && window.innerWidth > 1000); }
+  function closeAll(except) { dds.forEach(function (d) { if (d !== except) { d.classList.remove('open'); var b = d.querySelector('button'); if (b) b.setAttribute('aria-expanded', 'false'); } }); syncScrim(); }
+  if (hdr) { var onScroll = function () { hdr.classList.toggle('scrolled', window.scrollY > 24); }; window.addEventListener('scroll', onScroll, { passive: true }); onScroll(); }
+  var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches, hoverT;
+  if (fine) dds.forEach(function (d) {
+    d.addEventListener('mouseenter', function () { clearTimeout(hoverT); hoverT = setTimeout(function () { closeAll(d); d.classList.add('open'); d.querySelector('button').setAttribute('aria-expanded', 'true'); syncScrim(); }, 90); });
+    d.addEventListener('mouseleave', function () { clearTimeout(hoverT); hoverT = setTimeout(function () { closeAll(); }, 160); });
+  });
   dds.forEach(function (d) {
     var b = d.querySelector('button');
-    b.addEventListener('click', function (e) { e.stopPropagation(); var o = !d.classList.contains('open'); closeAll(d); d.classList.toggle('open', o); b.setAttribute('aria-expanded', String(o)); });
+    b.addEventListener('click', function (e) { e.stopPropagation(); var o = !d.classList.contains('open'); closeAll(d); d.classList.toggle('open', o); b.setAttribute('aria-expanded', String(o)); syncScrim(); });
   });
   doc.addEventListener('click', function (e) { if (!e.target.closest('.dd')) closeAll(); });
   doc.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeAll(); if (hdr && hdr.classList.contains('open')) mb.click(); } });
@@ -464,6 +471,27 @@
       var body = 'Name: ' + doc.getElementById('c-name').value.trim() + '\nOrganisation: ' + (doc.getElementById('c-org').value.trim() || '-') + '\n\n' + doc.getElementById('c-msg').value.trim();
       doc.getElementById('form-link').href = form.getAttribute('data-issues') + '?title=' + encodeURIComponent(title) + '&body=' + encodeURIComponent(body);
       form.hidden = true; var done = doc.getElementById('form-ok'); done.hidden = false; done.focus();
+    });
+  }
+
+  /* ---------- Sign in and sign up: real accounts on the Tarikh server ---------- */
+  var af = doc.getElementById('auth-form');
+  if (af) {
+    var kind = af.getAttribute('data-kind'), msg = doc.getElementById('a-msg');
+    var next = new URLSearchParams(location.search).get('next') || 'app/index.html';
+    if (!/^[a-z0-9_\-\/\.]+(#[A-Za-z0-9_\-]+)?$/i.test(next) || next.indexOf('//') >= 0) next = 'app/index.html';
+    af.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var body = { email: doc.getElementById('a-email').value, password: doc.getElementById('a-pass').value };
+      if (kind === 'signup') { body.name = doc.getElementById('a-name').value; body.chambers = doc.getElementById('a-chambers').value; var k = af.querySelector('input[name=kind]:checked'); body.kind = k ? k.value : 'advocate'; }
+      var btn = af.querySelector('button[type=submit]'); btn.disabled = true; msg.textContent = '';
+      fetch('api/auth/' + kind, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin', body: JSON.stringify(body) })
+        .then(function (r) { return r.json().catch(function () { return { error: 'The Tarikh server did not answer.' }; }).then(function (j) { return { ok: r.ok, j: j, status: r.status }; }); })
+        .then(function (res) {
+          btn.disabled = false;
+          if (res.ok) { location.href = next; return; }
+          msg.textContent = res.status === 404 || res.status === 405 ? 'This copy of the site has no Tarikh server behind it, so accounts cannot be created here. Run Tarikh on your computer (see the README) and open it there.' : (res.j.error || 'Something went wrong. Try again.');
+        }, function () { btn.disabled = false; msg.textContent = 'This copy of the site has no Tarikh server behind it, so accounts cannot be created here. Run Tarikh on your computer (see the README) and open it there.'; });
     });
   }
 

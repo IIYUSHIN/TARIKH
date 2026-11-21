@@ -32,8 +32,8 @@ class Store:
         return db
 
     # -- matters -------------------------------------------------------------
-    def create_matter(self, title: str) -> Matter:
-        m = Matter(id="m_" + secrets.token_hex(4), title=title)
+    def create_matter(self, title: str, owner: str = "", profile: dict | None = None) -> Matter:
+        m = Matter(id="m_" + secrets.token_hex(4), title=title, owner=owner, profile=profile or {})
         with closing(self._db()) as db, db:
             seq = db.execute("SELECT COALESCE(MAX(seq),0)+1 FROM matters").fetchone()[0]
             db.execute("INSERT INTO matters(id, seq, body) VALUES (?,?,?)",
@@ -47,10 +47,22 @@ class Store:
             raise KeyError(matter_id)
         return Matter.model_validate_json(row["body"])
 
-    def list_matters(self) -> list[Matter]:
+    def list_matters(self, owner: str | None = None) -> list[Matter]:
         with closing(self._db()) as db:
             rows = db.execute("SELECT body FROM matters ORDER BY seq DESC").fetchall()
-        return [Matter.model_validate_json(r["body"]) for r in rows]
+        ms = [Matter.model_validate_json(r["body"]) for r in rows]
+        return ms if owner is None else [m for m in ms if m.owner == owner]
+
+    def update_profile(self, matter_id: str, changes: dict, actor: str, action: str = "matter_updated") -> Matter:
+        m = self.get_matter(matter_id)
+        entries = {**(m.profile.get("entries") or {}), **(changes.pop("entries", None) or {})}
+        m.profile = {**m.profile, **changes, "entries": {k: v for k, v in entries.items() if v}}
+        self._put(m)
+        self._log(matter_id, actor, action, {k: v for k, v in changes.items() if k not in ("hearings", "drafts")})
+        return m
+
+    def log(self, matter_id: str, actor: str, action: str, detail: dict) -> None:
+        self._log(matter_id, actor, action, detail)
 
     def _put(self, m: Matter) -> None:
         with closing(self._db()) as db, db:

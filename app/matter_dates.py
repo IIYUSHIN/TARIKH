@@ -8,11 +8,13 @@ from .models import Matter
 
 
 def fact_value(matter: Matter, key: str) -> str | None:
+    """A date the advocate entered directly wins over one read from a paper only when no paper has it."""
     for d in matter.documents:
         for f in d.facts:
             if f.key == key and f.value:
                 return f.value
-    return None
+    entered = (matter.profile.get("entries") or {}).get(key)
+    return entered or None
 
 
 def _date(value: str | None) -> date | None:

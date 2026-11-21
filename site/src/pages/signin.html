@@ -1,0 +1,28 @@
+{% extends "_layout.html" %}
+{% import "partials/ui.html" as U %}
+{% set title = "Sign in" %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block main %}
+<div class="auth">
+  <div class="auth-art">
+    {{ U.brand(root) }}
+    <div>
+      <p class="kicker" style="color:#8D8D87">The next tarikh, never a surprise</p>
+      <p class="quote" style="margin-top:18px">Every date in a cheque case, counted and kept.</p>
+    </div>
+    <p class="tiny" style="color:#77776F;position:relative;z-index:2">Not legal advice. Your matters are visible only to your account.</p>
+    <div class="pad" data-pad='[["2026-12-19","Last day to file",""]]'></div>
+  </div>
+  <div class="auth-form">
+    <form id="auth-form" data-kind="signin" novalidate>
+      <h1>Welcome back.</h1>
+      <p class="alt">New to Tarikh? <a href="signup.html">Create an account</a></p>
+      <div class="field"><label for="a-email">Email</label><input class="inp" id="a-email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="a-pass">Password</label><input class="inp" id="a-pass" type="password" autocomplete="current-password" required></div>
+      <p class="form-msg" id="a-msg" role="alert"></p>
+      <button class="btn red" type="submit" style="width:100%">Sign in <span class="arr">→</span></button>
+    </form>
+  </div>
+</div>
+{% endblock %}

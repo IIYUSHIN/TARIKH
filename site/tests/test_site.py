@@ -21,14 +21,6 @@ def base():
     srv.shutdown()
 
 
-@pytest.fixture(scope="module")
-def browser():
-    with sync_playwright() as pw:
-        b = pw.chromium.launch()
-        yield b
-        b.close()
-
-
 @pytest.fixture
 def page(browser, base):
     p = browser.new_page(viewport={"width": 1440, "height": 900})
@@ -53,7 +45,7 @@ def test_moving_the_notice_pin_moves_the_complaint_window(page, base):
 
 def test_hero_today_window_is_computed_from_the_sample_data(page, base):
     page.goto(base + "index.html")
-    rows = page.locator("[data-mini-today] .row b").all_inner_texts()
+    rows = page.locator("[data-mini-today] .row b").first.all_inner_texts() and page.locator("[data-mini-today] .row b").all_inner_texts()
     assert rows[0] == "Dhillon Cold Storage"
     assert "5 days to file" in page.inner_text("[data-mini-today]")
 
@@ -71,7 +63,7 @@ def test_check_tool_counts_from_the_dates_entered(page, base):
 
 
 def test_settlement_calculator_uses_the_2025_stages(page, base):
-    page.goto(base + "index.html")
+    page.goto(base + "platform.html")
     box = page.locator("#settle [data-settle]")
     box.locator("input[name=amount]").fill("100000")
     box.locator("input[value='7.5']").check()
@@ -89,7 +81,7 @@ def test_matters_are_ordered_by_urgency(page, base):
 
 def test_entering_a_missing_date_starts_the_clocks(page, base):
     page.goto(base + "app/matter.html#PB-1130")
-    page.fill("#f-memo", "2026-11-14")
+    page.fill("#f-memo_received_on", "2026-11-14")
     page.click("text=Save and count")
     assert "Notice must go by 14 December 2026" in page.inner_text("#mt")
 
@@ -119,7 +111,7 @@ def test_portfolio_bulk_assign(page, base):
     page.goto(base + "app/portfolio.html")
     page.select_option("#fa", "none")
     n = page.locator("tbody tr[data-id]").count()
-    assert n == 7
+    assert n == 13
     page.check("#sall")
     page.click("#bgo")
     page.select_option("#fa", "none")
@@ -151,7 +143,7 @@ def test_early_access_prepares_a_github_issue_and_sends_nothing(page, base):
 
 def test_every_internal_link_resolves(browser, base):
     p = browser.new_page()
-    seen, queue, bad = set(), ["index.html"], []
+    seen, queue, bad = set(), ["index.html", "app/index.html"], []
     while queue:
         u = queue.pop()
         if u in seen:
@@ -169,7 +161,7 @@ def test_every_internal_link_resolves(browser, base):
                 queue.append(target)
     p.close()
     assert not bad, bad
-    assert len(seen) == 19  # every page except 404, which nothing links to
+    assert len(seen) == 21  # every page except 404, which nothing links to
 
 
 def test_no_third_party_requests(browser, base):
@@ -197,5 +189,5 @@ def test_reduced_motion_shows_everything(browser, base):
     ctx = browser.new_context(reduced_motion="reduce", viewport={"width": 1440, "height": 900})
     p = ctx.new_page()
     p.goto(base + "index.html")
-    assert p.evaluate("getComputedStyle(document.querySelector('.fact')).opacity") == "1"
+    assert p.evaluate("getComputedStyle(document.querySelector('.facts-strip')).opacity") == "1"
     ctx.close()

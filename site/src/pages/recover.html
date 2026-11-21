@@ -8,7 +8,7 @@
     <div><p class="kicker">Tarikh Recover · for lenders and businesses</p>
     <h1 class="h-xl rise" style="margin-top:24px;max-width:11ch">Every bounced cheque, in <em>one</em> view.</h1></div>
     <div><p class="lede rise d1" style="color:#B5B5AF">For NBFCs, banks, distributors and suppliers holding hundreds of cheque cases across many courts and panel advocates. Recover shows where each case stands, what it is worth and who is behind.</p>
-    <div class="acts rise d2" style="margin-top:28px"><a class="btn red" href="{{ root }}app/portfolio.html">Open the sample portfolio <span class="arr">→</span></a><a class="btn" href="{{ root }}contact.html">Talk to us</a></div></div>
+    <div class="acts rise d2" style="margin-top:28px"><a class="btn red" href="{{ root }}signup.html">Create a lender account <span class="arr">→</span></a><a class="btn" href="{{ root }}contact.html">Talk to us</a></div></div>
   </div>
 </section>
 
@@ -35,7 +35,7 @@
         <div class="row" style="grid-template-columns:150px 1fr 40px"><b style="font-size:13px">{{ name }}</b><div style="height:10px;background:var(--g100);border-radius:3px;overflow:hidden"><div style="width:{{ pct * 3 }}%;height:100%;background:{% if cls=='hot' %}var(--red){% elif cls=='ok' %}var(--green){% elif cls=='warn' %}var(--amber){% else %}var(--bk){% endif %}"></div></div><span class="tiny" style="text-align:right">{{ n }}</span></div>
         {% endfor %}
       </div>
-      <p class="tiny" style="margin-top:12px">Northline Finance is fictional. Numbers are generated for the demo.</p>
+      <p class="tiny" style="margin-top:12px">Sample figures for a fictional lender. Your own portfolio is built from your matters and return files.</p>
     </div>
   </div>
 </section>
@@ -45,11 +45,11 @@
     <p class="kicker">Fits how lenders already work</p>
     <h2 class="h-l" style="margin-top:22px;max-width:16ch">No new process for your panel. A better view for you.</h2>
     <div class="g3" style="margin-top:56px">
-      <div class="card"><b class="h-s">Spreadsheets in, reports out</b><p>Import from the format your collections team already keeps. Export the portfolio for the credit committee.</p><span class="tag" style="align-self:start">In the demo</span></div>
+      <div class="card"><b class="h-s">Spreadsheets in, reports out</b><p>Import from the format your collections team already keeps. Export the portfolio for the credit committee.</p><span class="tag" style="align-self:start">Live</span></div>
       <div class="card"><b class="h-s">Through the API</b><p>Push bounced cheques straight from your loan-management system and pull the windows back.</p><span class="tag" style="align-self:start">Private beta</span></div>
       <div class="card"><b class="h-s">Separate by design</b><p>Each panel advocate sees only the matters given to them. You see all of them. Every view is logged.</p><span class="tag" style="align-self:start">Coming next</span></div>
     </div>
   </div>
 </section>
-{{ U.close(root, 'See a portfolio of sixty-four sample cheques.', 'Filter by stage, sort by money at stake, and allocate matters to panel advocates.') }}
+{{ U.close(root, 'Import a return file. See your book by stage.', 'Create a lender account, import the sample return file, and allocate matters to panel advocates.') }}
 {% endblock %}

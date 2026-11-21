@@ -17,33 +17,34 @@
 <body class="{% block bodyclass %}{% endblock %}">
 <a class="skip" href="#main">Skip to content</a>
 {% block header %}
+{% import "partials/ui.html" as UI %}
 <header class="hdr">
   <div class="wrap">
-    <a class="brand" href="{{ root }}index.html" aria-label="Tarikh home"><span class="lf" aria-hidden="true"></span><b>Tarikh</b><span lang="hi" aria-hidden="true">तारीख़</span></a>
+    {{ UI.brand(root) }}
     <nav class="mainnav" id="mainnav" aria-label="Main">
       <div class="dd{% if nav in ['desk','recover','check','api'] %} cur{% endif %}">
         <button type="button" aria-expanded="false" aria-controls="dd-products">Products <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></button>
-        <div class="ddp" id="dd-products">
+        <div class="ddp" id="dd-products"><div class="ddp-in"><div class="ddp-grid">
           {% for ic, name, blurb, href in PRODUCTS %}
           <a href="{{ root }}{{ href }}"><span class="ic" aria-hidden="true">{{ ic }}</span><span><b>{{ name }}</b><span>{{ blurb }}</span></span></a>
           {% endfor %}
-          <div class="foot"><span>Every product runs on the same rule engine.</span><a href="{{ root }}app/index.html">Open the live demo →</a></div>
-        </div>
+          <a class="feature" href="{{ root }}signup.html"><span class="ic" aria-hidden="true" style="background:rgba(255,255,255,.16);border-color:transparent">+</span><span><b>Create your account</b><span>Open a matter in a minute. Free while in early access.</span></span></a>
+        </div></div></div>
       </div>
       {% for key, label, href in NAV %}
       <a href="{{ root }}{{ href }}"{% if nav == key %} aria-current="page"{% endif %}>{{ label }}</a>
       {% endfor %}
-      <a class="m-only" href="{{ root }}check.html">Check a cheque, free</a>
-      <a class="m-only" href="{{ root }}app/index.html">Open the demo</a>
+      <a class="m-only" href="{{ root }}signin.html">Sign in</a>
+      <a class="m-only" href="{{ root }}signup.html">Create your account</a>
     </nav>
     <div class="hdr-r">
-      <a class="signin" href="{{ root }}app/index.html">Open the demo</a>
-      <a class="btn red sm" href="{{ root }}check.html">Check a cheque, free</a>
+      <a class="signin" href="{{ root }}signin.html">Sign in</a>
+      <a class="btn red sm" href="{{ root }}signup.html">Start free</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mainnav">Menu</button>
     </div>
   </div>
 </header>
-{% endblock %}
+<div class="scrim" aria-hidden="true"></div>{% endblock %}
 <main id="main">
 {% block main %}{% endblock %}
 </main>
@@ -52,7 +53,7 @@
   <div class="wrap">
     <div class="ftr-grid">
       <div>
-        <a class="brand" href="{{ root }}index.html" aria-label="Tarikh home"><span class="lf" aria-hidden="true"></span><b>Tarikh</b></a>
+        {% import "partials/ui.html" as UF %}{{ UF.brand(root, False) }}
         <p class="about">The litigation platform for cheque-bounce cases in India. Built in Chandigarh.</p>
       </div>
       {% for head, links in FOOT.items() %}
