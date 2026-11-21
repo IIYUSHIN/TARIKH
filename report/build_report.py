@@ -452,7 +452,7 @@ class Build:
                f"Class: {C.CLASS}\" in partial fulfillment of the requirements for the award of the Degree {C.DEGREE} in \"{C.PROGRAMME} "
                f"({C.SPECIALIZATION})\" is a bonafide record of the work carried out from \"{fmt_long(C.START)}\" to \"{fmt_long(C.END)}\" "
                f"under my guidance and supervision at Chandigarh University, Gharuan.", size=14, spacing=2.0, after=24)
-        for t in ("SIGNATURE", f"{C.LEADER}", f"Program Leader - {C.SPECIALIZATION}", "[PENDING: academic designation of the Program Leader]",
+        for t in ("SIGNATURE", f"{C.LEADER}", f"{C.LEADER_TITLE}, {C.SPECIALIZATION}",
                   "Department of Computer Science and Engineering"):
             self.p(t, align=WD_ALIGN_PARAGRAPH.LEFT, size=14, spacing=1.2, after=2, bold=(t == "SIGNATURE"))
         self.p("This project report was evaluated by us on ____________________ (date).", align=WD_ALIGN_PARAGRAPH.LEFT, size=14, spacing=1.5, before=36, after=24)

@@ -18,7 +18,8 @@ CLASS = "24AML4 A"
 PROGRAMME = "Computer Science and Engineering"
 SPECIALIZATION = "Artificial Intelligence and Machine Learning"
 DEGREE = "Bachelor of Engineering"          # wording follows the university template; see README for B.E. / B.Tech
-LEADER = "Hari Haran"
+LEADER = "Mr. Hari Haran"
+LEADER_TITLE = "Program Leader (PL)"
 START, END = date(2026, 7, 3), date(2026, 10, 31)
 SUBMISSION = "November 2026"
 TITLE = ("TARIKH: A LITIGATION PLATFORM FOR CHEQUE-BOUNCE (SECTION 138) CASES BUILT ON MICROSOFT AZURE AI, "
@@ -70,7 +71,7 @@ def abstract() -> list[str]:
         "but only if three steps are taken inside fixed periods, and each period starts when the previous one ends. "
         "Advocates' offices count these dates by hand from photographs, scanned memos and phone calls, and a miscount can end the case.",
         "This report describes Tarikh, a litigation platform for these cases built during the industrial internship on Microsoft Azure AI "
-        "Fundamentals (AI-901). Advocates, lenders and businesses create an account and keep their matters on a server. It reads the cheque, the bank's return memo and the demand notice with Azure Content Understanding; "
+        "Fundamentals (AI-901). Advocates, lenders and businesses create an account and keep their matters on a server. It reads the cheque, the bank's return memo and the demand notice with a Foundry vision model, or with Azure Content Understanding where the region offers it; "
         "transcribes a client's voice note with Azure Speech and masks personal details with Azure AI Language before any language "
         "model sees the text; lets an advocate check each reading against the paper; counts the four statutory periods in ordinary tested code, not in a model; "
         "drafts a brief in which every sentence cites a fact or is dropped; answers questions through a Foundry agent limited to two read-only tools; "
@@ -304,13 +305,14 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
               "The counting step is plain code. A voice note, if there is one, joins at the drafting step only in masked form."))
     add(("fig", "flow", "fig_workflow.png", "The six steps of a matter. Shaded steps are decisions taken by a person.", 5.4))
     add(("h2", "Choice of Azure services"))
-    add(("p", "Each service was chosen for one job and tied to the AI-901 skill it exercises {c:exam}, as in {tab:svc}. The region has to offer the Foundry project, Content Understanding, "
-              "Speech fast transcription, neural voices and the Agent Service together {c:reg}{c:spreg}{c:curg}. Sweden Central was recommended because all of them are listed there; "
-              "South India, the region the student subscription offered first, lacks Content Understanding. For that case the program has a second reader in which the deployed vision model "
-              "fills the same fields through a strict JSON schema, and every value it reads is flagged for checking because it carries no location on the page (decision 0006)."))
+    add(("p", "Each service was chosen for one job and tied to the AI-901 skill it exercises {c:exam}, as in {tab:svc}. The student subscription permits a fixed list of regions: "
+              "Central India, East Asia, Korea Central, UAE North and Indonesia Central. Of these, Korea Central and UAE North offer the Foundry Agent Service {c:reg}, and none offers "
+              "Content Understanding, which is listed in twelve other regions {c:curg}. Tarikh is therefore deployed in **Korea Central**. Papers are read by the deployed vision model, "
+              "which fills the same fields through a strict JSON schema; because that reading carries no location on the page, every value it returns is flagged for the advocate to check "
+              "against the paper. The Content Understanding reader remains in the code and is selected by one setting where the region allows it (decision record 0006)."))
     add(("table", "svc", "Services, their job in Tarikh and the AI-901 skill covered",
          ["Service", "Job in Tarikh", "AI-901 skill area"],
-         [["Content Understanding (custom analyzers)", "Reads the cheque, return memo and demand notice into fields with confidence and page location", "Extract information from documents and forms"],
+         [["Foundry model with vision (Korea Central); Content Understanding where offered", "Reads the cheque, return memo and demand notice into fields; Content Understanding adds confidence and page location", "Extract information from documents and forms"],
           ["Azure AI Language (PII redaction)", "Masks personal details in the voice-note transcript", "Build an application that includes text analysis"],
           ["Azure Speech", "Fast transcription of a voice note; neural voice for reading the approved brief", "Build an application by using Azure Speech"],
           ["Foundry model deployment (gpt-4.1)", "Drafts the brief; notes what is visible on a cheque image", "Chat client with the Foundry SDK; interpret visual input"],
@@ -328,8 +330,8 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
               "Text is set in Schibsted Grotesk, calendar numerals in Anton, case data in JetBrains Mono and Hindi in Tiro Devanagari, all held locally. "
               "Every status is written in words as well as shown in colour, every control works by keyboard, and all movement stops for people who ask their system to reduce motion."))
     add(("p", "The product is presented as four products on one engine: Desk for advocates, Recover for lenders, Check as a free public tool and an API for other systems. "
-              "The home page shows the three papers of a sample case as they would lie on a desk, with the last day to file on a calendar leaf, before any feature is described ({fig:home})."))
-    add(("fig", "home", "shot_home.png", "The home page: the papers of a fictional case, the date that matters, and the two ways in (screen capture).", 5.9))
+              "The home page shows the three papers of a case as they would lie on a desk, with the last day to file on a calendar leaf, before any feature is described ({fig:home})."))
+    add(("fig", "home", "shot_home.png", "The home page: the three papers of a case, the date that matters, and the two ways in (screen capture).", 5.9))
 
     # ------------------------------------------------------------------ 4
     add(("h1", "Implementation"))
@@ -351,13 +353,16 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
          ["Period", "From", "To", "Status"], worked_rows, [2.2, 1.2, 1.2, 1.3]))
     add(("fig", "win", "fig_windows.png", "The four periods for the worked example. Light grey bars are met, the dark grey bar is the drawer's time, and red is the open complaint period.", 5.3))
     add(("h2", "Reading the papers"))
-    add(("p", "Three custom analyzers extend the prebuilt document analyzer {c:cu2}, one for each paper. Content Understanding needs model deployments in the Foundry resource, "
+    add(("p", "Tarikh has two readers behind one interface, chosen by the setting `TARIKH_EXTRACTOR`. In Korea Central, where the project is deployed, the **model reader** sends the image of the paper "
+              "to the gpt-4.1 deployment with an instruction to return each field exactly as printed, dates as YYYY-MM-DD, and null where a field is not visible; the reply must match a strict JSON schema "
+              "built from the same field list, so a value can never arrive in the wrong place. Each value is flagged \"read by the model without a location box\" until the advocate confirms it."))
+    add(("p", "Where Content Understanding is offered, the **analyzer reader** is used instead. Three custom analyzers extend the prebuilt document analyzer {c:cu2}, one for each paper. Content Understanding needs model deployments in the Foundry resource, "
               "so the program first sets the resource's default deployments, gpt-4.1, gpt-4.1-mini and text-embedding-3-large, once per run, and then creates the analyzer if it is not already there. "
               "{tab:fields} lists the fields. Each extracted value is stored with its confidence and its polygon on the page. "
               "A low confidence is flagged in words, and \"Show on paper\" outlines the region so that the advocate can compare it with the original. "
               "Fields that appear on no paper are marked manual and are entered by the advocate."))
     add(("table", "fields", "Fields read from each paper (manual fields are entered by the advocate)",
-         ["Paper", "Fields read by Content Understanding", "Manual"],
+         ["Paper", "Fields read from the paper", "Manual"],
          [["Cheque", "Cheque number, date, amount in figures, drawer, payee, drawee bank", "None"],
           ["Return memo", "Cheque number, presented on, returned on, reason for return", "Memo received by payee"],
           ["Demand notice", "Cheque number, notice dated, amount demanded", "Notice posted on; notice received by drawer"]],
@@ -454,7 +459,7 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
     # ------------------------------------------------------------------ 6
     add(("h1", "Conclusions and Recommendations"))
     add(("h2", "Conclusions"))
-    add(("p", "Against the objectives in Chapter 1: **O1** was met, since the project uses Content Understanding, Azure AI Language, Azure Speech, a Foundry model deployment and the Foundry Agent Service, "
+    add(("p", "Against the objectives in Chapter 1: **O1** was met, since the project uses a Foundry model deployment for reading papers and drafting, Azure AI Language, Azure Speech and the Foundry Agent Service, with a Content Understanding reader ready where the region offers it, "
               "which between them cover each implementation area of the AI-901 outline {c:exam}. **O2** was met by the deadline engine and its boundary tests, with the earlier date shown and no date assumed. "
               "**O3** was met by the source rule, which drops any claim without a cited fact. **O4** was met for transcripts and for approval, with the limitation on extracted facts stated in Section 5.5. "
               "**O5** was met in the interface, which was checked at phone width and by keyboard."))
@@ -487,7 +492,7 @@ def appendices() -> list[tuple]:
                ["Implement generative AI apps and agents by using Foundry", "Brief drafting; the two-tool agent"],
                ["Implement AI solutions for text and speech", "PII masking; voice note and read-aloud"],
                ["Implement AI solutions with computer vision and image generation", "Cheque image observations"],
-               ["Implement AI solutions for information extraction", "Content Understanding analyzers for three papers"]],
+               ["Implement AI solutions for information extraction", "Model reader with a strict schema; Content Understanding analyzers for three papers"]],
               [4.0, 1.9]))
     A.append(("h1a", "B", "Course Certificate"))
     cert = HERE.parent / "assets" / "course_certificate.png"

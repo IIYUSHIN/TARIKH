@@ -16,3 +16,9 @@ Microsoft lists it in regions such as East US 2, West US, Sweden Central and Aus
 ## Costs if wrong
 In model mode the paper view cannot draw boxes and confidence scores are absent. The facts, deadlines, drafts and audit
 work the same. Changing region later needs only a new `.env`.
+
+## Update, 21 November 2026
+The subscription's policy allows only Central India, East Asia, Korea Central, UAE North and Indonesia Central (the list
+may be longer; it was truncated). None offers Content Understanding. Korea Central and UAE North offer the Agent Service.
+**Tarikh is deployed in Korea Central** (fallback UAE North) with one model deployment, `gpt-4.1`, and
+`TARIKH_EXTRACTOR=model`. Names: resource group `tarikh-rg`, Foundry resource `tarikh-24bai70769`, project `tarikh`.
