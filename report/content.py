@@ -21,8 +21,8 @@ DEGREE = "Bachelor of Engineering"          # wording follows the university tem
 LEADER = "Hari Haran"
 START, END = date(2026, 7, 3), date(2026, 10, 31)
 SUBMISSION = "November 2026"
-TITLE = ("TARIKH: AN AZURE AI CASE DESK FOR CHEQUE-BOUNCE (SECTION 138) MATTERS THAT READS THE PAPERS, "
-         "COUNTS THE DEADLINES IN CODE AND DRAFTS A SOURCE-CITED BRIEF")
+TITLE = ("TARIKH: A LITIGATION PLATFORM FOR CHEQUE-BOUNCE (SECTION 138) CASES BUILT ON MICROSOFT AZURE AI, "
+         "THAT READS THE PAPERS, COUNTS EVERY DEADLINE IN CODE AND KEEPS A PERSON IN CHARGE")
 
 ABBREVIATIONS = [
     ("AI", "Artificial Intelligence"), ("AIML", "Artificial Intelligence and Machine Learning"),
@@ -69,13 +69,15 @@ def abstract() -> list[str]:
         "A cheque returned unpaid can become a criminal complaint under Section 138 of the Negotiable Instruments Act, "
         "but only if three steps are taken inside fixed periods, and each period starts when the previous one ends. "
         "Advocates' offices count these dates by hand from photographs, scanned memos and phone calls, and a miscount can end the case.",
-        "This report describes Tarikh, a desk for one such matter at a time, built during the industrial internship on Microsoft Azure AI "
-        "Fundamentals (AI-901). It reads the cheque, the bank's return memo and the demand notice with Azure Content Understanding; "
+        "This report describes Tarikh, a litigation platform for these cases built during the industrial internship on Microsoft Azure AI "
+        "Fundamentals (AI-901). Advocates, lenders and businesses create an account and keep their matters on a server. It reads the cheque, the bank's return memo and the demand notice with Azure Content Understanding; "
         "transcribes a client's voice note with Azure Speech and masks personal details with Azure AI Language before any language "
         "model sees the text; lets an advocate check each reading against the paper; counts the four statutory periods in ordinary tested code, not in a model; "
         "drafts a brief in which every sentence cites a fact or is dropped; answers questions through a Foundry agent limited to two read-only tools; "
-        "and releases the brief only after a named advocate approves it.",
-        f"The deadline engine is covered by boundary tests built from published worked examples, and the application has 88 automated checks and 9 browser checks. {result} "
+        "releases the brief only after a named advocate approves it; and keeps each matter's hearings, drafts, settlement and audit trail. "
+        "Lenders can import a bank return file and see their whole portfolio by stage, the measures the Supreme Court asked trial courts to track in 2025.",
+        f"The deadline engine is covered by boundary tests built from published worked examples; the application has 114 server checks, 11 checks of the browser engine "
+        f"and 17 browser checks, one of which signs up and works a matter end to end against a running server. {result} "
         "The main conclusion is that the Azure services were useful for reading and drafting, while the parts that carry legal risk "
         "were safest as plain code with a person's approval at the end.",
     ]
@@ -257,9 +259,10 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
                  "**O3.** Draft a brief that a reader can trace, line by line, to the papers.",
                  "**O4.** Keep personal details away from the reasoning model and keep a person in charge of the result.",
                  "**O5.** Make the desk usable by an advocate on a laptop or a phone, with the keyboard, and in more than one language."]))
-    add(("p", "Within scope are one matter at a time, three papers, a voice note in English, Hindi or Punjabi where the Speech service offers it, four periods, one brief and one agent. "
-              "Out of scope are legal advice, filing, a calendar of court holidays, delay condonation, several users and production hosting. "
-              "All names in the sample matter are fictional."))
+    add(("p", "Within scope are accounts and sessions, matters kept per account, three papers per matter, a voice note in English, Hindi or Punjabi where the Speech service offers it, "
+              "four periods, seven drafts, one brief, one agent, a hearing diary, a settlement record, return-file import for lenders and a public deadline checker. "
+              "Out of scope are legal advice, filing, a calendar of court holidays, delay condonation, payments, password reset and production hosting. "
+              "All names in the sample matters are fictional."))
     add(("h2", "Organisation of the report"))
     add(("p", "Chapter 2 is the weekly record. Chapter 3 gives the requirements and design, Chapter 4 the implementation, Chapter 5 testing, results and the responsible-AI review, "
               "and Chapter 6 the conclusions. The appendices hold the AI-901 syllabus, the course certificate and the commands for running the project."))
@@ -286,12 +289,14 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
           ["R7", "Answer questions through an agent limited to two read-only tools for one matter.", "Agent tests"],
           ["R8", "Release the brief and the spoken version only after a named advocate approves.", "API and browser tests"],
           ["R9", "Sign in with Entra ID; keep no keys in files.", "Configuration tests; service checker"],
-          ["R10", "Work at phone width, by keyboard, and without relying on colour alone.", "Browser and accessibility checks"]],
+          ["R10", "Work at phone width, by keyboard, and without relying on colour alone.", "Browser and accessibility checks"],
+          ["R11", "Let a person create an account, sign in and out, and see only their own matters.", "Account tests; end-to-end browser test"],
+          ["R12", "Keep hearings, settlements, draft approvals and imported matters, and log every change.", "Desk API tests; end-to-end browser test"]],
          [0.5, 3.9, 1.5]))
     add(("h2", "Architecture"))
-    add(("p", "The system is a single program on the advocate's laptop. A static page talks to a FastAPI server, which hands each request to a pipeline. "
-              "The pipeline uses a SQLite store, the deadline engine and a recorder that sits in front of every Azure call, as shown in {fig:arch}. "
-              "There is no build step for the interface and no database server to run. The deliberate choice was to put the steps in ordinary code, "
+    add(("p", "The system is one FastAPI server and the pages it serves. A person signs up or signs in; the server keeps users, sessions, matters and the audit trail in SQLite, "
+              "and sends each request that needs Azure to a pipeline. The pipeline uses the deadline engine and a recorder that sits in front of every Azure call, as shown in {fig:arch}. "
+              "The website and the desk are generated from templates by one script into plain HTML, one stylesheet and three scripts; the same deadline rules run in the browser for instant feedback. The deliberate choice was to put the steps in ordinary code, "
               "in order, and call a service at each step, rather than to hand the whole job to one agent. That keeps every step testable and keeps the legal arithmetic out of any model."))
     add(("fig", "arch", "fig_architecture.png", "Architecture of Tarikh. The heavy box is plain code; the dashed boxes are where the system leaves the laptop.", 5.2))
     add(("h2", "Workflow"))
@@ -299,9 +304,10 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
               "The counting step is plain code. A voice note, if there is one, joins at the drafting step only in masked form."))
     add(("fig", "flow", "fig_workflow.png", "The six steps of a matter. Shaded steps are decisions taken by a person.", 5.4))
     add(("h2", "Choice of Azure services"))
-    add(("p", "Each service was chosen for one job and tied to the AI-901 skill it exercises {c:exam}, as in {tab:svc}. All services are created in the Southeast Asia region, "
-              "because that was the region where the Foundry project, Content Understanding, Speech fast transcription, neural voices and the Agent Service were all listed as available "
-              "{c:reg}{c:spreg}{c:curg}. Central India was rejected because it lacked Content Understanding and the Agent Service."))
+    add(("p", "Each service was chosen for one job and tied to the AI-901 skill it exercises {c:exam}, as in {tab:svc}. The region has to offer the Foundry project, Content Understanding, "
+              "Speech fast transcription, neural voices and the Agent Service together {c:reg}{c:spreg}{c:curg}. Sweden Central was recommended because all of them are listed there; "
+              "South India, the region the student subscription offered first, lacks Content Understanding. For that case the program has a second reader in which the deployed vision model "
+              "fills the same fields through a strict JSON schema, and every value it reads is flagged for checking because it carries no location on the page (decision 0006)."))
     add(("table", "svc", "Services, their job in Tarikh and the AI-901 skill covered",
          ["Service", "Job in Tarikh", "AI-901 skill area"],
          [["Content Understanding (custom analyzers)", "Reads the cheque, return memo and demand notice into fields with confidence and page location", "Extract information from documents and forms"],
@@ -316,10 +322,14 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
               "A claim in the brief stores the identifiers of the facts it cites, which is what makes the source rule in R6 checkable ({fig:data})."))
     add(("fig", "data", "fig_datamodel.png", "Data model. Every claim in a brief points to facts; every fact points to where it was read.", 4.6))
     add(("h2", "Interface design"))
-    add(("p", "The interface was designed as a docket: a clerk's desk of paper and ink. The page is warm paper with near-black ink, and only three colours carry meaning. "
-              "A stamp red means a deadline, a verified green means a person has checked it, and a pen blue means provenance, that is, where something came from. "
-              "Headlines are set in Newsreader, text in IBM Plex Sans and dates in IBM Plex Mono, with Noto Devanagari and Gurmukhi for Hindi and Punjabi; all fonts are held locally and carry their open licences. "
-              "Corners have a two-pixel radius and there are no shadows, so that nothing pretends to be a physical card. Every status uses a word as well as a colour."))
+    add(("p", "The visual idea is the Indian tear-off wall calendar, because a cheque case is a sequence of dates. The mark is a red calendar leaf with two binding rings and the Devanagari ता; "
+              "the leaf itself, with its red month band, black numeral and Hindi weekday, is the recurring object on every page and in the desk. "
+              "The palette is black, white and one calendar red; amber means a person must act, green means settled or approved, and nothing else is coloured. "
+              "Text is set in Schibsted Grotesk, calendar numerals in Anton, case data in JetBrains Mono and Hindi in Tiro Devanagari, all held locally. "
+              "Every status is written in words as well as shown in colour, every control works by keyboard, and all movement stops for people who ask their system to reduce motion."))
+    add(("p", "The product is presented as four products on one engine: Desk for advocates, Recover for lenders, Check as a free public tool and an API for other systems. "
+              "The home page shows the three papers of a sample case as they would lie on a desk, with the last day to file on a calendar leaf, before any feature is described ({fig:home})."))
+    add(("fig", "home", "shot_home.png", "The home page: the papers of a fictional case, the date that matters, and the two ways in (screen capture).", 5.9))
 
     # ------------------------------------------------------------------ 4
     add(("h1", "Implementation"))
@@ -374,13 +384,23 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
     add(("p", "Every call to Azure passes through a recorder. In live mode it records the request and response into a cassette; in replay mode, set by `TARIKH_MODE=replay`, it serves them back and the page shows a banner saying so. "
               "This allows the project to be shown and tested without a connection, without pretending that replayed answers are live. "
               "Service errors are turned into plain sentences that say what failed and what to do next, for example a missing role assignment or an unsupported file type."))
-    add(("h2", "The interface"))
-    add(("p", "The interface is hand-written HTML, CSS and JavaScript with no build step and about 900 lines of script and style. The matter page opens with one sentence that answers the main question, "
-              "such as which date is missing, and below it the deadline clock ({fig:desk}). The marker for today can be dragged or moved with the arrow keys, and a text table gives the same dates. "
-              "The ledger lists the facts with native date inputs. {fig:brief} shows an approved brief, and {fig:phone} the same matter at phone width."))
-    add(("fig", "desk", "shot_clock.png", "The deadline clock for the sample matter after the three dates are entered (screen capture). [PENDING: replace with live capture]", 5.8))
-    add(("fig", "brief", "shot_brief.png", "An approved brief. Each line carries the facts it cites; the stamp shows who approved it (screen capture). [PENDING: replace with live capture]", 5.0))
-    add(("fig", "phone", "shot_phone.png", "The same matter at phone width (screen capture). [PENDING: replace with live capture]", 2.2))
+    add(("h2", "Accounts and sessions"))
+    add(("p", "A person signs up with a name, an email address, a password and the kind of work they do. The password is hashed with scrypt from Python's standard library, with a random salt, "
+              "and compared in constant time; the password itself is never stored. Signing in issues a random 32-byte token in an HttpOnly cookie that lasts fourteen days, and signing out deletes it. "
+              "A middleware refuses every data route without a valid session, and every matter carries its owner, so a request for another person's matter answers as if it did not exist ({fig:signup})."))
+    add(("fig", "signup", "shot_signup.png", "Creating an account (screen capture).", 5.6))
+    add(("h2", "The desk"))
+    add(("p", "The desk is where the work happens. Today lists what runs out first: complaint and notice deadlines in order of days left, hearings in the next three weeks, drafts waiting for approval and dates that no paper shows ({fig:desk}). "
+              "Each matter page holds the moveable clocks, the papers with their facts, the hearing diary with a form to record what happened and fix the next date, seven sourced drafts, "
+              "the AI brief, the agent, the settlement calculator and the activity log ({fig:matter}). A command palette (Ctrl K) finds any matter or page. "
+              "The sidebar folds into a rail of icons and a marker slides to the item under the pointer; at phone width it becomes a sheet ({fig:phone})."))
+    add(("fig", "desk", "shot_desk.png", "Today: deadlines in order of urgency, the week's hearings and what is waiting for the advocate (screen capture).", 5.9))
+    add(("fig", "matter", "shot_matter.png", "One matter: the last day to file, the clocks and the dates that set them (screen capture).", 5.9))
+    add(("p", "For lenders, the portfolio view groups every matter by stage, totals the money at stake and recovered, counts adjournments per filed case and ages the filed cases, "
+              "which are the measures the Supreme Court asked trial courts to track in Sanjabij Tari v. Kishore S. Borcar (2025). A bank return file in CSV opens one matter per row; "
+              "a row with a date that is not a real date is skipped and reported, never repaired. Selected matters can be allocated to a panel advocate in one step ({fig:portfolio})."))
+    add(("fig", "portfolio", "shot_portfolio.png", "The portfolio after importing the sample return file (screen capture).", 5.9))
+    add(("fig", "phone", "shot_phone.png", "Today at phone width (screen capture).", 2.2))
     add(("h2", "Sign-in and configuration"))
     add(("p", "The program uses `DefaultAzureCredential`, which means that `az login` is enough on a laptop and no key is written to any file. The person needs the Cognitive Services User and Foundry User roles on the resource. "
               "Settings such as the region, the endpoint and the deployment names are read from environment variables. A single command, `python -m tools.check_setup`, makes one real call to each service and prints a plain pass or fail with the fix; "
@@ -391,7 +411,9 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
     add(("h2", "Test strategy"))
     add(("p", "Tests were written before the code for the deadline engine, the store and the configuration. Services that need Azure are tested against hand-written stand-ins that follow the same interface, "
               "so the logic around them, such as the source rule and the agent loop, is exercised on every run. {tab:tests} shows the layers. "
-              "The last run had 88 passing application checks outside the browser and 9 passing browser checks, and the automated accessibility scan reported no violations."))
+              "The last run had 114 passing server checks, 11 passing checks of the browser engine and 17 passing browser checks. "
+              "One browser check starts a real server, signs up, loads the sample matters, enters a missing date, records a hearing, opens a matter, imports the sample return file, allocates the matters and signs out, "
+              "and fails if the page raises any error on the way."))
     add(("table", "tests", "Automated checks by layer",
          ["Layer", "What it proves"],
          [["Deadline engine", "Month-end, leap-year, missing-date, window status and rule wording"],
@@ -399,7 +421,8 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
           ["Extraction, redaction, speech", "Mapping of service output into facts; masking; locale handling"],
           ["Reasoning and agent", "Source-or-drop rule; tool binding to one matter; tool-round limit"],
           ["Recorder and configuration", "Record and replay; required settings; model deployment plan"],
-          ["Browser (Chromium)", "Clock, ledger, brief, approval gate, voice panel, phone width, refused files"]],
+          ["Accounts and desk API", "Sign-up, sign-in, sign-out, isolation between accounts, entered dates, hearings, settlements, approvals, import"],
+          ["Browser (Chromium)", "Live clocks, Check, calculator, ordering, drafts gate, allocation, command palette, links, no third-party requests, phone menu, reduced motion, the full account journey"]],
          [1.9, 4.0]))
     add(("h2", "Deadline checks"))
     add(("p", "The boundary cases in {tab:bound} are executed by the engine when this report is built, and the build stops if any result differs from the value shown. "
@@ -426,7 +449,7 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
                  "Court holidays, delay condonation and the question of where a complaint may be filed are not computed.",
                  "The engine does not count the day of receipt of the notice, so a notice received on 8 January gives 15 days ending on 23 January, as in the judgment cited in Section 5.2. A court that counted the day of receipt as the first day would end every period one day sooner, and the desk would then show a date one day late. The advocate is told to confirm every date for this reason.",
                  "A PDF is read but is shown as a link, not in the viewer overlay; a phone photograph in HEIC format is refused with a message that says why.",
-                 "The desk handles one matter at a time and has one user."]))
+                 "Accounts have no password reset or email verification yet, and the server keeps everything in one SQLite file on one machine."]))
 
     # ------------------------------------------------------------------ 6
     add(("h1", "Conclusions and Recommendations"))
@@ -440,7 +463,7 @@ def chapters(deadline_rows: list[list[str]], worked_rows: list[list[str]]) -> li
     add(("h2", "Recommendations"))
     add(("bul", ["Add a court-holiday calendar for the relevant district, and show a second date for the advocate to choose when a deadline falls on a holiday.",
                  "Show both ways of counting the day of receipt side by side and mark the earlier one, so that the date shown is always the safer of the two.",
-                 "Move to a managed database and add sign-in with roles, so that a junior can draft and only a senior can approve.",
+                 "Move to a managed database and to Microsoft Entra External ID for sign-in, with roles, so that a junior can draft and only a senior can approve.",
                  "Measure reading accuracy per field on a larger set of real papers, used with permission; three samples only show that the pipeline works.",
                  "Compare the brief with advocates' own notes before any use outside a classroom.",
                  ]))
@@ -475,9 +498,9 @@ def appendices() -> list[tuple]:
                       "pip install -r requirements.txt\n"
                       "python -m tools.deploy_models      # creates gpt-4.1, gpt-4.1-mini and text-embedding-3-large\n"
                       "python -m tools.check_setup        # one real call to each service, with a plain pass or fail\n"
-                      "uvicorn app.main:build_app --factory --port 8000\n"
+                      "python -m uvicorn app.main:build_app --factory --port 8000\n"
                       "TARIKH_MODE=replay uvicorn app.main:build_app --factory   # show without a connection\n"
                       "pytest                              # automated checks\n"))
-    A.append(("p", "Project layout: `app/` holds the server, pipeline and deadline engine; `app/services/` holds one file per Azure service; `app/static/` holds the interface; "
-                   "`tests/` holds the automated checks; `tools/` holds the setup helpers; `docs/` holds the guides; `report/` holds the script that built this document."))
+    A.append(("p", "Project layout: `app/` holds the server, accounts, pipeline and deadline engine; `app/services/` holds one file per Azure service; `site/` holds the website and the desk; "
+                   "`tests/` holds the automated checks; `tools/` holds the setup helpers; `docs/` holds the engineering record; `report/` holds the script that built this document."))
     return A

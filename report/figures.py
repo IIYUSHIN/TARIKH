@@ -43,12 +43,12 @@ def canvas(w, h):
 
 def architecture():
     fig, ax = canvas(6.3, 4.6)
-    ax.text(0.1, 4.42, "Laptop (everything the advocate touches)", fontsize=8, color=GREY, style="italic")
-    box(ax, 0.1, 3.45, 1.7, 0.75, "Browser", "static HTML+JS", fill=LIGHT)
-    box(ax, 2.15, 3.45, 2.0, 0.75, "FastAPI", "app/main.py", fill=LIGHT)
+    ax.text(0.1, 4.42, "Tarikh server and its browser clients", fontsize=8, color=GREY, style="italic")
+    box(ax, 0.1, 3.45, 1.7, 0.75, "Browser", "website + desk", fill=LIGHT)
+    box(ax, 2.15, 3.45, 2.0, 0.75, "FastAPI", "sessions, routes", fill=LIGHT)
     box(ax, 4.5, 3.45, 1.7, 0.75, "Pipeline", "app/pipeline.py", fill=LIGHT)
     arrow(ax, 1.8, 3.82, 2.15, 3.82); arrow(ax, 4.15, 3.82, 4.5, 3.82)
-    box(ax, 0.1, 2.2, 1.7, 0.75, "SQLite store", "facts, audit", sfs=7.2)
+    box(ax, 0.1, 2.2, 1.7, 0.75, "SQLite", "users, matters, audit", sfs=7.2)
     box(ax, 2.15, 2.2, 2.0, 0.75, "Deadline engine", "plain code, tested", lw=2.0, sfs=7.2)
     box(ax, 4.5, 2.2, 1.7, 0.75, "Recorder", "live / replay", ls="--", sfs=7.2)
     arrow(ax, 5.35, 3.45, 5.35, 2.95)
